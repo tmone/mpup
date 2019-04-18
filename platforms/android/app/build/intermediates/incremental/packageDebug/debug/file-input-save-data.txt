@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Thu Apr 18 15:18:13 ICT 2019
+#Thu Apr 18 15:39:46 ICT 2019
 20.base=D\:\\mpup\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 143.base=D\:\\mpup\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 237.path=www/pages/tabs-routable.html

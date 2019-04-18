@@ -346,7 +346,7 @@ var app = new Framework7({
         app.popup.close();
         return false;
       } else if (app.views.main.router.url == '/') {
-        app.dialog.confirm("Thoát ứng dụng", "KES Connect Mobile", function () {
+        app.dialog.confirm("Thoát ứng dụng", app.data.appName, function () {
           navigator.app.exitApp();
         }, function () {
           return false;

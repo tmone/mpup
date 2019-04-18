@@ -180,7 +180,7 @@
   "cordova-plugin-code-push": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-code-push"
+      "id": "cordova-plugin-code-push@latest"
     },
     "is_top_level": true,
     "variables": {}
