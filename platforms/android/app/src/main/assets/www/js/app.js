@@ -388,6 +388,7 @@ var getUserInfoSuccess = function (obj) {
     } else {
       $$("#user-image").attr("src", "img/sex/null.png");
     }
+    app.methods.loadData();
   } else {
     app.loginScreen.open("#my-login-screen");
   }
@@ -481,6 +482,8 @@ var onNotificationReceived = function (pushNotification) {
   //console.log(title, message);
 }
 
+$$(document).on("backbutton", app.methods.onBackKeyDown, false);
+
 $$(document).on('deviceready', function () {
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
     window.plugins.callLog.hasReadPermission(function (rs) {
@@ -498,7 +501,7 @@ $$(document).on('deviceready', function () {
     });
   }
 
-  document.addEventListener("backbutton", app.methods.onBackKeyDown, false);
+  
   AppCenter.Push.addEventListener('notificationReceived', onNotificationReceived);
   var platform = device.platform;
   if (device.platform.toLocaleUpperCase() == "ANDROID") {

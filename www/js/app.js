@@ -115,31 +115,31 @@ var app = new Framework7({
         }).done(function (data) {
           app.preloader.hide();
           self.methods.updateList(data);
-         
+
         });
       }
     },
-    UpsetStore: function(arr){
-      var self= this;
-      if(arr && arr.length && arr.length>0){
-        for(var i = 0; i < arr.length; i++){
-          try{
+    UpsetStore: function (arr) {
+      var self = this;
+      if (arr && arr.length && arr.length > 0) {
+        for (var i = 0; i < arr.length; i++) {
+          try {
             var tmp = arr[i];
-            var f = self.data.Store._array.find(function(x,i){
-              return x[self.data.Store.key]==tmp[self.data.Store.key];
+            var f = self.data.Store._array.find(function (x, i) {
+              return x[self.data.Store.key] == tmp[self.data.Store.key];
             });
-            if(f && f[self.data.Store.key]>0){
+            if (f && f[self.data.Store.key] > 0) {
               self.data.Store.push([{
                 type: "update", key: f[self.data.Store.key], data: tmp
               }]);
-            }else{
+            } else {
               self.data.Store.push([{
                 type: "insert", data: tmp
               }]);
             }
-          }catch(err){}          
+          } catch (err) { }
         }
-      }      
+      }
     },
     refreshList: function () {
       //app.data.list.replaceAllItems(app.data.items);
@@ -388,6 +388,7 @@ var getUserInfoSuccess = function (obj) {
     } else {
       $$("#user-image").attr("src", "img/sex/null.png");
     }
+    app.methods.loadData();
   } else {
     app.loginScreen.open("#my-login-screen");
   }
@@ -481,6 +482,8 @@ var onNotificationReceived = function (pushNotification) {
   //console.log(title, message);
 }
 
+$$(document).on("backbutton", app.methods.onBackKeyDown, false);
+
 $$(document).on('deviceready', function () {
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
     window.plugins.callLog.hasReadPermission(function (rs) {
@@ -498,7 +501,7 @@ $$(document).on('deviceready', function () {
     });
   }
 
-  document.addEventListener("backbutton", app.methods.onBackKeyDown, false);
+
   AppCenter.Push.addEventListener('notificationReceived', onNotificationReceived);
   var platform = device.platform;
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
