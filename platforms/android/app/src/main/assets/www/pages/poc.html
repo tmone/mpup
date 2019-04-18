@@ -8,7 +8,7 @@
                         <span class="ios-only">Back</span>
                     </a>
                 </div>
-                <div class="title">NGƯỜI NHẬN HÀNG</div>
+                <div class="title head-title">CHI TIẾT</div>
                 <div class="right">
                     <a class="link icon-only save" href="#">
                         <i class="icon f7-icons ios-only">save</i>
@@ -18,125 +18,389 @@
             </div>
         </div>
         <div class="page-content">
-            <form class="list" id="form-edit">
-                <input type="hidden" name="ID" value="{{poc.ID}}">
-                <ul>
-                    <li>
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Người nhận</div>
-                                <div class="item-input-wrap">
-                                    <input type="text" name="Recipient_Name" placeholder="Tên khách hàng"
-                                        id="Recipient_Name" 
-                                        value="{{poc.Recipient_Name}}">
-                                        
+            <form id="form0">
+                <div class="swiper-container swiper-init" data-pagination='{"el": ".swiper-pagination"}'
+                    data-space-between="50">
+                    <div class="swiper-pagination" style="top: 5px;bottom : auto;"></div>
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <div class="list">
+                                <input type="hidden" name="ID" value="{{poc.ID}}">
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Người nhận</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="Recipient_Name"
+                                                        placeholder="Tên khách hàng" id="Recipient_Name"
+                                                        value="{{poc.Recipient_Name}}">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {{#each poc.PHONES}}
+                                    <li {{#if Show}}style='display:block;' {{else}}style='display:none;' {{/if}}
+                                        data-index="{{Index}}">
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Điện thoại</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="numpad" name="{{Phone_Name}}" placeholder="Điện thoại"
+                                                        id="Mobile{{Index}}" value="{{Phone_Value}}"
+                                                        data-dot-character=";" data-dot-button="true">
+                                                </div>
+                                            </div>
+                                            <div class="item_after" style="padding-right:15px; display:block"
+                                                data-phone="{{Phone_Name}}">
+                                                <a class="link icon-only add-num" href="#" data-index="{{Index}}">
+                                                    <i class="icon f7-icons ios-only">add</i>
+                                                    <i class="icon material-icons md-only">add</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    {{/each}}
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Số nhà</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="Recipient_Soi" placeholder="Số nhà"
+                                                        value="{{poc.Recipient_Soi}}" id="Recipient_Soi">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Đường, phố</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="Recipient_Road" placeholder="Đường, phố"
+                                                        value="{{poc.Recipient_Road}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="item-link smart-select smart-select-init select-province "
+                                            data-searchbar="true" data-searchbar-placeholder="Nhập tên tỉnh, thành phố"
+                                            data-close-on-select="true">
+                                            <select name="Recipient_Province_ID" id="Recipient_Province_ID">
+                                                {{#each Provinces}}
+                                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>
+                                                    [{{Province_Code}}]
+                                                    {{Province_TH_Desc}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">Tỉnh, thành phố</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="item-link smart-select smart-select-init select-district "
+                                            data-searchbar="true" data-searchbar-placeholder="Nhập tên quận, huyện"
+                                            data-close-on-select="true">
+                                            <select name="Recipient_District_ID" id="Recipient_District_ID">
+                                                {{#each Districts}}
+                                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>
+                                                    [{{District_Code}}]
+                                                    {{District_TH_Desc}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">Quận, huyện</div>
+                                                    <div class="item-after" id="Recipient_District_Name"></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="item-link smart-select smart-select-init select-subdistrict "
+                                            data-searchbar="true" data-searchbar-placeholder="Nhập tên xã phường"
+                                            data-close-on-select="true">
+                                            <select name="Recipient_SubDistrict_ID" id="Recipient_SubDistrict_ID">
+                                                {{#each SubDistricts}}
+                                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>
+                                                    [{{SubDistrict_Code}}]
+                                                    {{SubDistrict_TH_Desc}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">Xã, phường</div>
+                                                    <div class="item-after" id="Recipient_SubDistrict_Name"></div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Địa chỉ</div>
+                                                <div class="item-text">
+                                                    <input type="text" readonly name="Address" placeholder="Địa chỉ"
+                                                        value="{{poc.Recipient_Address}}" id="Recipient_Address">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="list">
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Số kiện</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="numpad" name="Total_Package" placeholder="Số kiện"
+                                                        id="Total_Package" value="{{poc.Total_Package}}"
+                                                        data-dot-button="false">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">DOC</div>
+                                                <div class="item-after">
+                                                    <label class="toggle toggle-init">
+                                                        <input type="checkbox" name="Cargo_Type" value="yes"><i
+                                                            class="toggle-icon"></i>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Khối lượng</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="numpad" name="Actual_Weight" placeholder="Khối lượng"
+                                                        id="Actual_Weight" value="{{poc.Actual_Weight}}">
+                                                </div>
+                                            </div>
+                                            <div class="item_after" style="padding-right:15px;">
+                                                <a class="link icon-only add-weight" href="#">
+                                                    <i class="icon f7-icons ios-only">add</i>
+                                                    <i class="icon material-icons md-only">add</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Khối lượng qui đổi</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="numpad" name="Dim_Weight" placeholder="K.lượng qui đổi"
+                                                        id="Dim_Weight" value="{{poc.Dim_Weight}}">
+                                                </div>
+
+                                            </div>
+                                            <div class="item_after" style="padding-right:15px;">
+                                                <a class="link icon-only add-dim-weight" href="#">
+                                                    <i class="icon f7-icons ios-only">add</i>
+                                                    <i class="icon material-icons md-only">add</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="item-link smart-select smart-select-init select-services "
+                                            data-searchbar="true" data-searchbar-placeholder="Dịch vụ"
+                                            data-close-on-select="true">
+                                            <select name="Service_ID" id="Service_ID">
+                                                {{#each Services}}
+                                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>
+                                                    [{{Service_Code}}]
+                                                    {{Service_TH_Name}}</option>
+                                                {{/each}}
+                                            </select>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">Dịch vụ</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Giá trị hàng hóa</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="calculator" name="Declared_Value"
+                                                        placeholder="Giá trị hàng hóa" id="Declared_Value"
+                                                        value="{{poc.Declared_Value}}" class="format-number">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Tiền thu hộ</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="calculator" name="COD_Amount" placeholder="Tiền thu hộ"
+                                                        id="COD_Amount" value="{{poc.COD_Amount}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title">Đóng gỗ</div>
+                                            </div>
+                                            <div class="item_after" style="padding-right:15px;">
+                                                <a class="link icon-only add-wood" href="#">
+                                                    <i class="icon f7-icons ios-only">drawers_fill</i>
+                                                    <i class="icon material-icons md-only">all_inbox</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="item-link smart-select smart-select-init select-payment"
+                                            data-open-in="popup" data-searchbar-placeholder="Hình thức TT"
+                                            data-close-on-select="true">
+                                            <select name="Payment_Type" id="Payment_Type">
+                                                <option value="NG" selected>Đã thanh toán</option>
+                                                <option value="NN">Người nhận</option>
+                                                <option value="GS">Thanh toán sau</option>
+                                            </select>
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">Hình thức TT</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <li style="display:none;" class="customer-code">
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Mã Khách hàng</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="Customer_Code" placeholder="Mã khách hàng"
+                                                        value="{{poc.Customer_Code}}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <div class="list">
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Nội dung hàng hóa</div>
+                                                <div class="item-input-wrap">
+                                                    <textarea id="Consignment_Package_Remark"
+                                                        name="Consignment_Package_Remark"
+                                                        value="{{poc.Consignment_Package_Remark}}"
+                                                        placeholder="Nội dung hàng hóa"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Số tham chiếu</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" name="Consignment_Ref_Number"
+                                                        value="{{poc.Consignment_Ref_Number}}"
+                                                        placeholder="Số tham chiếu" id="Consignment_Ref_Number">
+                                                </div>
+                                            </div>
+                                            <div class="item_after" style="padding-right:15px;">
+                                                <a class="link icon-only scan-barcode" href="#">
+                                                    <i class="icon f7-icons ios-only">qrcode</i>
+                                                    <i class="icon material-icons md-only">aspect_ratio</i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card">
+                                <div class="card-content card-content-padding">
+                                    <p>Lưu ý các trường hợp sử dụng số tham chiếu:</p>
+                                    <p>1. Người gửi sử dụng số liên lạc không thể nhận thông tin bằng tin nhắn.</p>
+                                    <p>2. Khách hàng yêu cầu, bắt buộc phải cung cấp vận đơn để xác nhận trạng thái đơn
+                                        hàng.</p>
                                 </div>
                             </div>
                         </div>
-                    </li>                    
-                    {{#each poc.PHONES}}
-                    <li {{#if Show}}style='display:block;' {{else}}style='display:none;' {{/if}} data-index="{{Index}}">
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Điện thoại</div>
-                                <div class="item-input-wrap">
-                                    <input type="numpad" name="{{Phone_Name}}" placeholder="Điện thoại"
-                                    id="Phone_Name{{Index}}"    
-                                    value="{{Phone_Value}}">
-                                </div>
+                        <div class="swiper-slide">
+                            <div class="list">
+                                <ul>
+                                    <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Số vận đơn</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="text" readonly name="Consignment_No"
+                                                        value="{{poc.Consignment_No}}" placeholder="Số vận đơn"
+                                                        id="Consignment_No">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
-                            <div class="item_after" style="padding-right:15px; display:block"
-                                data-phone="{{Phone_Name}}">
-                                <a class="link icon-only add-num" href="#" data-index="{{Index}}">
-                                    <i class="icon f7-icons ios-only">add</i>
-                                    <i class="icon material-icons md-only">add</i>
-                                </a>
-                            </div>
-                        </div>
-                    </li>
-                    {{/each}}
-                    <li>
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Số nhà</div>
-                                <div class="item-input-wrap">
-                                    <input type="text" name="Recipient_Soi" placeholder="Số nhà" value="{{poc.Recipient_Soi}}" id="Recipient_Soi">
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Đường, phố</div>
-                                <div class="item-input-wrap">
-                                    <input type="text" name="Recipient_Road" placeholder="Đường, phố" value="{{poc.Recipient_Road}}">
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <a class="item-link smart-select smart-select-init select-province " data-searchbar="true"
-                            data-searchbar-placeholder="Nhập tên tỉnh, thành phố" data-close-on-select="true">
-                            <select name="Recipient_Province_ID" id="Recipient_Province_ID">
-                                {{#each Provinces}}
-                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>[{{Province_Code}}]
-                                    {{Province_TH_Desc}}</option>
-                                {{/each}}
-                            </select>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">Tỉnh, thành phố</div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="item-link smart-select smart-select-init select-district " data-searchbar="true"
-                            data-searchbar-placeholder="Nhập tên quận, huyện" data-close-on-select="true">
-                            <select name="Recipient_District_ID" id="Recipient_District_ID">
-                                {{#each Districts}}
-                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>[{{District_Code}}]
-                                    {{District_TH_Desc}}</option>
-                                {{/each}}
-                            </select>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">Quận, huyện</div>
-                                    <div class="item-after" id="Recipient_District_Name"></div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="item-link smart-select smart-select-init select-subdistrict " data-searchbar="true"
-                            data-searchbar-placeholder="Nhập tên xã phường" data-close-on-select="true">
-                            <select name="Recipient_SubDistrict_ID" id="Recipient_SubDistrict_ID">
-                                {{#each SubDistricts}}
-                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>[{{SubDistrict_Code}}]
-                                    {{SubDistrict_TH_Desc}}</option>
-                                {{/each}}
-                            </select>
-                            <div class="item-content">
-                                <div class="item-inner">
-                                    <div class="item-title">Xã, phường</div>
-                                    <div class="item-after" id="Recipient_SubDistrict_Name"></div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li>
-                        <div class="item-content item-input">
-                            <div class="item-inner">
-                                <div class="item-title item-label">Địa chỉ</div>
-                                <div class="item-text">
-                                    <input type="text" readonly name="Address" placeholder="Địa chỉ"
-                                        value="{{poc.Recipient_Address}}" id="Recipient_Address">
+                            <div class="data-table card">
+                                <table>
+                                    <thead>
+                                        <th class="label-cell">Tiền cước đơn hàng</th>
+                                        <th class="numeric-cell">Số tiền</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1.Cước chính</td>
+                                            <td><input type="number" readonly name="Freight_Charge"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2.Phí phát hàng ngoại thành</td>
+                                            <td><input type="number" readonly name="ESA_Surcharge"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3.Phí hàng giá trị cao</td>
+                                            <td><input type="number" readonly name="Insurance_Surcharge"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4.Phí đóng gỗ</td>
+                                            <td><input type="number" readonly name="VAS_Surcharge"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>5. Phí khác</td>
+                                            <td><input type="number" readonly name="Other_Surcharge"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="data-table-footer">
+                                    <div class="data-table-rows-select">
+                                        Tổng cộng: <input type="number" readonly name="Total_Charge">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
@@ -159,7 +423,7 @@
         methods: {
             updateAddress: function () {
                 //debugger;
-                var formData = app.form.convertToData("#form-edit") || {};
+                var formData = app.form.convertToData("#form0") || {};
                 var str = "";
                 if (formData.Recipient_Soi && formData.Recipient_Soi.length > 0) {
                     if (str.length > 0) {
@@ -220,7 +484,7 @@
                 });
             },
             save: function () {
-                var data = app.form.convertToData("#form-edit") || {};
+                var data = app.form.convertToData("#form0") || {};
                 if (!data.Recipient_Name || data.Recipient_Name.length <= 0) {
                     app.toast.create({
                         text: "Chưa nhập thông tin: Người gửi",
@@ -231,11 +495,11 @@
                 }
                 //$$(".Recipient_Name").text(data.Recipient_Name);
                 var phones = "";
-                $.each($(""),function(x){
+                $.each($(""), function (x) {
                     phones += $(this).val();
                 });
                 //data.Phone_No+";"+data.Mobile_No1+";"+data.Mobile_No2;
-                if (phones.length<12 || phones.includes("undefined")) {
+                if (phones.length < 12 || phones.includes("undefined")) {
                     app.toast.create({
                         text: "Chưa nhập thông tin: Điện thoại",
                         closeTimeout: 2000,
@@ -245,25 +509,25 @@
                 }
                 //$$(".Phone_No").text(data.Phone_No);
                 //$$(".Contact_Person").text(data.Contact_Person);
-                if(!data.Recipient_Province_ID || data.Recipient_Province_ID<=1){
+                if (!data.Recipient_Province_ID || data.Recipient_Province_ID <= 1) {
                     app.toast.create({
                         text: "Chưa nhập thông tin: Tỉnh, thành phố",
                         closeTimeout: 2000,
-                    }).open();                    
+                    }).open();
                     return;
                 }
-                if(!data.Recipient_District_ID || +data.Recipient_District_ID==3760 || +data.Recipient_District_ID==3761){
+                if (!data.Recipient_District_ID || +data.Recipient_District_ID == 3760 || +data.Recipient_District_ID == 3761) {
                     app.toast.create({
                         text: "Chưa nhập thông tin: Quận, huyện",
                         closeTimeout: 2000,
-                    }).open();                    
+                    }).open();
                     return;
                 }
-                if(!data.Recipient_Address || data.Recipient_Address<10){
+                if (!data.Recipient_Address || data.Recipient_Address < 10) {
                     app.toast.create({
                         text: "Lỗi. Địa chỉ quá ngắn",
                         closeTimeout: 2000,
-                    }).open();                    
+                    }).open();
                     return;
                 }
                 //$$(".Address").text(data.Address);
@@ -311,10 +575,10 @@
                 var self = this;
                 var pocID = page.route.params.pocID;
                 console.log(pocID);
-                // self.poc = app.data.items.find(function (x) {
-                //     return x.ID == poID;
-                // });
-                self.poc = app.data.Store.byKey(pocID);
+                self.poc = app.data.Store._array.find(function (x) {
+                    return x.ID == pocID;
+                });
+                // self.poc = app.data.Store._array.find(pocID);
                 $$(".Recipient_Name").text(self.poc.Recipient_Name);
                 //$$(".Recipient_Mobile_No").text(self.po.Sender_Phone_No);
                 $$(".Recipient_Address").text(self.poc.Recipient_Address);
@@ -322,41 +586,77 @@
                 //$$(".edit").attr("href", "/po/" + poID + "/edit/");
 
                 $$(".add-num").on("click", function () {
-                    $$(this).parent().hide();
                     var id = $$(this).data("index");
-                    id = +id + 1;
-                    if (id <= 9) {
-                        $$('li[data-index="' + id + '"]').show();
+                    var val = $$("#Mobile" + id).val();
+                    // debugdebugger;
+                    if (val && val.length >= 10) {
+                        $$(this).parent().hide();
+                        id = +id + 1;
+                        if (id <= 9) {
+                            $$('li[data-index="' + id + '"]').show();
+                        }
+                    } else {
+                        app.toast.create({
+                            text: "Hãy nhập đầy đủ số điện thoại!",
+                            closeTimeout: 2000,
+                        }).open();
                     }
+
                 });
-                $$("#Province_ID").on("change", function () {
+                $$("#Recipient_Province_ID").on("change", function () {
                     var val = $$(this).val();
                     self.refreshDistrict(val);
                     self.refreshSubDistrict();
                     //app.smartSelect.get(".select-district").setValue("3761");
                     //app.smartSelect.get(".select-subdistrict").setValue("18732");
-                    $$("#District_ID").val(null);
-                    $$("#District_Name").text("Chọn quận, huyện");
-                    $$("#SubDistrict_ID").val(null);
-                    $$("#SubDistrict_Name").text("Chọn Xã, phường");
+                    $$("#Recipient_District_ID").val(null);
+                    $$("#Recipient_District_Name").text("Chọn quận, huyện");
+                    $$("#Recipient_SubDistrict_ID").val(null);
+                    $$("#Recipient_SubDistrict_Name").text("Chọn Xã, phường");
                     self.updateAddress();
                 });
-                $$("#District_ID").on("change", function () {
+                $$("#Recipient_District_ID").on("change", function () {
                     var val = $$(this).val();
                     self.refreshSubDistrict(val);
-                    $$("#SubDistrict_ID").val(null);
-                    $$("#SubDistrict_Name").text("Chọn Xã, phường");
+                    $$("#Recipient_SubDistrict_ID").val(null);
+                    $$("#Recipient_SubDistrict_Name").text("Chọn Xã, phường");
                     self.updateAddress();
                 });
-                $$("#SubDistrict_ID").on("change", function () {
+                $$("#Recipient_SubDistrict_ID").on("change", function () {
                     self.updateAddress();
                 });
                 $$(".save").on("click", function () {
                     self.save();
                 });
+                // for(var i = 0; i<10; i++){
+                //     app.keypad.create({
+                //     inputEl: '#Mobile'+i,
+                //     dotCharacter: ";",
+                //     dotButton: true
+                //     });
+                // }  
+
+                $$("#Payment_Type").on("change", function () {
+                    var vl = $$(this).val();
+                    if (vl == "GS") {
+                        $$(".customer-code").show();
+                    } else {
+                        $$(".customer-code").hide();
+                    }
+                });
+                $$(".add-wood").on("click",function(){
+
+                });
+                $(".format-number").number(true,0);
             },
             pageBeforeIn: function (e, page) {
-                console.log('pageBeforeIn', page);
+                // console.log('pageBeforeIn', page);
+                // var t = app.keypad.get("#Declared_Value");
+                // t.formatValue = function (vl) {
+                //     //debugger;
+                //     ret$.number( 5020.2364 )
+                // }
+                $(".format-number").number(true,0);
             },
             pageAfterIn: function (e, page) {
                 console.log('pageAfterIn', page);

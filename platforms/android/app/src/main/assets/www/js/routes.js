@@ -76,9 +76,9 @@ var routes = [
       //     })
 
       // }
-      var process = function(data){
+      var process = function (data) {
         // Hide Preloader
-      app.preloader.hide();
+        app.preloader.hide();
         resolve(
           {
             componentUrl: './pages/po.html',
@@ -115,7 +115,7 @@ var routes = [
       }).done(function (data) {
         process(data);
       });
-      
+
       // Hide Preloader
       //app.preloader.hide();
       //});
@@ -146,7 +146,7 @@ var routes = [
       }).map(function (x) {
         return Object.assign({ Selected: x.ID == PO.District_ID }, x);
       });
-      var SubDistricts = SUBDISTRICTS.filter(function(x){
+      var SubDistricts = SUBDISTRICTS.filter(function (x) {
         return x.District_ID == PO.District_ID;
       }).map(function (x) {
         return Object.assign({ Selected: x.ID == PO.SubDistrict_ID }, x);
@@ -210,7 +210,9 @@ var routes = [
 
       // User ID from request
       var pocID = routeTo.params.pocID;
-      var POC = app.data.Store.byKey(pocID);
+      var POC = app.data.Store._array.find(function (x) {
+        return x.ID == pocID;
+      });//(pocID);
       var Provinces = PROVINCES.map(function (x) {
         return Object.assign({ Selected: x.ID == POC.Recipient_Province_ID }, x);
       });
@@ -219,41 +221,46 @@ var routes = [
       }).map(function (x) {
         return Object.assign({ Selected: x.ID == POC.Recipient_District_ID }, x);
       });
-      var SubDistricts = SUBDISTRICTS.filter(function(x){
+      var SubDistricts = SUBDISTRICTS.filter(function (x) {
         return x.District_ID == POC.Recipient_District_ID;
       }).map(function (x) {
         return Object.assign({ Selected: x.ID == POC.Recipient_SubDistrict_ID }, x);
+      });
+      var Services = SERVICES.map(function(x){
+        return Object.assign({Selected:POC.Service_ID==x.ID},x);
       });
       if (POC && POC.Recipient_Mobile && POC.Recipient_Mobile.length > 0) {
         POC.PHONES = POC.Recipient_Mobile.split(";")
           .filter(function (x, i, a) {
             return a.indexOf(x) === i;
           });
-        for (var i = 0; i < 10; i++) {
-          POC.PHONES.push("");
-        }
-        POC.PHONES = POC.PHONES.slice(0, 10)
-          .map(function (x, i) {
-            var fn = "Mobile"+i;
-            // if (i >= 1) {
-            //   fn = "Mobile_No" + i;
-            // }
-            var show = false;
-            if (x && x.length >= 10) {
-              show = true;
-            }
-            if(i==0&&!Show){
-              Show = true;
-            }
-            return {
-              Phone_Name: fn,
-              Phone_Value: x,
-              Show: show,
-              Index: i
-            };
-          })
-
+      } else {
+        POC.PHONES = [];
       }
+
+      for (var i = 0; i < 10; i++) {
+        POC.PHONES.push("");
+      }
+      POC.PHONES = POC.PHONES.slice(0, 10)
+        .map(function (x, i) {
+          var fn = "Mobile" + i;
+          // if (i >= 1) {
+          //   fn = "Mobile_No" + i;
+          // }
+          var show = false;
+          if (x && x.length >= 10) {
+            show = true;
+          }
+          if (i == 0 && !show) {
+            show = true;
+          }
+          return {
+            Phone_Name: fn,
+            Phone_Value: x,
+            Show: show,            
+            Index: i
+          };
+        });
       resolve(
         {
           componentUrl: './pages/poc.html',
@@ -263,7 +270,8 @@ var routes = [
             poc: POC,
             Provinces: Provinces,
             Districts: Districts,
-            SubDistricts: SubDistricts
+            SubDistricts: SubDistricts,
+            Services: Services
           }
         }
       );

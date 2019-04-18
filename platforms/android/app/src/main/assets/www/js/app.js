@@ -89,13 +89,16 @@ var app = new Framework7({
     loadData: function () {
       var self = this;
       if (self.data.user.user_name && self.data.user.user_name.length > 3) {
+        app.preloader.show();
         $.ajax({
           url: app.data.serverUrl + "/api/MPUP/" + app.data.user.user_name + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
           method: "GET",
           success: function (data) {
+            app.preloader.hide();
             self.methods.updateList(data);
           },
           error: function (err) {
+            app.preloader.hide();
             var msg = JSON.stringify(err);
             var ty = msg.includes("deadlock");
 
@@ -110,7 +113,9 @@ var app = new Framework7({
             // }
           }
         }).done(function (data) {
+          app.preloader.hide();
           self.methods.updateList(data);
+         
         });
       }
     },

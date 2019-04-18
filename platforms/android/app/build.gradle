@@ -92,7 +92,6 @@ ext {
 // PLUGIN GRADLE EXTENSIONS START
 apply from: "../cordova-plugin-appcenter-push/mpup-AppCenterPush.gradle"
 apply from: "../cordova-plugin-code-push/mpup-build-extras.gradle"
-apply from: "../phonegap-plugin-barcodescanner/mpup-barcodescanner.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -274,7 +273,6 @@ dependencies {
     implementation "com.microsoft.appcenter:appcenter-crashes:1.11.4"
     implementation "com.microsoft.appcenter:appcenter-push:1.11.4"
     implementation "com.android.support:support-v4:24.1.1+"
-    implementation "com.android.support:support-v4:27.+"
     // SUB-PROJECT DEPENDENCIES END
 }
 

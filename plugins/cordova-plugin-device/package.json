@@ -1,19 +1,19 @@
 {
-  "_from": "cordova-plugin-device",
+  "_from": "cordova-plugin-device@>=1.1.0",
   "_id": "cordova-plugin-device@2.0.2",
   "_inBundle": false,
   "_integrity": "sha1-/Ajzci5n7ve2xnv8mag99q3Quro=",
   "_location": "/cordova-plugin-device",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "range",
     "registry": true,
-    "raw": "cordova-plugin-device",
+    "raw": "cordova-plugin-device@>=1.1.0",
     "name": "cordova-plugin-device",
     "escapedName": "cordova-plugin-device",
-    "rawSpec": "",
+    "rawSpec": ">=1.1.0",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": ">=1.1.0"
   },
   "_requiredBy": [
     "#USER",
@@ -21,8 +21,8 @@
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-device/-/cordova-plugin-device-2.0.2.tgz",
   "_shasum": "fc08f3722e67eef7b6c67bfc99a83df6add0baba",
-  "_spec": "cordova-plugin-device",
-  "_where": "D:\\mPUP",
+  "_spec": "cordova-plugin-device@>=1.1.0",
+  "_where": "D:\\mpup",
   "author": {
     "name": "Apache Software Foundation"
   },

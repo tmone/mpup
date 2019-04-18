@@ -146,9 +146,26 @@
                 </div>
             </div>
             <div class="card create-panel" style="display:none;">
-                <div class="card-header">Thông tin người nhận</div>
+                <div class="card-header">
+                    Danh sách đơn hàng
+                </div>
+                <div class="card-footer">
+                    <a class="button" href="#">
+                        <i class="icon f7-icons ios-only">add</i>
+                        <i class="icon material-icons md-only">add</i>
+                        Đơn khác
+                    </a>
+                    <a class="button" href="#">
+                        <i class="icon f7-icons ios-only">check</i>
+                        <i class="icon material-icons md-only">check</i>
+                        Xác nhận
+                    </a>
+                </div>
+                <div class="card-header">
+                    Tổng tiền cần thu <span class="right total-money format-number">0</span>
+                </div>
                 <div class="card-content card-content-padding">
-                    <div class="list virtual-list media-list" id="bill-list">
+                    <div class="list virtual-list media-list chevron-center" id="bill-list">
                     </div>
                 </div>
             </div>
@@ -351,19 +368,19 @@
                         '    <a href="/poc/{{ID}}/" class="item-link item-content">' +
                         '        <div class="item-inner">' +
                         '            <div class="item-title-row">' +
-                        '                <div class="item-title">{{Recipient_Name}}</div>' +
-                        '                <div class="item-after">17:14</div>' +
+                        '                <div class="item-title">{{Consignment_No}}</div>' +
+                        '                <div class="item-after format-number">{{Total_Charge}}</div>' +
                         '            </div>' +
-                        '            <div class="item-subtitle">SĐT: <span>{{Recipient_Mobile}}</span></div>' +
-                        '            <div class="item-text">' +
-                        '               Đ/c: <span>{{Recipient_Address}}</span>' +
-                        '            </div>' +
-                        '            <div class="item-subtitle">' +
-                        '               <span class="badge">{{Total_Package}}</span>' +
-                        '               <span class="badge">{{Actual_Weight}}</span>' +
-                        '               <span class="badge">{{Total_Charge}}</span>' +
-                        '               <span class="badge">{{Declared_Value}}</span>' +
-                        '            </div>' +
+                        '            <div class="item-subtitle">HTTT: {{#js_if "this.Payment_Type ==\'NG\'"}}Đã thanh toán{{/js_if}}{{#js_if "this.Payment_Type ==\'NN\'"}}Người nhận{{/js_if}}{{#js_if "this.Payment_Type ==\'GS\'"}}Thanh toán sau{{/js_if}}</div>' +
+                        //'            <div class="item-text">' +
+                        //'               Đ/c: <span>{{Recipient_Address}}</span>' +
+                        //'            </div>' +
+                        //'            <div class="item-subtitle">' +
+                        //'               <span class="badge">{{Total_Package}}</span>' +
+                        //'               <span class="badge">{{Actual_Weight}}</span>' +
+                        //'               <span class="badge">{{Total_Charge}}</span>' +
+                        //'               <span class="badge">{{Declared_Value}}</span>' +
+                        //'            </div>' +
                         '        </div>' +
                         '    </a>' +
                         '</li>',
@@ -374,6 +391,7 @@
                     }
                 });
                 $$(".virtual-list ul").css("height", "auto");
+                $(".format-number").number(true,0);
             },
             pageBeforeIn: function (e, page) {
                 console.log('pageBeforeIn', page);

@@ -1,3 +1,16 @@
+var SERVICES = [
+    {ID: -1, Service_Code: 'UNDEFINED' , Service_TH_Name: 'NULL'},
+    {ID: 26, Service_Code: '207' , Service_TH_Name: 'Cho thuê nguyên chuyến'},
+    {ID: 27, Service_Code: '205' , Service_TH_Name: 'Vận chuyển đường bộ'},
+    {ID: 28, Service_Code: 'FRE' , Service_TH_Name: 'Free Bill'},
+    {ID: 29, Service_Code: 'URG' , Service_TH_Name: 'Hỏa tốc'},
+    {ID: 30, Service_Code: 'EXP' , Service_TH_Name: 'Chuyển phát nhanh'},
+    {ID: 32, Service_Code: '48H' , Service_TH_Name: '48H'},
+    {ID: 33, Service_Code: 'ECO' , Service_TH_Name: 'Giá rẽ'},
+    {ID: 34, Service_Code: 'FCL' , Service_TH_Name: 'Container nguyên chuyến'},
+    {ID: 35, Service_Code: 'INT' , Service_TH_Name: 'Chuyển phát quốc tế'},
+    {ID: 37, Service_Code: 'RFR' , Service_TH_Name: 'Đường bộ'}
+];
 var PROVINCES = [
     { ID: 1, Province_Code: 'NA', Province_EN_Desc: 'NA', Province_TH_Desc: 'NA' },
     { ID: 584, Province_Code: '11', Province_EN_Desc: 'Tinh Cao Bang', Province_TH_Desc: 'Tỉnh Cao Bằng' },
