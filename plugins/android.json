@@ -31,6 +31,15 @@
     "cordova-plugin-code-push": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
     "cordova-plugin-file-transfer": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
@@ -43,24 +52,40 @@
     "cordova-plugin-inappbrowser": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
-    "cordova-plugin-file": {
+    "cordova-plugin-media": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
-    "cordova-plugin-media": {
+    "cordova-plugin-nativestorage": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-zip": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   },
   "dependent_plugins": {
-    "cordova-plugin-appcenter-shared": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
     "code-push": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
-    "cordova-plugin-dialogs": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
-    "cordova-plugin-device": {
+    "cordova-plugin-appcenter-shared": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   }

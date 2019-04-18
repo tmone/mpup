@@ -1,11 +1,4 @@
 {
-  "_args": [
-    [
-      "cordova-plugin-file-transfer@1.6.3",
-      "D:\\mpup"
-    ]
-  ],
-  "_development": true,
   "_from": "cordova-plugin-file-transfer@1.6.3",
   "_id": "cordova-plugin-file-transfer@1.6.3",
   "_inBundle": false,
@@ -23,17 +16,20 @@
     "fetchSpec": "1.6.3"
   },
   "_requiredBy": [
-    "#DEV:/"
+    "#USER",
+    "/"
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-file-transfer/-/cordova-plugin-file-transfer-1.6.3.tgz",
-  "_spec": "1.6.3",
-  "_where": "D:\\mpup",
+  "_shasum": "6c71de63b076cbec570eca664586ff9a51b8ac21",
+  "_spec": "cordova-plugin-file-transfer@1.6.3",
+  "_where": "D:\\mPUP",
   "author": {
     "name": "Apache Software Foundation"
   },
   "bugs": {
     "url": "https://github.com/apache/cordova-plugin-file-transfer/issues"
   },
+  "bundleDependencies": false,
   "cordova": {
     "id": "cordova-plugin-file-transfer",
     "platforms": [
@@ -50,6 +46,7 @@
       "browser"
     ]
   },
+  "deprecated": "This plugin has been deprecated",
   "description": "Cordova File Transfer Plugin",
   "devDependencies": {
     "jscs": "^2.6.0",
