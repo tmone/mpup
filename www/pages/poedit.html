@@ -1,0 +1,382 @@
+<template>
+    <div class="page">
+        <div class="navbar">
+            <div class="navbar-inner sliding">
+                <div class="left">
+                    <a href="#" class="link back">
+                        <i class="icon icon-back"></i>
+                        <span class="ios-only">Back</span>
+                    </a>
+                </div>
+                <div class="title">Book: {{po.ID}}</div>
+                <div class="right">
+                    <a class="link icon-only save" href="#">
+                        <i class="icon f7-icons ios-only">save</i>
+                        <i class="icon material-icons md-only">save</i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="page-content">
+            <form class="list" id="form-edit">
+                <input type="hidden" name="ID" value="{{po.ID}}">
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Người gửi</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="Sender_Name" placeholder="Tên khách hàng"
+                                        id="Sender_Name" 
+                                        value="{{po.Sender_Name}}">
+                                        
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Người liên hệ</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="Contact_Person" placeholder="Người liên hệ"
+                                    id="Contact_Person"    
+                                    value="{{po.Contact_Person}}">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    {{#each po.PHONES}}
+                    <li {{#if Show}}style='display:block;' {{else}}style='display:none;' {{/if}} data-index="{{Index}}">
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Điện thoại</div>
+                                <div class="item-input-wrap">
+                                    <input type="numpad" name="{{Phone_Name}}" placeholder="Điện thoại"
+                                    id="Phone_Name{{Index}}"    
+                                    value="{{Phone_Value}}" data-dot-character=";">
+                                </div>
+                            </div>
+                            <div class="item_after" style="padding-right:15px; display:block"
+                                data-phone="{{Phone_Name}}">
+                                <a class="link icon-only add-num" href="#" data-index="{{Index}}">
+                                    <i class="icon f7-icons ios-only">add</i>
+                                    <i class="icon material-icons md-only">add</i>
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+                    {{/each}}
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Số nhà</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="Soi" placeholder="Số nhà" value="{{po.Soi}}" id="Soi">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Đường, phố</div>
+                                <div class="item-input-wrap">
+                                    <input type="text" name="Road" placeholder="Đường, phố" value="{{po.Road}}">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a class="item-link smart-select smart-select-init select-province " data-searchbar="true"
+                            data-searchbar-placeholder="Nhập tên tỉnh, thành phố" data-close-on-select="true">
+                            <select name="Province_ID" id="Province_ID">
+                                {{#each Provinces}}
+                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>[{{Province_Code}}]
+                                    {{Province_TH_Desc}}</option>
+                                {{/each}}
+                            </select>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">Tỉnh, thành phố</div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="item-link smart-select smart-select-init select-district " data-searchbar="true"
+                            data-searchbar-placeholder="Nhập tên quận, huyện" data-close-on-select="true">
+                            <select name="District_ID" id="District_ID">
+                                {{#each Districts}}
+                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>[{{District_Code}}]
+                                    {{District_TH_Desc}}</option>
+                                {{/each}}
+                            </select>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">Quận, huyện</div>
+                                    <div class="item-after" id="District_Name"></div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="item-link smart-select smart-select-init select-subdistrict " data-searchbar="true"
+                            data-searchbar-placeholder="Nhập tên xã phường" data-close-on-select="true">
+                            <select name="SubDistrict_ID" id="SubDistrict_ID">
+                                {{#each SubDistricts}}
+                                <option value="{{ID}}" {{#if Selected}}selected{{/if_js}}>[{{SubDistrict_Code}}]
+                                    {{SubDistrict_TH_Desc}}</option>
+                                {{/each}}
+                            </select>
+                            <div class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title">Xã, phường</div>
+                                    <div class="item-after" id="SubDistrict_Name"></div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Địa chỉ</div>
+                                <div class="item-text">
+                                    <input type="text" readonly name="Address" placeholder="Địa chỉ"
+                                        value="{{po.Address}}" id="Address">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </div>
+</template>
+<style>
+    p {
+        margin: 10px 0;
+    }
+</style>
+<script>
+    return {
+        // Component Data
+        data: function () {
+            // Must return an object
+            return {
+                po: {}
+            }
+        },
+        // Component Methods
+        methods: {
+            updateAddress: function () {
+                //debugger;
+                var formData = app.form.convertToData("#form-edit") || {};
+                var str = "";
+                if (formData.Soi && formData.Soi.length > 0) {
+                    if (str.length > 0) {
+                        str += ", ";
+                    }
+                    str += formData.Soi;
+                }
+                if (formData.Road && formData.Road.length > 0) {
+                    if (str.length > 0) {
+                        str += ", ";
+                    }
+                    str += formData.Road;
+                }
+                if (formData.SubDistrict_ID && formData.SubDistrict_ID > 0) {
+                    var f = SUBDISTRICTS.find(function (x) {
+                        return x.ID == formData.SubDistrict_ID;
+                    }) || {};
+                    if (f && f.SubDistrict_TH_Desc && f.SubDistrict_TH_Desc.length > 0) {
+                        if (str.length > 0) str += ", ";
+                        str += f.SubDistrict_TH_Desc;
+                    }
+                }
+                if (formData.District_ID && formData.District_ID > 0) {
+                    var f = DISTRICTS.find(function (x) {
+                        return x.ID == formData.District_ID;
+                    }) || {};
+                    if (f && f.District_TH_Desc && f.District_TH_Desc.length > 0) {
+                        if (str.length > 0) str += ", ";
+                        str += f.District_TH_Desc;
+                    }
+                }
+                if (formData.Province_ID && formData.Province_ID > 0) {
+                    var f = PROVINCES.find(function (x) {
+                        return x.ID == formData.Province_ID;
+                    }) || {};
+                    if (f && f.Province_TH_Desc && f.Province_TH_Desc.length > 0) {
+                        if (str.length > 0) str += ", ";
+                        str += f.Province_TH_Desc;
+                    }
+                }
+
+                $$("#Address").val(str);
+            },
+            refreshDistrict: function (Province_ID) {
+                $$("#District_ID").empty();
+                DISTRICTS.filter(function (x) {
+                    return x.Province_ID == Province_ID || x.Province_ID == 1;
+                }).map(function (x) {
+                    $$("#District_ID").append('<option value="' + x.ID + '">' + x.District_TH_Desc + '</option>');
+                });
+            },
+            refreshSubDistrict: function (District_ID) {
+                $$("#SubDistrict_ID").empty();
+                SUBDISTRICTS.filter(function (x) {
+                    return x.District_ID == District_ID || x.District_ID == 3760;
+                }).map(function (x) {
+                    $$("#SubDistrict_ID").append('<option value="' + x.ID + '">' + x.SubDistrict_TH_Desc + '</option>');
+                });
+            },
+            save: function () {
+                var data = app.form.convertToData("#form-edit") || {};
+                if (!data.Sender_Name || data.Sender_Name.length <= 0) {
+                    app.toast.create({
+                        text: "Chưa nhập thông tin: Người gửi",
+                        closeTimeout: 2000,
+                    }).open();
+                    $$("#Sender_Name").focus();
+                    return;
+                }
+                $$(".Sender_Name").text(data.Sender_Name);
+                var phones = data.Phone_No+";"+data.Mobile_No1+";"+data.Mobile_No2;
+                if (phones.length<12 || phones.includes("undefined")) {
+                    app.toast.create({
+                        text: "Chưa nhập thông tin: Điện thoại",
+                        closeTimeout: 2000,
+                    }).open();
+                    $$("#Phone_No").focus();
+                    return;
+                }
+                $$(".Phone_No").text(data.Phone_No);
+                $$(".Contact_Person").text(data.Contact_Person);
+                if(!data.Province_ID || data.Province_ID<=1){
+                    app.toast.create({
+                        text: "Chưa nhập thông tin: Tỉnh, thành phố",
+                        closeTimeout: 2000,
+                    }).open();                    
+                    return;
+                }
+                if(!data.District_ID || +data.District_ID==3760 || +data.District_ID==3761){
+                    app.toast.create({
+                        text: "Chưa nhập thông tin: Quận, huyện",
+                        closeTimeout: 2000,
+                    }).open();                    
+                    return;
+                }
+                if(!data.Address || data.Address<10){
+                    app.toast.create({
+                        text: "Lỗi. Địa chỉ quá ngắn",
+                        closeTimeout: 2000,
+                    }).open();                    
+                    return;
+                }
+                $$(".Address").text(data.Address);
+                var find = app.data.items.find(function(x){
+                    return x.ID == data.ID;
+                });
+                if(find && find.ID>0){
+                    find = Object.assign(find,data);
+                }
+                app.router.back()
+            }
+
+        },
+        // Lifecycle Hooks
+        beforeCreate() {
+            console.log('componentBeforeCreate', this)
+        },
+        created() {
+            console.log('componentCreated', this)
+        },
+        beforeMount() {
+            console.log('componentBeforeMount', this)
+        },
+        mounted() {
+            console.log('componentMounted', this);
+        },
+        updated() {
+            console.log('componentUpdated', this);
+        },
+        beforeDestroy() {
+            console.log('componentBeforeDestroy', this);
+        },
+        destroyed() {
+            console.log('componentDestroyed', this);
+        },
+        // Page Events
+        on: {
+            pageMounted: function (e, page) {
+                console.log('pageMounted', page);
+                //debugger;
+
+            },
+            pageInit: function (e, page) {
+                console.log('pageInit', page);
+                var self = this;
+                var poID = page.route.params.poID;
+                console.log(poID);
+                self.po = app.data.items.find(function (x) {
+                    return x.ID == poID;
+                });
+                $$(".Sender_Name").text(self.po.Sender_Name);
+                $$(".Sender_Phone_No").text(self.po.Sender_Phone_No);
+                $$(".Sender_Address").text(self.po.Sender_Address);
+                $$(".Sender_Contact_Person").text(self.po.Sender_Contact_Person);
+                $$(".edit").attr("href", "/po/" + poID + "/edit/");
+
+                $$(".add-num").on("click", function () {
+                    $$(this).parent().hide();
+                    var id = $$(this).data("index");
+                    id = +id + 1;
+                    if (id <= 9) {
+                        $$('li[data-index="' + id + '"]').show();
+                    }
+                });
+                $$("#Province_ID").on("change", function () {
+                    var val = $$(this).val();
+                    self.refreshDistrict(val);
+                    self.refreshSubDistrict();
+                    //app.smartSelect.get(".select-district").setValue("3761");
+                    //app.smartSelect.get(".select-subdistrict").setValue("18732");
+                    $$("#District_ID").val(null);
+                    $$("#District_Name").text("Chọn quận, huyện");
+                    $$("#SubDistrict_ID").val(null);
+                    $$("#SubDistrict_Name").text("Chọn Xã, phường");
+                    self.updateAddress();
+                });
+                $$("#District_ID").on("change", function () {
+                    var val = $$(this).val();
+                    self.refreshSubDistrict(val);
+                    $$("#SubDistrict_ID").val(null);
+                    $$("#SubDistrict_Name").text("Chọn Xã, phường");
+                    self.updateAddress();
+                });
+                $$("#SubDistrict_ID").on("change", function () {
+                    self.updateAddress();
+                });
+                $$(".save").on("click", function () {
+                    self.save();
+                });
+            },
+            pageBeforeIn: function (e, page) {
+                console.log('pageBeforeIn', page);
+            },
+            pageAfterIn: function (e, page) {
+                console.log('pageAfterIn', page);
+            },
+            pageBeforeOut: function (e, page) {
+                console.log('pageBeforeOut', page);
+            },
+            pageAfterOut: function (e, page) {
+                console.log('pageAfterOut', page);
+            },
+            pageBeforeRemove: function (e, page) {
+                console.log('pageBeforeRemove', page);
+            },
+        }
+    }
+</script>
