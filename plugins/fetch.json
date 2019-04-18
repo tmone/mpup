@@ -165,20 +165,14 @@
       "id": "phonegap-plugin-barcodescanner@8.0.1"
     },
     "is_top_level": true,
-    "variables": {}
+    "variables": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+"
+    }
   },
   "cordova-plugin-file-transfer": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-file-transfer@1.6.3"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-file": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-file@4.0.0"
+      "id": "cordova-plugin-file-transfer@^1.6.3"
     },
     "is_top_level": true,
     "variables": {}
@@ -187,6 +181,14 @@
     "source": {
       "type": "registry",
       "id": "cordova-plugin-code-push"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-file": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-file@6.0.1"
     },
     "is_top_level": true,
     "variables": {}

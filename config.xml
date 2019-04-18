@@ -20,6 +20,7 @@
     <preference name="APPCENTER_ANALYTICS_ENABLE_IN_JS" value="true" />
     <preference name="APPCENTER_CRASHES_ALWAYS_SEND" value="false" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <preference name="phonegap-version" value="cli-8.1.1" />
     <platform name="android">
         <resource-file src="www/img/logo.png" target="res/drawable/logo.png" />
         <preference name="APP_SECRET" value="b1c44c87-d4d9-41d7-9fe0-0de3d6f777b2" />
@@ -67,4 +68,5 @@
     <plugin name="phonegap-plugin-barcodescanner" spec="8.0.1">
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="27.+" />
     </plugin>
+    <engine name="android" spec="~7.1.4" />
 </widget>
