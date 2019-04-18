@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#ff9500">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap:">
+    <title>Mobile Pickup</title>
+    <link rel="stylesheet" href="devextreme/css/dx.common.css">
+    <link rel="stylesheet" href="devextreme/css/dx.material.orange.light.css">
+    <link rel="stylesheet" href="framework7/css/framework7.min.css">
+    <link rel="stylesheet" href="framework7/css/framework7.keypad.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="apple-touch-icon" href="img/logo-square.png">
+    <link rel="icon" href="img/logo.png">
+
+</head>
+
+<body class="color-theme-orange">
+    <div id="app">
+        <div class="statusbar"></div>
+        <div class="panel panel-left panel-cover">
+            <div class="page" data-page="home">
+                <div class="page-content">
+                    <div class="block-title"
+                        style="min-height:50px;background-color: darkorange;padding: 16px;margin: 0px;color:black;">
+                        <div>
+                            <i class="icon f7-icons text-color-white" style="font-size:64px">person_round</i>
+                            <span id="user-name"
+                                style="font-weight:900;font-size: 32px;color:white;padding-left: 20px">53265</span>
+                        </div>
+                        <div class="user_panel" style="color: white;padding: 5px;">
+                            <strong><span class="user-name" style="font-weight:700">53265</span></strong><br>
+                            <span id="user-fullname" style="display: none;">Nguyễn Văn Thịnh</span><br>
+                            <span id="last-login" style="display: none;">16H50 31/12/2018</span>
+                            <span style=" right: 10px; bottom: 10px; position: absolute; ">PRO</span>
+                        </div>
+                    </div>
+                    <div class="list links-list no-harilines no-chevron fix-left-menu">
+                        <ul>
+                            <li>
+                                <a href="/setting/" class="item-link panel-close  flm">
+                                    <div class="item-content flm">
+                                        <div class="item-media flm"><i
+                                                class="icon f7-icons ios-only  text-color-orange">gear</i>
+                                            <i class="icon material-icons md-only  text-color-orange">settings</i>
+                                        </div>
+                                        <div class="item-inner flm">
+                                            <div class="item-title flm">
+                                                <!-- <div class="item-header flm">Item header text</div> -->
+                                                Cài đặt
+                                                <!-- <div class="item-footer flm">Item footer text</div> -->
+                                            </div>
+                                            <!-- <div class="item-after flm">...</div> -->
+                                        </div>
+                                    </div>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="/about/" class="item-link panel-close  flm">
+                                    <div class="item-content flm">
+                                        <div class="item-media flm"><i
+                                                class="icon f7-icons ios-only  text-color-orange">info_round</i>
+                                            <i class="icon material-icons md-only text-color-orange">info_outline</i>
+                                        </div>
+                                        <div class="item-inner flm">
+                                            <div class="item-title flm">
+                                                <!-- <div class="item-header flm">Item header text</div> -->
+                                                Giới thiệu
+                                                <!-- <div class="item-footer flm">Item footer text</div> -->
+                                            </div>
+                                            <!-- <div class="item-after flm">...</div> -->
+                                        </div>
+                                    </div>
+                                </a>
+
+                            </li>
+                            <li>
+                                <a href="#" id="dang-xuat" class="item-link panel-close flm">
+                                    <div class="item-content flm">
+                                        <div class="item-media flm"><i
+                                                class="icon f7-icons ios-only  text-color-orange">exit</i>
+                                            <i class="icon material-icons md-only  text-color-orange">exit_to_app</i>
+                                        </div>
+                                        <div class="item-inner flm">
+                                            <div class="item-title flm">
+                                                <!-- <div class="item-header flm">Item header text</div> -->
+                                                Đăng xuất
+                                                <!-- <div class="item-footer flm">Item footer text</div> -->
+                                            </div>
+                                            <!-- <div class="item-after flm">...</div> -->
+                                        </div>
+                                    </div>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-right panel-reveal theme-dark">
+            <div class="view view-init view-right" name="right" data-url="/">
+                <div class="page theme-dark">
+                    <div class="navbar">
+                        <div class="navbar-inner sliding">
+                            <div class="title">Right Panel</div>
+                            <div class="right">
+                                <a class="link icon-only panel-close" data-panel="right">
+                                    <i class="icon f7-icons ios-only">save</i>
+                                    <i class="icon material-icons md-only">save</i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page-content theme-dark">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="view view-main view-init ios-edges" data-url="/">
+            <div class="page">
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <div class="left">
+                            <a href="#" class="link icon-only panel-open" data-panel="left">
+                                <i class="icon f7-icons ios-only">menu</i>
+                                <i class="icon material-icons md-only">menu</i>
+                            </a>
+                        </div>
+                        <div class="title sliding">NHẬN HÀNG</div>
+                        <div class="right">
+                            <a class="link icon-only panel-open" data-panel="right">
+                                <i class="icon f7-icons ios-only">gear</i>
+                                <i class="icon material-icons md-only">settings</i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Top Toolbar -->
+                <div class="toolbar tabbar tabbar-labels toolbar-top bg-color-gray">
+                    <div class="toolbar-inner">
+                        <a href="#" class="tab-link tab-link-active bill-wait"><i
+                                class="icon f7-icons ios-only">document_fill<span class="badge"><span
+                                        class="count-wait">0</span></span></i>
+                            <i class="icon material-icons md-only">assignment_returned<span class="badge"><span
+                                        class="count-wait">0</span></span></i>
+                            <span class="tabbar-label">Đang nhận</span></a>
+                        <a href="#" class="tab-link bill-finish"><i
+                                class="icon f7-icons ios-only">document_check_fill<span class="badge color-green"><span
+                                        class="count-finish">0</span></span></i>
+                            <i class="icon material-icons md-only">assignment_turned_in<span
+                                    class="badge color-green"><span class="count-finish">0</span></span></i>
+                            <span class="tabbar-label">Hoàn thành</span></a>
+                        <a href="#" class="tab-link bill-cancel">
+                            <i class="icon f7-icons ios-only">document_text_fill<span class="badge color-red"><span
+                                        class="count-cancel">0</span></span></i>
+                            <i class="icon material-icons md-only">assignment_late<span class="badge color-red"><span
+                                        class="count-cancel">0</span></span></i>
+                            <span class="tabbar-label">Hủy</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="toolbar toolbar-search toolbar-bottom-md fab-morph-target">
+                    <div class="toolbar-inner">
+                        <form data-search-container=".search-list" data-search-in=".search-avaliable"
+                            class="searchbar searchbar-init">
+                            <div class="searchbar-inner">
+                                <div class="searchbar-input-wrap">
+                                    <input type="search" placeholder="Tìm" />
+                                    <i class="searchbar-icon"></i>
+                                    <span class="input-clear-button"></span>
+                                </div>
+                                <span class="searchbar-disable-button fab-close">Cancel</span>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="fab fab-right-bottom fab-morph" data-morph-to=".toolbar-search.fab-morph-target"
+                    style="margin-bottom: 0px;margin-right: 15px;">
+                    <a href="#">
+                        <i class="icon f7-icons ios-only">search</i>
+                        <i class="icon material-icons md-only">search</i>
+                    </a>
+                </div>
+
+                <div class="page-content">
+
+                    <div class="searchbar-backdrop"></div>
+                    <div class="list search-list searchbar-not-found">
+                        <ul>
+                            <li>Không có dữ liệu</li>
+                        </ul>
+                    </div>
+                    <div
+                        class="list virtual-list search-list searchbar-found media-list no-chevron  no-harilines-between no-harilines">
+
+                    </div>
+                    <div style="display:none;">
+                        <input type="text" placeholder="Select a date" readonly="readonly" id="popupDate" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Login Screen -->
+        <div class="login-screen" id="my-login-screen">
+            <div class="view">
+                <div class="page">
+                    <div class="page-content login-screen-content">
+                        <div class="login-screen-title"><img src="img/logo2.png" style="width: 100%"></div>
+                        <div class="list">
+                            <ul>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Tên đăng nhập</div>
+                                        <div class="item-input-wrap">
+                                            <input type="text" name="username" placeholder="Mã nhân viên...">
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Mật khẩu</div>
+                                        <div class="item-input-wrap">
+                                            <input type="password" name="password" placeholder="Mật khẩu...">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="list">
+                            <ul>
+                                <li style="margin:10px">
+                                    <a href="#"
+                                        class="button button-big button-raised button-fill list-button login-button color-orange"
+                                        style="color:white">ĐĂNG
+                                        NHẬP</a>
+                                </li>
+                            </ul>
+                            <div class="block-footer" style="position: fixed;bottom:10px;right:10px;z-index: -2;">
+                                Version: <span class='version'>1.0.0</span></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="cordova.js"></script>
+
+    <!-- DevExtreme -->
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/dx.all.js"></script>
+    <!-- <script src="js/cldr.min.js"></script>
+    <script src="js/currency.min.js"></script>
+    <script src="js/date.min.js"></script>
+    <script src="js/number.min.js"></script>
+    <script src="js/message.min.js"></script> -->
+    <script src="js/jszip.min.js"></script>
+    <script src="js/dx.aspnet.data.js"></script>
+
+    <script src="framework7/js/framework7.min.js"></script>
+    <script src="framework7/js/framework7.keypad.js"></script>
+    <script src="js/routes.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/master.js"></script>
+    <script src="js/jquery.number.min.js"></script>
+</body>
+
+</html>
