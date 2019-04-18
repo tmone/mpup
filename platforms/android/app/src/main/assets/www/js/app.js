@@ -482,9 +482,10 @@ var onNotificationReceived = function (pushNotification) {
   //console.log(title, message);
 }
 
-$$(document).on("backbutton", app.methods.onBackKeyDown, false);
+
 
 $$(document).on('deviceready', function () {
+  $$(document).on("backbutton", app.methods.onBackKeyDown, false);
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
     window.plugins.callLog.hasReadPermission(function (rs) {
       if (rs) {
@@ -502,7 +503,7 @@ $$(document).on('deviceready', function () {
   }
 
 
-  AppCenter.Push.addEventListener('notificationReceived', onNotificationReceived);
+  //AppCenter.Push.addEventListener('notificationReceived', onNotificationReceived);
   var platform = device.platform;
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
     codePush.sync(null,
@@ -513,7 +514,7 @@ $$(document).on('deviceready', function () {
 
       });
   }
-  AppCenter.Analytics.setEnabled(true);
+  //AppCenter.Analytics.setEnabled(true);
 
   NativeStorage.getItem("config", function (result) {
     app.data.serverUrl = result.server || app.data.serverUrl;
