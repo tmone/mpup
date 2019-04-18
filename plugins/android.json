@@ -1,0 +1,92 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-call": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-app-version": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-appcenter-analytics": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-appcenter-crashes": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-appcenter-push": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-calllog": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-code-push": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-globalization": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-media": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-nativestorage": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-splashscreen": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-zip": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "ANDROID_SUPPORT_V4_VERSION": "27.+",
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    }
+  },
+  "dependent_plugins": {
+    "code-push": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-appcenter-shared": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    }
+  }
+}

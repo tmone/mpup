@@ -1,0 +1,60 @@
+{
+  "_from": "cordova-plugin-appcenter-push",
+  "_id": "cordova-plugin-appcenter-push@0.3.3",
+  "_inBundle": false,
+  "_integrity": "sha512-lzga/YcTRe7lGF4Smk0bPkWO8xX+vi72XpDantWZww+aaCXQUDtqUREx5qsFPA5mNS4wfNiYyUWrDR9GXGpKWQ==",
+  "_location": "/cordova-plugin-appcenter-push",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-appcenter-push",
+    "name": "cordova-plugin-appcenter-push",
+    "escapedName": "cordova-plugin-appcenter-push",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-appcenter-push/-/cordova-plugin-appcenter-push-0.3.3.tgz",
+  "_shasum": "bbef6319f13c465498c67808a73945410c183ab8",
+  "_spec": "cordova-plugin-appcenter-push",
+  "_where": "D:\\mPUP",
+  "author": {
+    "name": "Microsoft Corporation"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/appcenter-sdk-cordova/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "appcenter-crashes",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Provides Microsoft Azure App Center Push client for Cordova",
+  "homepage": "https://github.com/Microsoft/appcenter-sdk-cordova/blob/master/README.md",
+  "keywords": [
+    "microsoft",
+    "azure",
+    "app center",
+    "push",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-appcenter-push",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/appcenter-sdk-cordova.git"
+  },
+  "types": "./types/index.d.ts",
+  "version": "0.3.3"
+}

@@ -1,0 +1,60 @@
+{
+  "_from": "cordova-plugin-appcenter-analytics",
+  "_id": "cordova-plugin-appcenter-analytics@0.3.3",
+  "_inBundle": false,
+  "_integrity": "sha512-uCIIictubBRN6/DXre6cz8qgR513j57OWkREkm5+IixfhJ1sS0tyT2MTTs01GEUSurWYPZwMrqJdsczpTXTuXQ==",
+  "_location": "/cordova-plugin-appcenter-analytics",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "cordova-plugin-appcenter-analytics",
+    "name": "cordova-plugin-appcenter-analytics",
+    "escapedName": "cordova-plugin-appcenter-analytics",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-appcenter-analytics/-/cordova-plugin-appcenter-analytics-0.3.3.tgz",
+  "_shasum": "21e678cf432a29b57f6294515ab172cd80b8b3ab",
+  "_spec": "cordova-plugin-appcenter-analytics",
+  "_where": "D:\\mPUP",
+  "author": {
+    "name": "Microsoft Corporation"
+  },
+  "bugs": {
+    "url": "https://github.com/Microsoft/appcenter-sdk-cordova/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "appcenter-analytics",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Provides Microsoft Azure App Center Analytics client for Cordova",
+  "homepage": "https://github.com/Microsoft/appcenter-sdk-cordova/blob/master/README.md",
+  "keywords": [
+    "microsoft",
+    "azure",
+    "app center",
+    "analytics",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-appcenter-analytics",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Microsoft/appcenter-sdk-cordova.git"
+  },
+  "types": "./types/index.d.ts",
+  "version": "0.3.3"
+}
