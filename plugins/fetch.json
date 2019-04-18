@@ -119,44 +119,12 @@
     "is_top_level": true,
     "variables": {}
   },
-  "cordova-plugin-appcenter-analytics": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-appcenter-analytics@^0.3.3"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
   "cordova-plugin-appcenter-shared": {
     "source": {
       "type": "registry",
       "id": "cordova-plugin-appcenter-shared@0.3.3"
     },
     "is_top_level": false,
-    "variables": {}
-  },
-  "cordova-plugin-appcenter-crashes": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-appcenter-crashes@^0.3.3"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-appcenter-push": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-appcenter-push"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-code-push": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-code-push@latest"
-    },
-    "is_top_level": true,
     "variables": {}
   },
   "code-push": {
@@ -211,6 +179,14 @@
     "source": {
       "type": "registry",
       "id": "cordova-plugin-file@4.0.0"
+    },
+    "is_top_level": true,
+    "variables": {}
+  },
+  "cordova-plugin-code-push": {
+    "source": {
+      "type": "registry",
+      "id": "cordova-plugin-code-push"
     },
     "is_top_level": true,
     "variables": {}

@@ -7,22 +7,6 @@
     <feature name="AppVersion">
         <param name="android-package" value="uk.co.whiteoctober.cordova.AppVersion" />
     </feature>
-    <feature name="AppCenterShared">
-        <param name="onload" value="true" />
-        <param name="android-package" value="com.microsoft.azure.mobile.cordova.AppCenterSharedPlugin" />
-    </feature>
-    <feature name="AppCenterAnalytics">
-        <param name="onload" value="true" />
-        <param name="android-package" value="com.microsoft.azure.mobile.cordova.AppCenterAnalyticsPlugin" />
-    </feature>
-    <feature name="AppCenterCrashes">
-        <param name="onload" value="true" />
-        <param name="android-package" value="com.microsoft.azure.mobile.cordova.AppCenterCrashesPlugin" />
-    </feature>
-    <feature name="AppCenterPush">
-        <param name="onload" value="true" />
-        <param name="android-package" value="com.microsoft.azure.mobile.cordova.AppCenterPushPlugin" />
-    </feature>
     <feature name="CallLog">
         <param name="android-package" value="be.creacore.calllog.CallLog" />
     </feature>
@@ -78,10 +62,6 @@
     <feature name="Zip">
         <param name="android-package" value="org.apache.cordova.Zip" />
     </feature>
-    <feature name="CodePush">
-        <param name="android-package" value="com.microsoft.cordova.CodePush" />
-        <param name="onload" value="true" />
-    </feature>
     <name>Mobile Pickuper</name>
     <description>
         Tool pickup of Kerry Express VN.
@@ -127,4 +107,8 @@
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="SplashShowOnlyFirstTime" value="true" />
     <preference name="CodePushDeploymentKey" value="2Q6HRRdTyLye3fjVrIXK1dfMsmmCH1cm14xc4" />
+    <feature name="CodePush">
+        <param name="android-package" value="com.microsoft.cordova.CodePush" />
+        <param name="onload" value="true" />
+    </feature>
 </widget>

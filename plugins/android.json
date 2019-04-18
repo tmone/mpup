@@ -13,22 +13,10 @@
     "cordova-plugin-app-version": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
-    "cordova-plugin-appcenter-analytics": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
-    "cordova-plugin-appcenter-crashes": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
-    "cordova-plugin-appcenter-push": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
     "cordova-plugin-calllog": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
     "cordova-plugin-camera": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
-    "cordova-plugin-code-push": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
     "cordova-plugin-device": {
@@ -79,13 +67,13 @@
     "phonegap-plugin-barcodescanner": {
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-code-push": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   },
   "dependent_plugins": {
     "code-push": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
-    "cordova-plugin-appcenter-shared": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   }

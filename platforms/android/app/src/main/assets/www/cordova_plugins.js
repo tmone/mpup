@@ -1,14 +1,6 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
   module.exports = [
     {
-      "id": "code-push.AcquisitionManager",
-      "file": "plugins/code-push/script/acquisition-sdk.js",
-      "pluginId": "code-push",
-      "merges": [
-        "window"
-      ]
-    },
-    {
       "id": "cordova-call.CordovaCall",
       "file": "plugins/cordova-call/www/CordovaCall.js",
       "pluginId": "cordova-call",
@@ -22,38 +14,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "pluginId": "cordova-plugin-app-version",
       "clobbers": [
         "cordova.getAppVersion"
-      ]
-    },
-    {
-      "id": "cordova-plugin-appcenter-shared.AppCenter",
-      "file": "plugins/cordova-plugin-appcenter-shared/www/AppCenter.js",
-      "pluginId": "cordova-plugin-appcenter-shared",
-      "clobbers": [
-        "AppCenter"
-      ]
-    },
-    {
-      "id": "cordova-plugin-appcenter-analytics.Analytics",
-      "file": "plugins/cordova-plugin-appcenter-analytics/www/Analytics.js",
-      "pluginId": "cordova-plugin-appcenter-analytics",
-      "clobbers": [
-        "AppCenter.Analytics"
-      ]
-    },
-    {
-      "id": "cordova-plugin-appcenter-crashes.Crashes",
-      "file": "plugins/cordova-plugin-appcenter-crashes/www/Crashes.js",
-      "pluginId": "cordova-plugin-appcenter-crashes",
-      "clobbers": [
-        "AppCenter.Crashes"
-      ]
-    },
-    {
-      "id": "cordova-plugin-appcenter-push.Push",
-      "file": "plugins/cordova-plugin-appcenter-push/www/Push.js",
-      "pluginId": "cordova-plugin-appcenter-push",
-      "clobbers": [
-        "AppCenter.Push"
       ]
     },
     {
@@ -127,82 +87,6 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "device"
       ]
-    },
-    {
-      "id": "cordova-plugin-code-push.codePush",
-      "file": "plugins/cordova-plugin-code-push/bin/www/codePush.js",
-      "pluginId": "cordova-plugin-code-push",
-      "clobbers": [
-        "codePush"
-      ]
-    },
-    {
-      "id": "cordova-plugin-code-push.localPackage",
-      "file": "plugins/cordova-plugin-code-push/bin/www/localPackage.js",
-      "pluginId": "cordova-plugin-code-push",
-      "clobbers": [
-        "LocalPackage"
-      ]
-    },
-    {
-      "id": "cordova-plugin-code-push.remotePackage",
-      "file": "plugins/cordova-plugin-code-push/bin/www/remotePackage.js",
-      "pluginId": "cordova-plugin-code-push",
-      "clobbers": [
-        "RemotePackage"
-      ]
-    },
-    {
-      "id": "cordova-plugin-code-push.syncStatus",
-      "file": "plugins/cordova-plugin-code-push/bin/www/syncStatus.js",
-      "pluginId": "cordova-plugin-code-push",
-      "clobbers": [
-        "SyncStatus"
-      ]
-    },
-    {
-      "id": "cordova-plugin-code-push.installMode",
-      "file": "plugins/cordova-plugin-code-push/bin/www/installMode.js",
-      "pluginId": "cordova-plugin-code-push",
-      "clobbers": [
-        "InstallMode"
-      ]
-    },
-    {
-      "id": "cordova-plugin-code-push.codePushUtil",
-      "file": "plugins/cordova-plugin-code-push/bin/www/codePushUtil.js",
-      "pluginId": "cordova-plugin-code-push",
-      "runs": true
-    },
-    {
-      "id": "cordova-plugin-code-push.fileUtil",
-      "file": "plugins/cordova-plugin-code-push/bin/www/fileUtil.js",
-      "pluginId": "cordova-plugin-code-push",
-      "runs": true
-    },
-    {
-      "id": "cordova-plugin-code-push.httpRequester",
-      "file": "plugins/cordova-plugin-code-push/bin/www/httpRequester.js",
-      "pluginId": "cordova-plugin-code-push",
-      "runs": true
-    },
-    {
-      "id": "cordova-plugin-code-push.nativeAppInfo",
-      "file": "plugins/cordova-plugin-code-push/bin/www/nativeAppInfo.js",
-      "pluginId": "cordova-plugin-code-push",
-      "runs": true
-    },
-    {
-      "id": "cordova-plugin-code-push.package",
-      "file": "plugins/cordova-plugin-code-push/bin/www/package.js",
-      "pluginId": "cordova-plugin-code-push",
-      "runs": true
-    },
-    {
-      "id": "cordova-plugin-code-push.sdk",
-      "file": "plugins/cordova-plugin-code-push/bin/www/sdk.js",
-      "pluginId": "cordova-plugin-code-push",
-      "runs": true
     },
     {
       "id": "cordova-plugin-file.DirectoryEntry",
@@ -508,21 +392,99 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
       "clobbers": [
         "cordova.plugins.barcodeScanner"
       ]
+    },
+    {
+      "id": "code-push.AcquisitionManager",
+      "file": "plugins/code-push/script/acquisition-sdk.js",
+      "pluginId": "code-push",
+      "merges": [
+        "window"
+      ]
+    },
+    {
+      "id": "cordova-plugin-code-push.codePush",
+      "file": "plugins/cordova-plugin-code-push/bin/www/codePush.js",
+      "pluginId": "cordova-plugin-code-push",
+      "clobbers": [
+        "codePush"
+      ]
+    },
+    {
+      "id": "cordova-plugin-code-push.localPackage",
+      "file": "plugins/cordova-plugin-code-push/bin/www/localPackage.js",
+      "pluginId": "cordova-plugin-code-push",
+      "clobbers": [
+        "LocalPackage"
+      ]
+    },
+    {
+      "id": "cordova-plugin-code-push.remotePackage",
+      "file": "plugins/cordova-plugin-code-push/bin/www/remotePackage.js",
+      "pluginId": "cordova-plugin-code-push",
+      "clobbers": [
+        "RemotePackage"
+      ]
+    },
+    {
+      "id": "cordova-plugin-code-push.syncStatus",
+      "file": "plugins/cordova-plugin-code-push/bin/www/syncStatus.js",
+      "pluginId": "cordova-plugin-code-push",
+      "clobbers": [
+        "SyncStatus"
+      ]
+    },
+    {
+      "id": "cordova-plugin-code-push.installMode",
+      "file": "plugins/cordova-plugin-code-push/bin/www/installMode.js",
+      "pluginId": "cordova-plugin-code-push",
+      "clobbers": [
+        "InstallMode"
+      ]
+    },
+    {
+      "id": "cordova-plugin-code-push.codePushUtil",
+      "file": "plugins/cordova-plugin-code-push/bin/www/codePushUtil.js",
+      "pluginId": "cordova-plugin-code-push",
+      "runs": true
+    },
+    {
+      "id": "cordova-plugin-code-push.fileUtil",
+      "file": "plugins/cordova-plugin-code-push/bin/www/fileUtil.js",
+      "pluginId": "cordova-plugin-code-push",
+      "runs": true
+    },
+    {
+      "id": "cordova-plugin-code-push.httpRequester",
+      "file": "plugins/cordova-plugin-code-push/bin/www/httpRequester.js",
+      "pluginId": "cordova-plugin-code-push",
+      "runs": true
+    },
+    {
+      "id": "cordova-plugin-code-push.nativeAppInfo",
+      "file": "plugins/cordova-plugin-code-push/bin/www/nativeAppInfo.js",
+      "pluginId": "cordova-plugin-code-push",
+      "runs": true
+    },
+    {
+      "id": "cordova-plugin-code-push.package",
+      "file": "plugins/cordova-plugin-code-push/bin/www/package.js",
+      "pluginId": "cordova-plugin-code-push",
+      "runs": true
+    },
+    {
+      "id": "cordova-plugin-code-push.sdk",
+      "file": "plugins/cordova-plugin-code-push/bin/www/sdk.js",
+      "pluginId": "cordova-plugin-code-push",
+      "runs": true
     }
   ];
   module.exports.metadata = {
-    "code-push": "2.0.6",
     "cordova-call": "1.1.6",
     "cordova-plugin-app-version": "0.1.9",
-    "cordova-plugin-appcenter-shared": "0.3.3",
-    "cordova-plugin-appcenter-analytics": "0.3.3",
-    "cordova-plugin-appcenter-crashes": "0.3.3",
-    "cordova-plugin-appcenter-push": "0.3.3",
     "cordova-plugin-calllog": "1.2.2",
     "cordova-plugin-camera": "4.0.3",
     "cordova-plugin-dialogs": "2.0.1",
     "cordova-plugin-device": "2.0.2",
-    "cordova-plugin-code-push": "1.11.17",
     "cordova-plugin-file": "4.0.0",
     "cordova-plugin-file-transfer": "1.6.3",
     "cordova-plugin-geolocation": "4.0.1",
@@ -536,6 +498,8 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-vibration": "3.1.0",
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-plugin-zip": "3.1.0",
-    "phonegap-plugin-barcodescanner": "8.0.1"
+    "phonegap-plugin-barcodescanner": "8.0.1",
+    "code-push": "2.0.6",
+    "cordova-plugin-code-push": "1.11.17"
   };
 });
