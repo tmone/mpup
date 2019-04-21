@@ -9,7 +9,7 @@
                     </a>
                 </div>
                 <div class="title head-title">CHI TIẾT</div>
-                <div class="right">
+                <div class="right save-command" style="display:none;">
                     <a class="link icon-only save" href="#">
                         <i class="icon f7-icons ios-only">save</i>
                         <i class="icon material-icons md-only">save</i>
@@ -19,13 +19,16 @@
         </div>
         <div class="page-content">
             <form id="form0">
+                <input type="hidden" name="ID" value="{{poc.ID}}">
+                <input type="hidden" name="Pickup_Order_ID" value="{{poc.Pickup_Order_ID}}">
+                <input type="hidden" name="Staff_PickUp_Code" value="{{poc.Staff_PickUp_Code}}">
                 <div class="swiper-container swiper-init" data-pagination='{"el": ".swiper-pagination"}'
                     data-space-between="50">
                     <div class="swiper-pagination" style="top: 5px;bottom : auto;"></div>
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
                             <div class="list">
-                                <input type="hidden" name="ID" value="{{poc.ID}}">
+
                                 <ul>
                                     <li>
                                         <div class="item-content item-input">
@@ -48,7 +51,7 @@
                                                 <div class="item-title item-label">Điện thoại</div>
                                                 <div class="item-input-wrap">
                                                     <input type="numpad" name="{{Phone_Name}}" placeholder="Điện thoại"
-                                                        id="Mobile{{Index}}" value="{{Phone_Value}}"
+                                                        id="mobile{{Index}}" value="{{Phone_Value}}"
                                                         data-dot-character=";" data-dot-button="true">
                                                 </div>
                                             </div>
@@ -145,8 +148,9 @@
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Địa chỉ</div>
                                                 <div class="item-text">
-                                                    <input type="text" readonly name="Address" placeholder="Địa chỉ"
-                                                        value="{{poc.Recipient_Address}}" id="Recipient_Address">
+                                                    <input type="text" readonly name="Recipient_Address"
+                                                        placeholder="Địa chỉ" value="{{poc.Recipient_Address}}"
+                                                        id="Recipient_Address">
                                                 </div>
                                             </div>
                                         </div>
@@ -170,6 +174,18 @@
                                         </div>
                                     </li>
                                     <li>
+                                        <div class="item-content item-input">
+                                            <div class="item-inner">
+                                                <div class="item-title item-label">Số DOC</div>
+                                                <div class="item-input-wrap">
+                                                    <input type="numpad" name="Package_Doc" placeholder="Số DOC"
+                                                        id="Package_Doc" value="{{poc.Package_Doc}}"
+                                                        data-dot-button="false" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- <li>
                                         <div class="item-content">
                                             <div class="item-inner">
                                                 <div class="item-title">DOC</div>
@@ -181,7 +197,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <div class="item-content item-input">
                                             <div class="item-inner">
@@ -363,46 +379,74 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="data-table card">
-                                <table>
-                                    <thead>
-                                        <th class="label-cell">Tiền cước đơn hàng</th>
-                                        <th class="numeric-cell">Số tiền</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>1.Cước chính</td>
-                                            <td><input type="number" readonly name="Freight_Charge"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2.Phí phát hàng ngoại thành</td>
-                                            <td><input type="number" readonly name="ESA_Surcharge"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3.Phí hàng giá trị cao</td>
-                                            <td><input type="number" readonly name="Insurance_Surcharge"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>4.Phí đóng gỗ</td>
-                                            <td><input type="number" readonly name="VAS_Surcharge"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>5. Phí khác</td>
-                                            <td><input type="number" readonly name="Other_Surcharge"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="data-table-footer">
-                                    <div class="data-table-rows-select">
-                                        Tổng cộng: <input type="number" readonly name="Total_Charge">
+                            <div class="card">
+                                <div class="card-header">Tiền cước đơn hàng</div>
+                                <div class="card-content">
+                                    <div class="list inline-labels no-hairlines-md">
+                                        <ul>
+                                            <li class="item-content item-input">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">1. Cước chính</div>
+                                                    <div class="item-input-wrap">
+                                                        <input type="number" readonly name="Freight_Charge"
+                                                            value="{{poc.Freight_Charge}}">
+
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">2. Phí phát hàng ngoại thành
+                                                    </div>
+                                                    <div class="item-input-wrap">
+                                                        <input type="number" readonly name="ESA_Surcharge"
+                                                            value="{{poc.ESA_Surcharge}}">
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">3. Phí hàng giá trị cao
+                                                    </div>
+                                                    <div class="item-input-wrap">
+                                                        <input type="number" readonly name="Insurance_Surcharge"
+                                                            value="{{poc.Insurance_Surcharge}}">
+                                                    </div>
+                                                </div>
+
+                                            </li>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">4. Phí đóng gỗ
+                                                    </div>
+                                                    <div class="item-input-wrap">
+                                                        <input type="number" readonly name="VAS_Surcharge"
+                                                            value="{{poc.VAS_Surcharge}}"> </div>
+                                                </div>
+                                            </li>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title item-label">5. Phí khác
+                                                    </div>
+                                                    <div class="item-input-wrap">
+                                                        <input type="number" readonly name="Other_Surcharge"
+                                                            value="{{poc.Other_Surcharge}}"> </div>
+                                                </div>
+
+                                            </li>
+                                        </ul>
                                     </div>
                                 </div>
+                                <div class="card-footer"> <span>Tổng tiền cước<strong></strong></span><input
+                                        type="number" readonly name="Total_Charge"
+                                        value="{{poc.Total_Charge}}"><span></span></div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </form>
         </div>
+        </form>
+    </div>
     </div>
 </template>
 <style>
@@ -416,7 +460,9 @@
         data: function () {
             // Must return an object
             return {
-                poc: {}
+                poc: {},
+                swiper: null,
+                Store: {},
             }
         },
         // Component Methods
@@ -483,28 +529,61 @@
                     $$("#Recipient_SubDistrict_ID").append('<option value="' + x.ID + '">' + x.SubDistrict_TH_Desc + '</option>');
                 });
             },
+            init_Consignment_No: function () {
+                var d = new Date();
+                var str = "CAL";
+                var y = d.getFullYear() % 100;
+                str += (y < 10 ? "0" : "") + y;
+                str += d.getMonth().toString(16).toUpperCase();
+                var da = d.getDate();
+                str += (da < 10 ? "0" : "") + da;
+                var h = d.getHours();
+                str += (h < 10 ? "0" : "") + h;
+                var m = d.getMinutes();
+                str += (m < 10 ? "0" : "") + m;
+                var s = d.getSeconds();
+                str += (s < 10 ? "0" : "") + s;
+                str += app.data.user.user_name;
+
+                return str.substr(0, 20);
+            },
+            refresh: function () {
+                var self = this;
+                var pocID = self.poc.Pickup_Order_ID;
+                mainView.router.navigate("/po/" + pocID + "/");
+            },
             save: function () {
-                var data = app.form.convertToData("#form0") || {};
+                var self = this;
+                var data = app.form.convertToData("#form0");
+
+                data = Object.assign(self.poc,data);
+
                 if (!data.Recipient_Name || data.Recipient_Name.length <= 0) {
                     app.toast.create({
-                        text: "Chưa nhập thông tin: Người gửi",
+                        text: "Chưa nhập thông tin: Người nhận",
                         closeTimeout: 2000,
                     }).open();
+                    self.swiper.slideTo(0);
                     $$("#Recipient_Name").focus();
                     return;
                 }
                 //$$(".Recipient_Name").text(data.Recipient_Name);
-                var phones = "";
-                $.each($(""), function (x) {
-                    phones += $(this).val();
+                var phones = [];
+                $.each($("[id^=mobile]"), function (x) {
+                    phones.push($(this).val());
                 });
+                data.Recipient_Mobile = phones.filter(function (x) {
+                    var t = +(x || "").replace(/[^0-9]/g, '');
+                    return x && x.length >= 10 && t > 99999999;
+                }).join(";");
                 //data.Phone_No+";"+data.Mobile_No1+";"+data.Mobile_No2;
-                if (phones.length < 12 || phones.includes("undefined")) {
+                if (data.Recipient_Mobile.length < 10 || data.Recipient_Mobile.includes("undefined")) {
                     app.toast.create({
-                        text: "Chưa nhập thông tin: Điện thoại",
+                        text: "Điện thoại không đúng",
                         closeTimeout: 2000,
                     }).open();
                     //$$("#Phone_No").focus();
+                    self.swiper.slideTo(0);
                     return;
                 }
                 //$$(".Phone_No").text(data.Phone_No);
@@ -514,6 +593,7 @@
                         text: "Chưa nhập thông tin: Tỉnh, thành phố",
                         closeTimeout: 2000,
                     }).open();
+                    self.swiper.slideTo(0);
                     return;
                 }
                 if (!data.Recipient_District_ID || +data.Recipient_District_ID == 3760 || +data.Recipient_District_ID == 3761) {
@@ -521,46 +601,198 @@
                         text: "Chưa nhập thông tin: Quận, huyện",
                         closeTimeout: 2000,
                     }).open();
+                    self.swiper.slideTo(0);
                     return;
                 }
+                //debugger;
                 if (!data.Recipient_Address || data.Recipient_Address < 10) {
                     app.toast.create({
                         text: "Lỗi. Địa chỉ quá ngắn",
                         closeTimeout: 2000,
                     }).open();
+                    self.swiper.slideTo(0);
+                    $$("#Recipient_Address").focus();
                     return;
                 }
-                //$$(".Address").text(data.Address);
-                // var find = app.data.items.find(function(x){
-                //     return x.ID == data.ID;
-                // });
-                // if(find && find.ID>0){
-                //     find = Object.assign(find,data);
-                // }
-                app.router.back()
+                var sk = 0;
+                if (data.Total_Package && data.Total_Package > 0) {
+                    sk += data.Total_Package;
+                }
+                if (data.Package_Doc && data.Package_Doc > 0) {
+                    sk += data.Package_Doc;
+                }
+                if (sk <= 0) {
+                    app.toast.create({
+                        text: "Chưa nhập số kiện hoặc số DOC",
+                        closeTimeout: 2000,
+                    }).open();
+                    self.swiper.slideTo(1);
+                    //$$("#Total_Package").focus();
+                    return;
+                }
+                var total_weight = 0;
+                if (data.Actual_Weight && +data.Actual_Weight > 0) {
+                    if (total_weight < +data.Actual_Weight) {
+                        total_weight = +data.Actual_Weight;
+                    }
+                }
+                if (data.Dim_Weight && +data.Dim_Weight > 0) {
+                    if (total_weight < +data.Dim_Weight) {
+                        total_weight = +data.Dim_Weight;
+                    }
+                }
+                if (total_weight <= 0) {
+                    app.toast.create({
+                        text: "Khối lượng không đúng",
+                        closeTimeout: 2000,
+                    }).open();
+                    self.swiper.slideTo(1);
+                    //$$("#Actual_Weight").focus();
+                    return;
+                }
+                data.Charge_Weight = total_weight;
+
+                if (!data.Service_ID || +data.Service_ID < 1) {
+                    app.toast.create({
+                        text: "Loại dịch vụ chưa áp dụng",
+                        closeTimeout: 2000,
+                    }).open();
+                    self.swiper.slideTo(1);
+                    //$$("#Service_ID").focus();
+                    return;
+                }
+                if (data.Payment_Type && data.Payment_Type == "GS" && (!data.Customer_Code || data.Customer_Code.length < 7)) {
+                    app.toast.create({
+                        text: "Chưa nhập mã khách hàng",
+                        closeTimeout: 2000,
+                    }).open();
+                    self.swiper.slideTo(1);
+                    $$("#Customer_Code").focus();
+                    return;
+                }
+                if (!data.Consignment_Package_Remark || +data.Consignment_Package_Remark.length < 3) {
+                    app.toast.create({
+                        text: "Thông tin hàng hóa quá ngắn!",
+                        closeTimeout: 2000,
+                    }).open();
+                    self.swiper.slideTo(2);
+                    //$$("#Consignment_Package_Remark").focus();
+                    return;
+                }
+                if (!data.Declared_Value) {
+                    data.Declared_Value = 0;
+                }
+                if (!data.COD_Amount) {
+                    data.COD_Amount = 0;
+                }
+                if (!data.Total_Package) {
+                    data.Total_Package = 0;
+                }
+                if (!data.Package_Doc) {
+                    data.Package_Doc = 0;
+                }
+                if (!data.Actual_Weight) {
+                    data.Actual_Weight = 0;
+                }
+                if (!data.Dim_Weight) {
+                    data.Dim_Weight = 0;
+                }
+                if (!data.Charge_Weight) {
+                    data.Charge_Weight = 0;
+                }
+                if (!data.Freight_Charge) {
+                    data.Freight_Charge = 0;
+                }
+                if (!data.ESA_Surcharge) {
+                    data.ESA_Surcharge = 0;
+                }
+                if (!data.VAS_Surcharge) {
+                    data.VAS_Surcharge = 0;
+                }
+                if (!data.Total_Charge) {
+                    data.Total_Charge = 0;
+                }
+                if (!data.Insurance_Surcharge) {
+                    data.Insurance_Surcharge = 0;
+                }
+                if (!data.Other_Surcharge) {
+                    data.Other_Surcharge = 0;
+                }
+                if (!data.Recipient_Postcode || data.Recipient_Postcode.length==0) {
+                    data.Recipient_Postcode = 'N/A';
+                }
+                if(!data.Pickup_Order_ID || data.Pickup_Order_ID<=0){
+                    data.Pickup_Order_ID = app.data.lastChoice.ID;
+                }
+
+                if (!data.Staff_PickUp_Code || data.Staff_PickUp_Code.length < 1) {
+                    data.Staff_PickUp_Code = app.data.user.user_name;
+                }
+
+
+
+                ////
+
+                if (self.Store.insert) {
+
+                } else {
+                    self.Store = self.$route.context.Store;
+                }
+                
+
+                if (!data.ID || data.ID < 1) {
+                    self.Store.insert(data).done(function (dataObj, key) {
+                        // Process the key and data object here
+                        app.data.editing = false;
+                        self.refresh();
+                    }).fail(function (error) {
+                        // Handle the "error" here
+                        app.toast.create({
+                            text: "Lỗi: " + JSON.stringify(error),
+                            closeTimeout: 2000,
+                        }).open();
+                    });
+                } else {
+                    self.Store.update(data.ID, data).done(function (dataObj, key) {
+                        // Process the key and data object here
+                        app.data.editing = false;
+                        self.refresh();
+                    }).fail(function (error) {
+                        // Handle the "error" here
+                        app.toast.create({
+                            text: "Lỗi: " + JSON.stringify(error),
+                            closeTimeout: 2000,
+                        }).open();
+                    });
+                }
+
+
+
+                //mainView.router.back();
+                //debugger;
             }
 
         },
         // Lifecycle Hooks
-        beforeCreate() {
+        beforeCreate: function () {
             console.log('componentBeforeCreate', this)
         },
-        created() {
+        created: function () {
             console.log('componentCreated', this)
         },
-        beforeMount() {
+        beforeMount: function () {
             console.log('componentBeforeMount', this)
         },
-        mounted() {
+        mounted: function () {
             console.log('componentMounted', this);
         },
-        updated() {
+        updated: function () {
             console.log('componentUpdated', this);
         },
-        beforeDestroy() {
+        beforeDestroy: function () {
             console.log('componentBeforeDestroy', this);
         },
-        destroyed() {
+        destroyed: function () {
             console.log('componentDestroyed', this);
         },
         // Page Events
@@ -574,20 +806,16 @@
                 console.log('pageInit', page);
                 var self = this;
                 var pocID = page.route.params.pocID;
-                console.log(pocID);
-                self.poc = app.data.Store._array.find(function (x) {
-                    return x.ID == pocID;
-                });
-                // self.poc = app.data.Store._array.find(pocID);
-                $$(".Recipient_Name").text(self.poc.Recipient_Name);
+
+                $$(".Recipient_Name").text(self.poc.Recipient_Name || "");
                 //$$(".Recipient_Mobile_No").text(self.po.Sender_Phone_No);
-                $$(".Recipient_Address").text(self.poc.Recipient_Address);
+                $$(".Recipient_Address").text(self.poc.Recipient_Address || "");
                 //$$(".Sender_Contact_Person").text(self.po.Sender_Contact_Person);
                 //$$(".edit").attr("href", "/po/" + poID + "/edit/");
 
                 $$(".add-num").on("click", function () {
                     var id = $$(this).data("index");
-                    var val = $$("#Mobile" + id).val();
+                    var val = $$("#mobile" + id).val();
                     // debugdebugger;
                     if (val && val.length >= 10) {
                         $$(this).parent().hide();
@@ -644,10 +872,12 @@
                         $$(".customer-code").hide();
                     }
                 });
-                $$(".add-wood").on("click",function(){
+                $$(".add-wood").on("click", function () {
 
                 });
-                $(".format-number").number(true,0);
+
+                //debugger;
+                //self.swiper = app.swiper.get('.swiper-container');
             },
             pageBeforeIn: function (e, page) {
                 // console.log('pageBeforeIn', page);
@@ -656,13 +886,34 @@
                 //     //debugger;
                 //     ret$.number( 5020.2364 )
                 // }
-                $(".format-number").number(true,0);
+                $(".format-number").number(true, 0);
             },
             pageAfterIn: function (e, page) {
                 console.log('pageAfterIn', page);
+                var self = this;
+                self.swiper = app.swiper.get('.swiper-container');
+                $(".format-number").number(true, 0);
+                //$$(".back").on("click")
+                if (self.poc.FINISH && self.poc.FINISH > 0) {
+                    $$(".save-command").hide();
+                } else {
+                    $$(".save-command").show();
+                }
+                if (!self.poc.Consignment_No || self.poc.Consignment_No.length == 0) {
+                    self.poc.Consignment_No = self.init_Consignment_No();
+                    $$("#Consignment_No").val(self.poc.Consignment_No);
+                }
             },
             pageBeforeOut: function (e, page) {
                 console.log('pageBeforeOut', page);
+                if (app.data.editing) {
+                    var rs = confirm("Dữ liệu chưa được lưu. Vẫn thoát?");
+                    if (rs) {
+                        app.data.editing = false;
+                    } else {
+                        e.cancelled = true;
+                    }
+                }
             },
             pageAfterOut: function (e, page) {
                 console.log('pageAfterOut', page);

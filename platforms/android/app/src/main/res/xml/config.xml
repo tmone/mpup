@@ -24,6 +24,9 @@
         <param name="onload" value="true" />
     </feature>
     <allow-navigation href="cdvfile:*" />
+    <feature name="FileTransfer">
+        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+    </feature>
     <feature name="Geolocation">
         <param name="android-package" value="org.apache.cordova.geolocation.Geolocation" />
     </feature>
@@ -32,6 +35,9 @@
     </feature>
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+    </feature>
+    <feature name="Media">
+        <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
     </feature>
     <feature name="NativeStorage">
         <param name="android-package" value="NativeStorage" />
@@ -54,14 +60,14 @@
     <feature name="BarcodeScanner">
         <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner" />
     </feature>
-    <feature name="Media">
-        <param name="android-package" value="org.apache.cordova.media.AudioHandler" />
-    </feature>
-    <feature name="FileTransfer">
-        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+    <feature name="PushNotification">
+        <param name="android-package" value="com.adobe.phonegap.push.PushPlugin" />
     </feature>
     <feature name="Zip">
         <param name="android-package" value="org.apache.cordova.Zip" />
+    </feature>
+    <feature name="Badge">
+        <param name="android-package" value="de.appplant.cordova.plugin.badge.Badge" />
     </feature>
     <feature name="CodePush">
         <param name="android-package" value="com.microsoft.cordova.CodePush" />
@@ -82,6 +88,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <resource-file src="google-services.json" target="app/google-services.json" />
     <resource-file src="www/img/logo.png" target="res/drawable/logo.png" />
     <allow-intent href="market:*" />
     <icon density="ldpi" src="res/icon/android/ldpi.png" />
@@ -103,13 +110,15 @@
     <splash density="land-xxhdpi" src="res/screen/android/splash-land-xxhdpi.png" />
     <splash density="land-xxxhdpi" src="res/screen/android/splash-land-xxxhdpi.png" />
     <preference name="loglevel" value="DEBUG" />
-    <preference name="SplashScreenDelay" value="100" />
+    <preference name="SplashScreenDelay" value="500" />
     <preference name="AutoHideSplashScreen" value="true" />
     <preference name="APPCENTER_ANALYTICS_ENABLE_IN_JS" value="true" />
     <preference name="APPCENTER_CRASHES_ALWAYS_SEND" value="false" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
     <preference name="phonegap-version" value="cli-8.1.1" />
+    <preference name="android-build-tool" value="gradle" />
     <preference name="APP_SECRET" value="b1c44c87-d4d9-41d7-9fe0-0de3d6f777b2" />
+    <preference name="android-minSdkVersion" value="19" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="SplashShowOnlyFirstTime" value="true" />
     <preference name="CodePushDeploymentKey" value="2Q6HRRdTyLye3fjVrIXK1dfMsmmCH1cm14xc4" />

@@ -26,10 +26,9 @@
                             <div class="item-inner">
                                 <div class="item-title item-label">Người gửi</div>
                                 <div class="item-input-wrap">
-                                    <input type="text" name="Sender_Name" placeholder="Tên khách hàng"
-                                        id="Sender_Name" 
+                                    <input type="text" name="Sender_Name" placeholder="Tên khách hàng" id="Sender_Name"
                                         value="{{po.Sender_Name}}">
-                                        
+
                                 </div>
                             </div>
                         </div>
@@ -40,8 +39,7 @@
                                 <div class="item-title item-label">Người liên hệ</div>
                                 <div class="item-input-wrap">
                                     <input type="text" name="Contact_Person" placeholder="Người liên hệ"
-                                    id="Contact_Person"    
-                                    value="{{po.Contact_Person}}">
+                                        id="Contact_Person" value="{{po.Contact_Person}}">
                                 </div>
                             </div>
                         </div>
@@ -53,8 +51,7 @@
                                 <div class="item-title item-label">Điện thoại</div>
                                 <div class="item-input-wrap">
                                     <input type="numpad" name="{{Phone_Name}}" placeholder="Điện thoại"
-                                    id="Phone_Name{{Index}}"    
-                                    value="{{Phone_Value}}" data-dot-character=";">
+                                        id="Phone_Name{{Index}}" value="{{Phone_Value}}" data-dot-character=";">
                                 </div>
                             </div>
                             <div class="item_after" style="padding-right:15px; display:block"
@@ -164,7 +161,26 @@
         data: function () {
             // Must return an object
             return {
-                po: {}
+                po: {},
+                store: DevExpress.data.AspNet.createStore({
+                    key: "ID",
+                    // loadUrl: app.data.serverUrl + "/api/Pickup_Order/Get",
+                    // insertUrl: app.data.serverUrl + "/api/Pickup_Order/Get",
+                    updateUrl: app.data.serverUrl + "/api/Pickup_Order/Update",
+                    //deleteUrl: app.data.serverUrl + "/api/Pickup_Order/Get",
+                    onBeforeSend: function (operation, ajaxSettings) {
+                        debugger;
+                        ajaxSettings.data.u = app.data.user.user_name;
+                        ajaxSettings.data.p = app.data.user.password;
+                        //ajaxSettings.headers =  {"Accept-Encoding":"gzip, deflate, br"};
+                    },
+                    onAjaxError: function (e) {
+                        app.toast.create({
+                            text: "Lỗi: " + e.error,
+                            closeTimeout: 2000,
+                        }).open();
+                    }
+                })
             }
         },
         // Component Methods
@@ -232,6 +248,7 @@
                 });
             },
             save: function () {
+                var self = this;
                 var data = app.form.convertToData("#form-edit") || {};
                 if (!data.Sender_Name || data.Sender_Name.length <= 0) {
                     app.toast.create({
@@ -242,8 +259,8 @@
                     return;
                 }
                 $$(".Sender_Name").text(data.Sender_Name);
-                var phones = data.Phone_No+";"+data.Mobile_No1+";"+data.Mobile_No2;
-                if (phones.length<12 || phones.includes("undefined")) {
+                var phones = data.Phone_No + ";" + data.Mobile_No1 + ";" + data.Mobile_No2;
+                if (phones.length < 12 || phones.includes("undefined")) {
                     app.toast.create({
                         text: "Chưa nhập thông tin: Điện thoại",
                         closeTimeout: 2000,
@@ -253,58 +270,59 @@
                 }
                 $$(".Phone_No").text(data.Phone_No);
                 $$(".Contact_Person").text(data.Contact_Person);
-                if(!data.Province_ID || data.Province_ID<=1){
+                if (!data.Province_ID || data.Province_ID <= 1) {
                     app.toast.create({
                         text: "Chưa nhập thông tin: Tỉnh, thành phố",
                         closeTimeout: 2000,
-                    }).open();                    
+                    }).open();
                     return;
                 }
-                if(!data.District_ID || +data.District_ID==3760 || +data.District_ID==3761){
+                if (!data.District_ID || +data.District_ID == 3760 || +data.District_ID == 3761) {
                     app.toast.create({
                         text: "Chưa nhập thông tin: Quận, huyện",
                         closeTimeout: 2000,
-                    }).open();                    
+                    }).open();
                     return;
                 }
-                if(!data.Address || data.Address<10){
+                if (!data.Address || data.Address < 10) {
                     app.toast.create({
                         text: "Lỗi. Địa chỉ quá ngắn",
                         closeTimeout: 2000,
-                    }).open();                    
+                    }).open();
                     return;
                 }
                 $$(".Address").text(data.Address);
-                var find = app.data.items.find(function(x){
+                var find = app.data.items.find(function (x) {
                     return x.ID == data.ID;
                 });
-                if(find && find.ID>0){
-                    find = Object.assign(find,data);
+                if (find && find.ID > 0) {
+                    find = Object.assign(find, data);
                 }
-                app.router.back()
+                self.store.update(data.ID, data);
+                mainView.router.back()
             }
 
         },
         // Lifecycle Hooks
-        beforeCreate() {
+        beforeCreate: function () {
             console.log('componentBeforeCreate', this)
         },
-        created() {
+        created: function () {
             console.log('componentCreated', this)
         },
-        beforeMount() {
+        beforeMount: function () {
             console.log('componentBeforeMount', this)
         },
-        mounted() {
+        mounted: function () {
             console.log('componentMounted', this);
         },
-        updated() {
+        updated: function () {
             console.log('componentUpdated', this);
         },
-        beforeDestroy() {
+        beforeDestroy: function () {
             console.log('componentBeforeDestroy', this);
         },
-        destroyed() {
+        destroyed: function () {
             console.log('componentDestroyed', this);
         },
         // Page Events

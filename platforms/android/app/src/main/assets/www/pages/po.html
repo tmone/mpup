@@ -86,9 +86,9 @@
                                 <i class="icon f7-icons ios-only">qrcode</i>
                                 <i class="icon material-icons md-only">settings_overscan</i>
                             </a>
-                            <a class="link icon-only">
-                                <i class="icon f7-icons ios-only">more_vertical_round</i>
-                                <i class="icon material-icons md-only">more_vert</i>
+                            <a class="link icon-only scan-switch" data-type="2">
+                                <i class="icon f7-icons ios-only">reload</i>
+                                <i class="icon material-icons md-only">swap_vert</i>
                             </a>
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                     </table>
                     <div class="data-table-footer show-footer" style="display:none;">
                         <div class="segmented" style="padding-right: 15px;">
-                            <a class="button button-active finish">
+                            <a class="button button-active finish-scan4">
                                 <i class="icon f7-icons ios-only">check</i>
                                 <i class="icon material-icons md-only">check</i>
                                 Xác nhận
@@ -147,15 +147,21 @@
             </div>
             <div class="card create-panel" style="display:none;">
                 <div class="card-header">
-                    Danh sách đơn hàng
+                    Danh sách đơn đã tạo
+                    <span class="right">
+                        <a class="link icon-only scan-switch" data-type="1">
+                            <i class="icon f7-icons ios-only">reload</i>
+                            <i class="icon material-icons md-only">swap_vert</i>
+                        </a>
+                    </span>
                 </div>
                 <div class="card-footer">
-                    <a class="button" href="#">
+                    <a class="button" href="/poc/0/">
                         <i class="icon f7-icons ios-only">add</i>
                         <i class="icon material-icons md-only">add</i>
-                        Đơn khác
+                        Thêm
                     </a>
-                    <a class="button" href="#">
+                    <a class="button finish-create" href="#">
                         <i class="icon f7-icons ios-only">check</i>
                         <i class="icon material-icons md-only">check</i>
                         Xác nhận
@@ -271,33 +277,47 @@
             // Must return an object
             return {
                 po: {},
-                vl: null
+                vl: null,
             }
         },
         // Component Methods
         methods: {
-
+            setTYPE: function (type) {
+                if (type == 0) {
+                    $$(".command-panel").show();
+                    $$(".create-panel").hide();
+                    $$(".scan4-panel").hide();
+                } else if (type == 1) {
+                    $$(".command-panel").hide();
+                    $$(".create-panel").hide();
+                    $$(".scan4-panel").show();
+                } else {
+                    $$(".command-panel").hide();
+                    $$(".create-panel").show();
+                    $$(".scan4-panel").hide();
+                }
+            },            
         },
         // Lifecycle Hooks
-        beforeCreate() {
+        beforeCreate: function () {
             console.log('componentBeforeCreate', this)
         },
-        created() {
+        created: function () {
             console.log('componentCreated', this)
         },
-        beforeMount() {
+        beforeMount: function () {
             console.log('componentBeforeMount', this)
         },
-        mounted() {
+        mounted: function () {
             console.log('componentMounted', this);
         },
-        updated() {
+        updated: function () {
             console.log('componentUpdated', this);
         },
-        beforeDestroy() {
+        beforeDestroy: function () {
             console.log('componentBeforeDestroy', this);
         },
-        destroyed() {
+        destroyed: function () {
             console.log('componentDestroyed', this);
         },
         // Page Events
@@ -315,17 +335,46 @@
                 self.po = app.data.items.find(function (x) {
                     return x.ID == poID;
                 });
+                self.po.TYPE = self.po.TYPE || 0;
+                if (self.po.TYPE == 0) {
+                    selectLSM("Pickup_Order", self.po, "ID", function (x) {
+                        if (x && x.length > 0 && x[0].TYPE && x[0].TYPE > 0) {
+                            self.po.TYPE = x[0].TYPE;
+                        } else {
+                            replaceLSM("Pickup_Order", self.po, "ID");
+                        }
+
+                    });
+                }
+
+                app.data.lastChoice = self.po;
+
                 $$(".Sender_Name").text(self.po.Sender_Name);
                 $$(".Phone_No").text(self.po.Phone_No);
                 $$(".Address").text(self.po.Address);
                 $$(".Contact_Person").text(self.po.Contact_Person);
                 $$(".edit").attr("href", "/po/" + poID + "/edit/");
                 $$('.bill-create').off('click').on('click', function () {
+                    self.po.TYPE = 2;
+                    replaceLSM("Pickup_Order", self.po, "ID");
                     $$(".command-panel").hide();
                     $$(".create-panel").show();
+                    var pend = self.Bills.filter(function (x) {
+                        var t = x.FINISH && x.FINISH > 0;
+                        return !t;
+                    });
+                    var tmp = { ID: 0 };
+                    if (pend.length > 0) {
+                        var tmp = pend[0];
+
+                    }
+                    //app.data.lastChoice = self.po;
+                    mainView.router.navigate("/poc/" + tmp.ID + "/");
                 });
                 //$$(".bill-create").attr("href", "/po/" + poID + "/addbill/");
                 $$('.bill-scan4').off('click').on('click', function () {
+                    self.po.TYPE = 1;
+                    replaceLSM("Pickup_Order", self.po, "ID");
                     $$(".command-panel").hide();
                     $$(".scan4-panel").show();
                     MULTISCAN = true;
@@ -351,12 +400,24 @@
                     }
 
                 });
-                $$(".finish").on('click', function () {
+                $$(".finish-scan4").on('click', function () {
                     app.toast.create({
                         text: JSON.stringify(store),
                         closeTimeout: 2000,
                     }).open();
                     app.router.back();
+                });
+                $$(".finish-create").on('click', function () {
+                    var total_money = 0;
+
+                    self.Bills.map(function (x) {
+                        total_money += x.Total_Charge || 0;
+                    });
+
+                    app.dialog.confirm('Nhận thành công với ' + self.Bills.length + ' tổng số tiền <span style="color:orange"><strong>' + $.number(total_money) + '</strong></span>?', function () {
+                        app.methods.pickup(poID,3,0,'');
+                    });
+
                 });
                 //debugger;
                 self.vl = app.virtualList.create({
@@ -391,13 +452,21 @@
                     }
                 });
                 $$(".virtual-list ul").css("height", "auto");
-                $(".format-number").number(true,0);
+                $(".format-number").number(true, 0);
             },
             pageBeforeIn: function (e, page) {
                 console.log('pageBeforeIn', page);
             },
             pageAfterIn: function (e, page) {
+                var self = this;
                 console.log('pageAfterIn', page);
+                $$(".scan-switch").on("click", function () {
+                    var type = $$(this).data("type") || 0;
+                    self.po.TYPE = type;
+                    replaceLSM("Pickup_Order", self.po, "ID");
+                    self.setTYPE(self.po.TYPE);
+                });
+                self.setTYPE(self.po.TYPE);
             },
             pageBeforeOut: function (e, page) {
                 console.log('pageBeforeOut', page);

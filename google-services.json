@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "642728123061",
+    "firebase_url": "https://mpup-kerry.firebaseio.com",
+    "project_id": "mpup-kerry",
+    "storage_bucket": "mpup-kerry.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642728123061:android:db82fb49033c601a",
+        "android_client_info": {
+          "package_name": "vn.com.kerryexpress.mpup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642728123061-7lob9i3hksu5hafpd79pnh8b0ngbri58.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDH3Xvakd5MpBTyFqCcvsvkkpPb_uiT4fA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642728123061-7lob9i3hksu5hafpd79pnh8b0ngbri58.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

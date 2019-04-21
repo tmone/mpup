@@ -25,6 +25,14 @@ module.exports = [
     ]
   },
   {
+    "id": "cordova-plugin-badge.Badge",
+    "file": "plugins/cordova-plugin-badge/www/badge.js",
+    "pluginId": "cordova-plugin-badge",
+    "clobbers": [
+      "cordova.plugins.notification.badge"
+    ]
+  },
+  {
     "id": "cordova-plugin-calllog.CallLog",
     "file": "plugins/cordova-plugin-calllog/www/calllog.js",
     "pluginId": "cordova-plugin-calllog",
@@ -346,6 +354,22 @@ module.exports = [
     "runs": true
   },
   {
+    "id": "cordova-plugin-file-transfer.FileTransferError",
+    "file": "plugins/cordova-plugin-file-transfer/www/FileTransferError.js",
+    "pluginId": "cordova-plugin-file-transfer",
+    "clobbers": [
+      "window.FileTransferError"
+    ]
+  },
+  {
+    "id": "cordova-plugin-file-transfer.FileTransfer",
+    "file": "plugins/cordova-plugin-file-transfer/www/FileTransfer.js",
+    "pluginId": "cordova-plugin-file-transfer",
+    "clobbers": [
+      "window.FileTransfer"
+    ]
+  },
+  {
     "id": "cordova-plugin-geolocation.geolocation",
     "file": "plugins/cordova-plugin-geolocation/www/android/geolocation.js",
     "pluginId": "cordova-plugin-geolocation",
@@ -382,6 +406,22 @@ module.exports = [
     "clobbers": [
       "cordova.InAppBrowser.open",
       "window.open"
+    ]
+  },
+  {
+    "id": "cordova-plugin-media.MediaError",
+    "file": "plugins/cordova-plugin-media/www/MediaError.js",
+    "pluginId": "cordova-plugin-media",
+    "clobbers": [
+      "window.MediaError"
+    ]
+  },
+  {
+    "id": "cordova-plugin-media.Media",
+    "file": "plugins/cordova-plugin-media/www/Media.js",
+    "pluginId": "cordova-plugin-media",
+    "clobbers": [
+      "window.Media"
     ]
   },
   {
@@ -452,35 +492,11 @@ module.exports = [
     ]
   },
   {
-    "id": "cordova-plugin-media.MediaError",
-    "file": "plugins/cordova-plugin-media/www/MediaError.js",
-    "pluginId": "cordova-plugin-media",
+    "id": "phonegap-plugin-push.PushNotification",
+    "file": "plugins/phonegap-plugin-push/www/push.js",
+    "pluginId": "phonegap-plugin-push",
     "clobbers": [
-      "window.MediaError"
-    ]
-  },
-  {
-    "id": "cordova-plugin-media.Media",
-    "file": "plugins/cordova-plugin-media/www/Media.js",
-    "pluginId": "cordova-plugin-media",
-    "clobbers": [
-      "window.Media"
-    ]
-  },
-  {
-    "id": "cordova-plugin-file-transfer.FileTransferError",
-    "file": "plugins/cordova-plugin-file-transfer/www/FileTransferError.js",
-    "pluginId": "cordova-plugin-file-transfer",
-    "clobbers": [
-      "window.FileTransferError"
-    ]
-  },
-  {
-    "id": "cordova-plugin-file-transfer.FileTransfer",
-    "file": "plugins/cordova-plugin-file-transfer/www/FileTransfer.js",
-    "pluginId": "cordova-plugin-file-transfer",
-    "clobbers": [
-      "window.FileTransfer"
+      "PushNotification"
     ]
   }
 ];
@@ -490,15 +506,18 @@ module.exports.metadata =
   "code-push": "2.0.6",
   "cordova-call": "1.1.6",
   "cordova-plugin-app-version": "0.1.9",
+  "cordova-plugin-badge": "0.8.8",
   "cordova-plugin-calllog": "1.2.2",
   "cordova-plugin-camera": "4.0.3",
   "cordova-plugin-dialogs": "2.0.1",
   "cordova-plugin-device": "2.0.2",
   "cordova-plugin-code-push": "1.11.17",
   "cordova-plugin-file": "6.0.1",
+  "cordova-plugin-file-transfer": "1.7.1",
   "cordova-plugin-geolocation": "4.0.1",
   "cordova-plugin-globalization": "1.11.0",
   "cordova-plugin-inappbrowser": "3.0.0",
+  "cordova-plugin-media": "5.0.2",
   "cordova-plugin-nativestorage": "2.3.2",
   "cordova-plugin-network-information": "2.0.1",
   "cordova-plugin-splashscreen": "5.0.2",
@@ -506,9 +525,10 @@ module.exports.metadata =
   "cordova-plugin-vibration": "3.1.0",
   "cordova-plugin-whitelist": "1.3.3",
   "cordova-plugin-zip": "3.1.0",
+  "cordova-support-google-services": "1.1.0",
   "phonegap-plugin-barcodescanner": "8.0.1",
-  "cordova-plugin-media": "5.0.2",
-  "cordova-plugin-file-transfer": "1.7.1"
+  "phonegap-plugin-multidex": "1.0.0",
+  "phonegap-plugin-push": "2.2.3"
 };
 // BOTTOM OF METADATA
 });

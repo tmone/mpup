@@ -11,11 +11,6 @@ var routes = [
     componentUrl: './pages/about.html',
     name: 'about',
   },
-  //PO
-  // {
-  //   path: '/po/:poID/',
-  //   componentUrl: './pages/po.html',
-  // },
   {
     path: '/po/:poID/',
     async: function (routeTo, routeFrom, resolve, reject) {
@@ -34,48 +29,12 @@ var routes = [
         return x.ID == poID;
       }));
       var Provinces = [];
-      // PROVINCES.map(function (x) {
-      //   return Object.assign({ Selected: x.ID == PO.Province_ID }, x);
-      // });
-      var Districts = [];
-      // DISTRICTS.filter(function (x) {
-      //   return x.Province_ID == PO.Province_ID;
-      // }).map(function (x) {
-      //   return Object.assign({ Selected: x.ID == PO.District_ID }, x);
-      // });
-      var SubDistricts = [];
-      // SUBDISTRICTS.filter(function(x){
-      //   return x.District_ID == PO.District_ID;
-      // }).map(function (x) {
-      //   return Object.assign({ Selected: x.ID == PO.SubDistrict_ID }, x);
-      // });
-      // if (PO && PO.PHONES && PO.PHONES.length > 0) {
-      //   PO.PHONES = PO.PHONES.split(";")
-      //     .filter(function (x, i, a) {
-      //       return a.indexOf(x) === i;
-      //     });
-      //   for (var i = 0; i < 10; i++) {
-      //     PO.PHONES.push("");
-      //   }
-      //   PO.PHONES = PO.PHONES.slice(0, 10)
-      //     .map(function (x, i) {
-      //       var fn = "Phone_No";
-      //       if (i >= 1) {
-      //         fn = "Mobile_No" + i;
-      //       }
-      //       var show = false;
-      //       if (x && x.length >= 10) {
-      //         show = true;
-      //       }
-      //       return {
-      //         Phone_Name: fn,
-      //         Phone_Value: x,
-      //         Show: show,
-      //         Index: i
-      //       };
-      //     })
 
-      // }
+      var Districts = [];
+
+      var SubDistricts = [];
+      
+
       var process = function (data) {
         // Hide Preloader
         app.preloader.hide();
@@ -89,36 +48,21 @@ var routes = [
               Provinces: Provinces,
               Districts: Districts,
               SubDistricts: SubDistricts,
-              Bills: data
+              Bills: data,               
             }
           }
         );
       }
-      $.ajax({
-        url: app.data.serverUrl + "/api/POC/" + poID + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
-        method: "GET",
-        success: function (data) {
-          process(data);
-          app.methods.UpsetStore(data);
-        },
-        error: function (err) {
-          var msg = JSON.stringify(err);
-          var ty = msg.includes("deadlock");
 
-          //app.preloader.hide();
-          app.toast.create({
-            text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
-            closeTimeout: 2000,
-          }).open();
-          reject(msg);
-        }
-      }).done(function (data) {
+      var store = app.methods.initStore("Pickup_Order_Consignment", [
+        "Pickup_Order_ID", "=", poID
+      ]);
+      store.load().done(function (data) {
+        // Process "data" here
         process(data);
+      }).fail(function (error) {
+        reject(error);
       });
-
-      // Hide Preloader
-      //app.preloader.hide();
-      //});
     },
   },
   {
@@ -205,79 +149,103 @@ var routes = [
       // App instance
       var app = router.app;
 
-      // Show Preloader
-      //app.preloader.show();
-
       // User ID from request
       var pocID = routeTo.params.pocID;
-      var POC = app.data.Store._array.find(function (x) {
-        return x.ID == pocID;
-      });//(pocID);
-      var Provinces = PROVINCES.map(function (x) {
-        return Object.assign({ Selected: x.ID == POC.Recipient_Province_ID }, x);
-      });
-      var Districts = DISTRICTS.filter(function (x) {
-        return x.Province_ID == POC.Recipient_Province_ID;
-      }).map(function (x) {
-        return Object.assign({ Selected: x.ID == POC.Recipient_District_ID }, x);
-      });
-      var SubDistricts = SUBDISTRICTS.filter(function (x) {
-        return x.District_ID == POC.Recipient_District_ID;
-      }).map(function (x) {
-        return Object.assign({ Selected: x.ID == POC.Recipient_SubDistrict_ID }, x);
-      });
-      var Services = SERVICES.map(function(x){
-        return Object.assign({Selected:POC.Service_ID==x.ID},x);
-      });
-      if (POC && POC.Recipient_Mobile && POC.Recipient_Mobile.length > 0) {
-        POC.PHONES = POC.Recipient_Mobile.split(";")
-          .filter(function (x, i, a) {
-            return a.indexOf(x) === i;
-          });
-      } else {
-        POC.PHONES = [];
-      }
 
-      for (var i = 0; i < 10; i++) {
-        POC.PHONES.push("");
-      }
-      POC.PHONES = POC.PHONES.slice(0, 10)
-        .map(function (x, i) {
-          var fn = "Mobile" + i;
-          // if (i >= 1) {
-          //   fn = "Mobile_No" + i;
-          // }
-          var show = false;
-          if (x && x.length >= 10) {
-            show = true;
-          }
-          if (i == 0 && !show) {
-            show = true;
-          }
-          return {
-            Phone_Name: fn,
-            Phone_Value: x,
-            Show: show,            
-            Index: i
-          };
+      var pocStore = app.methods.initStore("Pickup_Order_Consignment");
+      var process = function (POC) {
+
+        var Provinces = PROVINCES.map(function (x) {
+          return Object.assign({ Selected: x.ID == POC.Recipient_Province_ID }, x);
         });
-      resolve(
-        {
-          componentUrl: './pages/poc.html',
-        },
-        {
-          context: {
-            poc: POC,
-            Provinces: Provinces,
-            Districts: Districts,
-            SubDistricts: SubDistricts,
-            Services: Services
-          }
+        var Districts = DISTRICTS.filter(function (x) {
+          return x.Province_ID == POC.Recipient_Province_ID;
+        }).map(function (x) {
+          return Object.assign({ Selected: x.ID == POC.Recipient_District_ID }, x);
+        });
+        var SubDistricts = SUBDISTRICTS.filter(function (x) {
+          return x.District_ID == POC.Recipient_District_ID;
+        }).map(function (x) {
+          return Object.assign({ Selected: x.ID == POC.Recipient_SubDistrict_ID }, x);
+        });
+        var Services = SERVICES.map(function (x) {
+          return Object.assign({ Selected: POC.Service_ID == x.ID }, x);
+        });
+        if (POC && POC.Recipient_Mobile && POC.Recipient_Mobile.length > 0) {
+          POC.PHONES = POC.Recipient_Mobile.split(";")
+            .filter(function (x, i, a) {
+              return a.indexOf(x) === i;
+            });
+        } else {
+          POC.PHONES = [];
         }
-      );
-      // Hide Preloader
-      //app.preloader.hide();
-      //});
+
+        for (var i = 0; i < 10; i++) {
+          POC.PHONES.push("");
+        }
+        POC.PHONES = POC.PHONES.slice(0, 10)
+          .map(function (x, i) {
+            var fn = "Mobile" + i;
+            // if (i >= 1) {
+            //   fn = "Mobile_No" + i;
+            // }
+            var show = false;
+            if (x && x.length >= 10) {
+              show = true;
+            }
+            if (i == 0 && !show) {
+              show = true;
+            }
+            return {
+              Phone_Name: fn,
+              Phone_Value: x,
+              Show: show,
+              Index: i,
+            };
+          });
+
+        resolve(
+          {
+            componentUrl: './pages/poc.html',
+          },
+          {
+            context: {
+              poc: POC,
+              Provinces: Provinces,
+              Districts: Districts,
+              SubDistricts: SubDistricts,
+              Services: Services,
+              Store: pocStore
+            }
+          }
+        );
+
+      }
+      var tmp = {
+        Recipient_Province_ID: 0,
+        Recipient_District_ID: 0,
+        Recipient_SubDistrict_ID: 0,
+        Service_ID: -1,
+        ID: 0,
+        Declared_Value: 0,
+        COD_Amount: 0,
+        Package_Doc: 0,
+        Actual_Weight: 0,
+        Dim_Weight: 0,
+        Charge_Weight: 0,
+        Freight_Charge: 0,
+        ESA_Surcharge: 0,
+        VAS_Surcharge: 0,
+        Total_Charge: 0
+      };
+      pocStore.byKey(pocID).done(function (dataItem) {
+        var obj = Object.assign(tmp, dataItem);
+        process(obj);
+      }).fail(function (error) {
+        process(tmp);
+      });
+
+
     },
   },
   // Right Panel pages

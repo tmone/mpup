@@ -1,6 +1,7 @@
 // Dom7
 var $$ = Dom7;
 
+
 // install plugin to Framework7
 Framework7.use(Framework7Keypad);
 
@@ -11,7 +12,7 @@ if (document.location.search.indexOf('theme=') >= 0) {
 }
 
 var getCallLog = function (beginTime, cbResult, cbError) {
-  let filters = [
+  var filters = [
     {
       "name": "date",
       "value": beginTime,
@@ -58,6 +59,7 @@ var CacheStore = new DevExpress.data.ArrayStore({
   data: Cachers
 });
 
+
 // Init App
 var app = new Framework7({
   id: 'vn.com.kerryexpress.mpup',
@@ -81,10 +83,38 @@ var app = new Framework7({
     popupDate: null,
     popupDateCallback: null,
     Store: CacheStore,
+    push: null,
   },
   methods: {
     helloWorld: function () {
       app.dialog.alert('Hello World!');
+    },
+    setWait: function (n) {
+      try {
+        cordova.plugins.notification.badge.hasPermission(function (granted) {
+          if (granted) {
+            if (n && n > 0) {
+              cordova.plugins.notification.badge.set(n);
+            } else {
+              cordova.plugins.notification.badge.clear();
+            }
+          } else {
+            cordova.plugins.notification.badge.requestPermission(function (granted) {
+              if (!granted) {
+                app.toast.create({
+                  text: "Lỗi: Không được cấp quyền để hiển thị thông báo!",
+                  closeTimeout: 2000,
+                }).open();
+              }
+            });
+          }
+        });
+
+
+
+        $$(".count-wait").text(n);
+        $(".count-wait").number(true, 0);
+      } catch (er) { }
     },
     loadData: function () {
       var self = this;
@@ -294,6 +324,7 @@ var app = new Framework7({
     },
     updateList: function (rs) {
       try {
+        app.methods.setWait(rs.length);
         if (rs && rs.length > 0) {
           app.data.items = rs;
           app.methods.refreshList();
@@ -346,7 +377,7 @@ var app = new Framework7({
         app.popup.close();
         return false;
       } else if (app.views.main.router.url == '/') {
-        app.dialog.confirm("Thoát ứng dụng", "KES Connect Mobile", function () {
+        app.dialog.confirm("Thoát ứng dụng", app.data.appName, function () {
           navigator.app.exitApp();
         }, function () {
           return false;
@@ -456,35 +487,65 @@ function checkConnection() {
   }
 }
 
-var onNotificationReceived = function (pushNotification) {
-  var message = pushNotification.message;
-  var title = pushNotification.title;
+// var onNotificationReceived = function (pushNotification) {
+//   var message = pushNotification.message;
+//   var title = pushNotification.title;
 
-  if (message === null || message === undefined) {
-    // Android messages received in the background don't include a message. On Android, that fact can be used to
-    // check if the message was received in the background or foreground. For iOS the message is always present.
-    title = 'Thông báo';
-    message = 'Không có gì...';
-  }
+//   if (message === null || message === undefined) {
+//     // Android messages received in the background don't include a message. On Android, that fact can be used to
+//     // check if the message was received in the background or foreground. For iOS the message is always present.
+//     title = 'Thông báo';
+//     message = 'Không có gì...';
+//   }
 
-  // Custom name/value pairs set in the App Center web portal are in customProperties
-  if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
-    message += '\nCustom properties:\n' + JSON.stringify(pushNotification.customProperties);
-  }
+//   // Custom name/value pairs set in the App Center web portal are in customProperties
+//   if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
+//     message += '\nCustom properties:\n' + JSON.stringify(pushNotification.customProperties);
+//   }
 
-  app.toast.create({
-    text: "<strong>" + title + "</strong><br>" + message,
-    position: 'top',
-    closeButton: true,
-    closeButtonText: '<i class="f7-icons">close_round_fill</i>',
-  }).open();
 
-  //console.log(title, message);
-}
+
+
+//   //console.log(title, message);
+// }
 
 
 
 $$(document).on('deviceready', function () {
+
+  app.data.push = PushNotification.init({
+    android: {
+    },
+    browser: {
+      pushServiceURL: 'http://push.api.phonegap.com/v1/push'
+    },
+    ios: {
+      alert: "true",
+      badge: "true",
+      sound: "true"
+    },
+    windows: {}
+  });
+
+  app.data.push.on('registration', function (data) {
+    console.log(data.registrationId);
+  });
+
+  app.data.push.on('notification', function (data) {
+    console.log(data.message);
+    console.log(data.title);
+    console.log(data.count);
+    console.log(data.sound);
+    console.log(data.image);
+    console.log(data.additionalData);
+  });
+
+  app.data.push.on('error', function (e) {
+    console.log(e.message);
+  });
+
+
+
   $$(document).on("backbutton", app.methods.onBackKeyDown, false);
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
     window.plugins.callLog.hasReadPermission(function (rs) {

@@ -13,6 +13,9 @@
     "cordova-plugin-app-version": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
     "cordova-plugin-calllog": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
@@ -31,6 +34,9 @@
     "cordova-plugin-file": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
+    "cordova-plugin-file-transfer": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
     "cordova-plugin-geolocation": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
@@ -38,6 +44,9 @@
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
     "cordova-plugin-inappbrowser": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-media": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
     "cordova-plugin-nativestorage": {
@@ -65,15 +74,20 @@
       "ANDROID_SUPPORT_V4_VERSION": "27.+",
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
-    "cordova-plugin-media": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
-    "cordova-plugin-file-transfer": {
+    "phonegap-plugin-push": {
+      "ANDROID_SUPPORT_V13_VERSION": "27.+",
+      "FCM_VERSION": "11.6.2",
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   },
   "dependent_plugins": {
     "code-push": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-support-google-services": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "phonegap-plugin-multidex": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   }

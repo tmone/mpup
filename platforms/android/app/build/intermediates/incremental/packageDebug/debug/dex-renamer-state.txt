@@ -1,4 +1,7 @@
-#Thu Apr 18 15:39:44 ICT 2019
+#Fri Apr 19 16:48:00 ICT 2019
 base.0=D\:\\mpup\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.1=classes2.dex
+renamed.1=classes2.dex
 path.0=classes.dex
 renamed.0=classes.dex
+base.1=D\:\\mpup\\platforms\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0

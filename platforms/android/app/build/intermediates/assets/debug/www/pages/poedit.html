@@ -286,25 +286,25 @@
 
         },
         // Lifecycle Hooks
-        beforeCreate() {
+        beforeCreate:function() {
             console.log('componentBeforeCreate', this)
         },
-        created() {
+        created:function() {
             console.log('componentCreated', this)
         },
-        beforeMount() {
+        beforeMount:function() {
             console.log('componentBeforeMount', this)
         },
-        mounted() {
+        mounted:function() {
             console.log('componentMounted', this);
         },
-        updated() {
+        updated:function() {
             console.log('componentUpdated', this);
         },
-        beforeDestroy() {
+        beforeDestroy:function() {
             console.log('componentBeforeDestroy', this);
         },
-        destroyed() {
+        destroyed:function() {
             console.log('componentDestroyed', this);
         },
         // Page Events

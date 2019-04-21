@@ -4,6 +4,40 @@
             "outputFile": "D:\\mpup\\platforms\\android\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sw\\values-sw.xml",
             "map": [
                 {
+                    "source": "C:\\Users\\tmone\\.gradle\\caches\\transforms-1\\files-1.1\\firebase-messaging-11.6.2.aar\\35f8daa12500d2179264d0cb3fd66834\\res\\values-sw\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "243",
+                        "endColumns": "103",
+                        "endOffsets": "346"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "310",
+                        "endColumns": "107",
+                        "endOffsets": "413"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\tmone\\.gradle\\caches\\transforms-1\\files-1.1\\play-services-basement-11.6.2.aar\\cbd3031f9aaa7db38ac52e87c87bd831\\res\\values-sw\\values.xml",
+                    "from": {
+                        "startLines": "4",
+                        "startColumns": "0",
+                        "startOffsets": "285",
+                        "endColumns": "204",
+                        "endOffsets": "489"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "105",
+                        "endColumns": "204",
+                        "endOffsets": "305"
+                    }
+                },
+                {
                     "source": "C:\\Users\\tmone\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-27.1.1.aar\\869171abef0c5798335cae04b9180bdd\\res\\values-sw\\values-sw.xml",
                     "from": {
                         "startLines": "2",
@@ -11,6 +45,13 @@
                         "startOffsets": "55",
                         "endColumns": "100",
                         "endOffsets": "151"
+                    },
+                    "to": {
+                        "startLines": "4",
+                        "startColumns": "4",
+                        "startOffsets": "418",
+                        "endColumns": "100",
+                        "endOffsets": "514"
                     }
                 }
             ]

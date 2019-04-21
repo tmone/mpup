@@ -91,8 +91,11 @@ ext {
 }
 
 // PLUGIN GRADLE EXTENSIONS START
+apply from: "../cordova-plugin-badge/mpup-badge.gradle"
 apply from: "../cordova-plugin-code-push/mpup-build-extras.gradle"
+apply from: "../cordova-support-google-services/mpup-build.gradle"
 apply from: "../phonegap-plugin-barcodescanner/mpup-barcodescanner.gradle"
+apply from: "../phonegap-plugin-multidex/mpup-multidex.gradle"
 // PLUGIN GRADLE EXTENSIONS END
 
 def hasBuildExtras1 = file('build-extras.gradle').exists()
@@ -269,6 +272,9 @@ dependencies {
     implementation(project(path: ":CordovaLib"))
     compile "com.android.support:support-v4:24.1.1+"
     compile "com.android.support:support-v4:27.+"
+    compile "com.android.support:support-v13:27.+"
+    compile "me.leolin:ShortcutBadger:1.1.17@aar"
+    compile "com.google.firebase:firebase-messaging:11.6.2"
     // SUB-PROJECT DEPENDENCIES END
 }
 

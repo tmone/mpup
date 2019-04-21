@@ -1,3 +1,4 @@
+
 // Dom7
 var $$ = Dom7;
 
@@ -52,11 +53,6 @@ var montionCall = function (number, beginTime, cbResult, cbError) {
   }, cbError);
 }
 
-var Cachers = [];
-var CacheStore = new DevExpress.data.ArrayStore({
-  key: "ID",
-  data: Cachers
-});
 
 // Init App
 var app = new Framework7({
@@ -70,31 +66,144 @@ var app = new Framework7({
       password: '****',
       dc: ''
     },
+    editing: false,
     lastChoice: {},
     serverUrl: "http://210.211.121.146:30000",
     pushBill: true,
     geoLocation: {},
     signal: true,
     version: "1.0.0",
-    list: null,
+    waitlist: null,
     items: [],
     popupDate: null,
     popupDateCallback: null,
-    Store: CacheStore,
+
   },
   methods: {
-    helloWorld: function () {
-      app.dialog.alert('Hello World!');
+    pickup: function (poID, stausID, exceptionID, mess) {
+      app.preloader.show("multi");
+      $.ajax({
+        url: 'http://localhost:34567' + "/api/Pickup/Pickup",
+        data: {
+          u: app.data.user.user_name,
+          p: app.data.user.password,
+          i: poID,
+          m: mess || ' ',
+          s: stausID,
+          e: exceptionID
+        },
+        method: "POST",
+        success: function () {
+          app.preloader.hide();
+          mainView.router.back();
+        },
+        error: function (err) {
+          //debugger;
+          if (err.status != 200 || err.status != 201) {
+            app.preloader.hide();
+            app.toast.create({
+              text: "Lỗi: " + JSON.stringify(err),
+              closeTimeout: 2000,
+            }).open();
+          }
+
+        }
+      }).done(function (data) {
+        app.preloader.hide();
+        mainView.router.back();
+      }).fail(function (err) {
+        //debugger;
+        if (err.status != 200 || err.status != 201) {
+          app.preloader.hide();
+          app.toast.create({
+            text: "Lỗi: " + JSON.stringify(err),
+            closeTimeout: 2000,
+          }).open();
+        }
+      });
     },
-    loadData: function () {
+    initStore: function (storeName, filter) {
+      if (storeName && storeName.length > 0) {
+        return DevExpress.data.AspNet.createStore({
+          key: "ID",
+          // loadUrl: app.data.serverUrl + "/api/" + storeName + "/Get",
+          // insertUrl: app.data.serverUrl + "/api/" + storeName + "/Insert",
+          // updateUrl: app.data.serverUrl + "/api/" + storeName + "/Update",
+          // deleteUrl: app.data.serverUrl + "/api/" + storeName + "/Delete",
+          loadUrl: "http://localhost:34567" + "/api/" + storeName + "/Get",
+          insertUrl: "http://localhost:34567" + "/api/" + storeName + "/Insert",
+          updateUrl: "http://localhost:34567" + "/api/" + storeName + "/Update",
+          deleteUrl: "http://localhost:34567" + "/api/" + storeName + "/Delete",
+          onBeforeSend: function (operation, ajaxSettings) {
+            ajaxSettings.data.u = app.data.user.user_name;
+            ajaxSettings.data.p = app.data.user.password;
+            if (filter && filter.length > 0) {
+              ajaxSettings.data.filter = JSON.stringify(filter);
+            }
+          },
+          onAjaxError: function (e) {
+            app.toast.create({
+              text: "Lỗi: " + e.error,
+              closeTimeout: 2000,
+            }).open();
+          }
+        });
+      } else {
+        return new DevExpress.data.ArrayStore({
+          key: "ID",
+          data: []
+        });;
+      }
+    },
+    setWait: function (n) {
+      try {
+        cordova.plugins.notification.badge.hasPermission(function (granted) {
+          if (granted) {
+            if (n && n > 0) {
+              cordova.plugins.notification.badge.set(n);
+            } else {
+              cordova.plugins.notification.badge.clear();
+            }
+          } else {
+            cordova.plugins.notification.badge.requestPermission(function (granted) {
+              if (!granted) {
+                app.toast.create({
+                  text: "Lỗi: Không được cấp quyền để hiển thị thông báo!",
+                  closeTimeout: 2000,
+                }).open();
+              }
+            });
+          }
+        });
+
+
+
+        $$(".count-wait").text(n);
+        $(".count-wait").number(true, 0);
+      } catch (er) { }
+    },
+    loadData: function (isShow) {
+      if (isShow == false || isShow == true) {
+
+      }
+      else {
+        isShow = true;
+      }
       var self = this;
       if (self.data.user.user_name && self.data.user.user_name.length > 3) {
-        app.preloader.show();
+        if (isShow) {
+          app.preloader.show("multi");
+        } else {
+          app.progressbar.show();
+          $$(".count-wait").text('*');
+        };
         $.ajax({
           url: app.data.serverUrl + "/api/MPUP/" + app.data.user.user_name + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
           method: "GET",
           success: function (data) {
-            app.preloader.hide();
+            if (isShow) { app.preloader.hide(); } else {
+              app.progressbar.hide();
+            }
             self.methods.updateList(data);
           },
           error: function (err) {
@@ -113,9 +222,11 @@ var app = new Framework7({
             // }
           }
         }).done(function (data) {
-          app.preloader.hide();
+          if (isShow) { app.preloader.hide(); } else {
+            app.progressbar.hide();
+          }
+          app.ptr.done();
           self.methods.updateList(data);
-
         });
       }
     },
@@ -144,11 +255,13 @@ var app = new Framework7({
     refreshList: function () {
       //app.data.list.replaceAllItems(app.data.items);
 
-      app.data.list = app.virtualList.create({
+      app.data.waitlist = app.virtualList.create({
         // List Element
-        el: '.virtual-list',
+        el: '.wait-list',
         // Pass array with items
-        items: app.data.items,
+        items: app.data.items.filter(function (x) {
+          return x;
+        }),
         // Custom search function for searchbar
         searchAll: function (query, items) {
           var found = [];
@@ -163,8 +276,8 @@ var app = new Framework7({
           '<li>' +
           ' <div class="item-content">' +
           '   <div class="item-media">' +
-          '     <i class="icon f7-icons ios-only">{{#if CALL}}phone_round_fill{{else}}phone_landscape{{/if}}</i>' +
-          '     <i class="icon material-icons md-only">{{#if CALL}}contact_phone{{else}}stay_current_landscape{{/if}}</i>' +
+          '     <i class="icon f7-icons ios-only">{{#if CALL}}phone_round_fill{{else}}bolt_round_fill{{/if}}</i>' +
+          '     <i class="icon material-icons md-only">{{#if CALL}}contact_phone{{else}}local_play{{/if}}</i>' +
           '   </div>' +
           '   <div class="item-inner search-avaliable">' +
           '     <div class="item-title-row">' +
@@ -258,11 +371,15 @@ var app = new Framework7({
         var id = $$(self).data("id");
         var val = $$(self).val();
         if (val == "" || val == "REASON_0") {
+
           return;
         } else if (val == "REASON_3") {
           setTimeout(function () {
             app.data.popupDateCallback = function (year, month, day) {
               console.log(id, val, year, month, day);
+              var d = new Date(year, month, day);
+              var str = "Khách hẹn ngày khác: " + dateKey(d);
+              app.methods.pickup(id, 4, 87, str);
             }
             app.data.popupDate.open();
           }, 200);
@@ -271,6 +388,8 @@ var app = new Framework7({
           var dialog = app.dialog.prompt('Nhập lý do khác', "Hủy nhận hàng", function (name) {
             if (name && name.length > 2) {
               console.log(id, val, "Lý do khác", name);
+              var str = "Lý do khác: " + name;
+              app.methods.pickup(id, 4, 87, str);
             } else {
               app.toast.create({
                 text: "Lỗi: lý do '" + name + "' quá ngắn",
@@ -285,6 +404,14 @@ var app = new Framework7({
           setTimeout(function () {
             t.focus();
           }, 500);
+        } else if (val == "REASON_1") {
+          console.log(id, val);
+          var str = "Người gửi hủy yêu cầu";//+ (new Date(year,month,day).toJSON().substr(0,10));
+          app.methods.pickup(id, 4, 87, str);
+        } else if (val == "REASON_2") {
+
+          var str = "Chưa chuẩn bị hàng xong";//+ (new Date(year,month,day).toJSON().substr(0,10));
+          app.methods.pickup(id, 4, 87, str);
         } else {
           console.log(id, val);
         }
@@ -294,6 +421,7 @@ var app = new Framework7({
     },
     updateList: function (rs) {
       try {
+        app.methods.setWait(rs.length);
         if (rs && rs.length > 0) {
           app.data.items = rs;
           app.methods.refreshList();
@@ -346,15 +474,22 @@ var app = new Framework7({
         app.popup.close();
         return false;
       } else if (app.views.main.router.url == '/') {
-        app.dialog.confirm("Thoát ứng dụng", "KES Connect Mobile", function () {
+        app.dialog.confirm("Thoát ứng dụng", app.data.appName, function () {
           navigator.app.exitApp();
         }, function () {
           return false;
         });
       } else {
-        mainView.router.back();
+        if (app.data.editing) {
+          app.dialog.confirm("Dữ liệu chưa được lưu? Vẫn thoát", app.data.appName, function () {
+            mainView.router.back();
+          }, function () {
+            return false;
+          });
+        } else {
+          mainView.router.back();
+        }
       }
-
     },
   },
   routes: routes,
@@ -362,6 +497,11 @@ var app = new Framework7({
     placementId: 'pltd4o7ibb9rc653x14',
   },
 
+});
+
+// Init/Create main view
+var mainView = app.views.create('.view-main', {
+  url: '/'
 });
 
 var setUserInfoSuccess = function (obj) {
@@ -634,3 +774,14 @@ $$(document).on('page:afterin', function (e) {
     app.methods.refreshList();
   }
 });
+
+//app.ptr.create('.ptr-content');
+$$('.ptr-content').on('ptr:refresh', function (e) {
+  app.methods.loadData(false);
+});
+$$(".tab").on("tab:show", function () {
+  var tname = $$(this).data("name");
+  if (tname == "wait-list") {
+    app.methods.loadData(false);
+  }
+})

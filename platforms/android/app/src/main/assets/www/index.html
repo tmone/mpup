@@ -8,7 +8,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#ff9500">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self' * 'unsafe-inline' 'unsafe-eval' data: gap: content:; media-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
+    <meta http-equiv="Content-Security-Policy"
+        content="script-src 'self' * 'unsafe-inline' 'unsafe-eval' data: gap: content:; media-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: content:">
     <title>Mobile Pickup</title>
     <link rel="stylesheet" href="devextreme/css/dx.common.css">
     <link rel="stylesheet" href="devextreme/css/dx.material.orange.light.css">
@@ -148,19 +149,19 @@
                 <!-- Top Toolbar -->
                 <div class="toolbar tabbar tabbar-labels toolbar-top bg-color-gray">
                     <div class="toolbar-inner">
-                        <a href="#" class="tab-link tab-link-active bill-wait"><i
+                        <a href="#waitList" class="tab-link tab-link-active bill-wait"><i
                                 class="icon f7-icons ios-only">document_fill<span class="badge"><span
                                         class="count-wait">0</span></span></i>
                             <i class="icon material-icons md-only">assignment_returned<span class="badge"><span
                                         class="count-wait">0</span></span></i>
                             <span class="tabbar-label">Đang nhận</span></a>
-                        <a href="#" class="tab-link bill-finish"><i
+                        <a href="#finishList" class="tab-link bill-finish"><i
                                 class="icon f7-icons ios-only">document_check_fill<span class="badge color-green"><span
                                         class="count-finish">0</span></span></i>
                             <i class="icon material-icons md-only">assignment_turned_in<span
                                     class="badge color-green"><span class="count-finish">0</span></span></i>
                             <span class="tabbar-label">Hoàn thành</span></a>
-                        <a href="#" class="tab-link bill-cancel">
+                        <a href="#cancelList" class="tab-link bill-cancel">
                             <i class="icon f7-icons ios-only">document_text_fill<span class="badge color-red"><span
                                         class="count-cancel">0</span></span></i>
                             <i class="icon material-icons md-only">assignment_late<span class="badge color-red"><span
@@ -192,22 +193,53 @@
                         <i class="icon material-icons md-only">search</i>
                     </a>
                 </div>
+                <div class="searchbar-backdrop"></div>
+                <div class="list search-list searchbar-not-found">
+                    <ul>
+                        <li>Không có dữ liệu</li>
+                    </ul>
+                </div>
+                <div class="ptr-preloader">
+                    <div class="preloader"></div>
+                    <div class="ptr-arrow"></div>
+                </div>
+                <div class="tabs-swipeable-wrap">
+                    <div class="tabs">
+                        <div id="waitList" class="page-content tab tab-active ptr-content ptr-bottom"
+                            data-ptr-mousewheel="true"  data-name="wait-list">
+                            <div
+                                class="list virtual-list wait-list search-list searchbar-found media-list no-chevron  no-harilines-between no-harilines">
 
-                <div class="page-content">
+                            </div>
+                            <div class="ptr-preloader">
+                                <div class="preloader"></div>
+                                <div class="ptr-arrow"></div>
+                            </div>
+                        </div>
+                        <div id="finishList" class="page-content tab">
+                            <div
+                                class="list virtual-list finish-list search-list searchbar-found media-list no-chevron  no-harilines-between no-harilines">
 
-                    <div class="searchbar-backdrop"></div>
-                    <div class="list search-list searchbar-not-found">
-                        <ul>
-                            <li>Không có dữ liệu</li>
-                        </ul>
-                    </div>
-                    <div
-                        class="list virtual-list search-list searchbar-found media-list no-chevron  no-harilines-between no-harilines">
+                            </div>
+                            <div class="ptr-preloader">
+                                <div class="preloader"></div>
+                                <div class="ptr-arrow"></div>
+                            </div>
+                        </div>
+                        <div id="cancelList" class="page-content tab">
+                            <div
+                                class="list virtual-list cancel-list search-list searchbar-found media-list no-chevron  no-harilines-between no-harilines">
 
+                            </div>
+                            <div class="ptr-preloader">
+                                <div class="preloader"></div>
+                                <div class="ptr-arrow"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="display:none;">
-                        <input type="text" placeholder="Select a date" readonly="readonly" id="popupDate" />
-                    </div>
+                </div>
+                <div style="display:none;">
+                    <input type="text" placeholder="Select a date" readonly="readonly" id="popupDate" />
                 </div>
             </div>
         </div>
@@ -255,7 +287,8 @@
         </div>
     </div>
     <script src="cordova.js"></script>
-
+    <script src="js/ecma5.js"></script>
+    <script src="js/LSM.js"></script>
     <!-- DevExtreme -->
     <script src="js/jquery-3.1.0.min.js"></script>
     <script src="js/dx.all.js"></script>
