@@ -19,11 +19,11 @@
         </div>
         <div class="page-content">
             <form id="form0">
-                <input type="hidden" name="ID" value="{{poc.ID}}">
+                <input type="hidden" name="ID" value="{{poc.ID}}" id="POCID">
                 <input type="hidden" name="Pickup_Order_ID" value="{{poc.Pickup_Order_ID}}">
                 <input type="hidden" name="Staff_PickUp_Code" value="{{poc.Staff_PickUp_Code}}">
                 <div class="swiper-container swiper-init" data-pagination='{"el": ".swiper-pagination"}'
-                    data-space-between="50">
+                    data-space-between="100" data-threshold="50">
                     <div class="swiper-pagination" style="top: 5px;bottom : auto;"></div>
                     <div class="swiper-wrapper">
                         <div class="swiper-slide">
@@ -166,9 +166,10 @@
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Số kiện</div>
                                                 <div class="item-input-wrap">
-                                                    <input type="numpad" name="Total_Package" placeholder="Số kiện"
+                                                    <!-- <input type="numpad" name="Total_Package" placeholder="Số kiện"
                                                         id="Total_Package" value="{{poc.Total_Package}}"
-                                                        data-dot-button="false">
+                                                        data-dot-button="false"> -->
+                                                    <div id="Total_Package"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -178,9 +179,10 @@
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Số DOC</div>
                                                 <div class="item-input-wrap">
-                                                    <input type="numpad" name="Package_Doc" placeholder="Số DOC"
+                                                    <!-- <input type="numpad" name="Package_Doc" placeholder="Số DOC"
                                                         id="Package_Doc" value="{{poc.Package_Doc}}"
-                                                        data-dot-button="false" readonly>
+                                                        data-dot-button="false" readonly> -->
+                                                    <div id="Package_Doc"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -203,16 +205,18 @@
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Khối lượng</div>
                                                 <div class="item-input-wrap">
-                                                    <input type="numpad" name="Actual_Weight" placeholder="Khối lượng"
-                                                        id="Actual_Weight" value="{{poc.Actual_Weight}}">
+                                                    <!-- <input type="number" name="Actual_Weight" placeholder="Khối lượng"
+                                                        id="Actual_Weight" value="{{poc.Actual_Weight}}"> -->
+                                                    <div id="Actual_Weight"></div>
                                                 </div>
                                             </div>
-                                            <div class="item_after" style="padding-right:15px;">
-                                                <a class="link icon-only add-weight" href="#">
+                                            <!-- <div class="item_after" style="padding-right:15px;">
+                                                <a class="link icon-only add-weight popup-open"
+                                                    data-popup=".popup-weight" href="#" data-grid="weight">
                                                     <i class="icon f7-icons ios-only">add</i>
                                                     <i class="icon material-icons md-only">add</i>
                                                 </a>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </li>
                                     <li>
@@ -220,15 +224,17 @@
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Khối lượng qui đổi</div>
                                                 <div class="item-input-wrap">
-                                                    <input type="numpad" name="Dim_Weight" placeholder="K.lượng qui đổi"
-                                                        id="Dim_Weight" value="{{poc.Dim_Weight}}">
+                                                    <!-- <input type="number" name="Dim_Weight" placeholder="K.lượng qui đổi"
+                                                        id="Dim_Weight" value="{{poc.Dim_Weight}}"> -->
+                                                    <div id="Dim_Weight"></div>
                                                 </div>
-
                                             </div>
                                             <div class="item_after" style="padding-right:15px;">
-                                                <a class="link icon-only add-dim-weight" href="#">
-                                                    <i class="icon f7-icons ios-only">add</i>
-                                                    <i class="icon material-icons md-only">add</i>
+                                                <a class="button button-outline add-dim-weight popup-open"
+                                                    data-popup=".popup-weight" href="#" data-grid="dim">
+                                                    <!-- <i class="icon f7-icons ios-only">add</i>
+                                                    <i class="icon material-icons md-only">add</i> -->
+                                                    DxRxC
                                                 </a>
                                             </div>
                                         </div>
@@ -256,9 +262,10 @@
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Giá trị hàng hóa</div>
                                                 <div class="item-input-wrap">
-                                                    <input type="calculator" name="Declared_Value"
+                                                    <!-- <input type="calculator" name="Declared_Value"
                                                         placeholder="Giá trị hàng hóa" id="Declared_Value"
-                                                        value="{{poc.Declared_Value}}" class="format-number">
+                                                        value="{{poc.Declared_Value}}" class="format-number"> -->
+                                                    <div id="Declared_Value"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -268,25 +275,27 @@
                                             <div class="item-inner">
                                                 <div class="item-title item-label">Tiền thu hộ</div>
                                                 <div class="item-input-wrap">
-                                                    <input type="calculator" name="COD_Amount" placeholder="Tiền thu hộ"
-                                                        id="COD_Amount" value="{{poc.COD_Amount}}">
+                                                    <!-- <input type="calculator" name="COD_Amount" placeholder="Tiền thu hộ"
+                                                        id="COD_Amount" value="{{poc.COD_Amount}}"> -->
+                                                    <div id="COD_Amount"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <div class="item-content">
                                             <div class="item-inner">
                                                 <div class="item-title">Đóng gỗ</div>
                                             </div>
                                             <div class="item_after" style="padding-right:15px;">
-                                                <a class="link icon-only add-wood" href="#">
+                                                <a class="link icon-only add-wood popup-open" data-popup=".popup-weight"
+                                                    href="#" data-grid="weight">
                                                     <i class="icon f7-icons ios-only">drawers_fill</i>
                                                     <i class="icon material-icons md-only">all_inbox</i>
                                                 </a>
                                             </div>
                                         </div>
-                                    </li>
+                                    </li> -->
                                     <li>
                                         <a class="item-link smart-select smart-select-init select-payment"
                                             data-open-in="popup" data-searchbar-placeholder="Hình thức TT"
@@ -379,82 +388,71 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="card">
-                                <div class="card-header">Tiền cước đơn hàng</div>
-                                <div class="card-content">
-                                    <div class="list inline-labels no-hairlines-md">
-                                        <ul>
-                                            <li class="item-content item-input">
-                                                <div class="item-inner">
-                                                    <div class="item-title item-label">1. Cước chính</div>
-                                                    <div class="item-input-wrap">
-                                                        <input type="number" readonly name="Freight_Charge"
-                                                            value="{{poc.Freight_Charge}}">
-
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title item-label">2. Phí phát hàng ngoại thành
-                                                    </div>
-                                                    <div class="item-input-wrap">
-                                                        <input type="number" readonly name="ESA_Surcharge"
-                                                            value="{{poc.ESA_Surcharge}}">
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title item-label">3. Phí hàng giá trị cao
-                                                    </div>
-                                                    <div class="item-input-wrap">
-                                                        <input type="number" readonly name="Insurance_Surcharge"
-                                                            value="{{poc.Insurance_Surcharge}}">
-                                                    </div>
-                                                </div>
-
-                                            </li>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title item-label">4. Phí đóng gỗ
-                                                    </div>
-                                                    <div class="item-input-wrap">
-                                                        <input type="number" readonly name="VAS_Surcharge"
-                                                            value="{{poc.VAS_Surcharge}}"> </div>
-                                                </div>
-                                            </li>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title item-label">5. Phí khác
-                                                    </div>
-                                                    <div class="item-input-wrap">
-                                                        <input type="number" readonly name="Other_Surcharge"
-                                                            value="{{poc.Other_Surcharge}}"> </div>
-                                                </div>
-
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="card-footer"> <span>Tổng tiền cước<strong></strong></span><input
-                                        type="number" readonly name="Total_Charge"
-                                        value="{{poc.Total_Charge}}"><span></span></div>
+                            <div class="insert">
+                                <div id="grid-summary"></div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="Freight_Charge" name="Freight_Charge" value="{{poc.Freight_Charge}}">
+                <input type="hidden" id="Total_Charge" name="Total_Charge" value="{{poc.Total_Charge}}">
+                <input type="hidden" id="Charge_Weight" name="Charge_Weight" value="{{poc.Charge_Weight}}">
+            </form>
         </div>
-        </form>
-    </div>
+        <div class="popup popup-weight">
+            <div id="grid-weight">
+
+            </div>
+        </div>
     </div>
 </template>
 <style>
     p {
         margin: 10px 0;
     }
+
+    .hidden {
+        display: none;
+    }
+
+    .showden {
+        display: auto;
+    }
+
+    .right-number .dx-numberbox input[type=text] {
+        text-align: right;
+    }
+
+    .right-number .inline-labels .item-label {
+        width: 60%;
+    }
+
+    .dx-dropdowneditor-overlay-flipped {
+        width: 200px;
+    }
 </style>
 <script>
+    var cln = "";
+    var TYPEGRID = "weight";
+    var SHORT = false;
+    function formItem() {
+        if (TYPEGRID == "weight")
+            return [
+                { dataField: "Package_Weight", colSpan: 2 },
+                "Dong_Go",
+                "Package_Length",
+                "Package_Width",
+                "Package_Height"
+            ];
+        return [
+            "Package_Length",
+            "Package_Width",
+            "Package_Height"
+        ];
+    }
+    try {
+        cln = device.serial + ' ' + device.model + ' ' + device.manufacturer;
+    } catch (e) { }
     return {
         // Component Data
         data: function () {
@@ -463,6 +461,9 @@
                 poc: {},
                 swiper: null,
                 Store: {},
+                store: null,
+                summaryStore: null,
+                pocID: null,
             }
         },
         // Component Methods
@@ -532,18 +533,19 @@
             init_Consignment_No: function () {
                 var d = new Date();
                 var str = "CAL";
-                var y = d.getFullYear() % 100;
-                str += (y < 10 ? "0" : "") + y;
-                str += d.getMonth().toString(16).toUpperCase();
-                var da = d.getDate();
-                str += (da < 10 ? "0" : "") + da;
-                var h = d.getHours();
-                str += (h < 10 ? "0" : "") + h;
-                var m = d.getMinutes();
-                str += (m < 10 ? "0" : "") + m;
-                var s = d.getSeconds();
-                str += (s < 10 ? "0" : "") + s;
-                str += app.data.user.user_name;
+                // var y = d.getFullYear() % 100;
+                // str += (y < 10 ? "0" : "") + y;
+                // str += d.getMonth().toString(16).toUpperCase();
+                // var da = d.getDate();
+                // str += (da < 10 ? "0" : "") + da;
+                // var h = d.getHours();
+                // str += (h < 10 ? "0" : "") + h;
+                // var m = d.getMinutes();
+                // str += (m < 10 ? "0" : "") + m;
+                // var s = d.getSeconds();
+                // str += (s < 10 ? "0" : "") + s;
+                str += d.getTime().toString(36).toUpperCase();
+                str += app.data.user.user_name.replace(/[^0-9A-Za-z]/g, "");
 
                 return str.substr(0, 20);
             },
@@ -556,7 +558,7 @@
                 var self = this;
                 var data = app.form.convertToData("#form0");
 
-                data = Object.assign(self.poc,data);
+                data = Object.assign(self.poc, data);
 
                 if (!data.Recipient_Name || data.Recipient_Name.length <= 0) {
                     app.toast.create({
@@ -627,7 +629,7 @@
                         closeTimeout: 2000,
                     }).open();
                     self.swiper.slideTo(1);
-                    //$$("#Total_Package").focus();
+                    $("#Total_Package").dxNumberBox("instance").focus();
                     return;
                 }
                 var total_weight = 0;
@@ -647,7 +649,7 @@
                         closeTimeout: 2000,
                     }).open();
                     self.swiper.slideTo(1);
-                    //$$("#Actual_Weight").focus();
+                    $("#Actual_Weight").dxNumberBox("instance").focus();
                     return;
                 }
                 data.Charge_Weight = total_weight;
@@ -679,6 +681,29 @@
                     //$$("#Consignment_Package_Remark").focus();
                     return;
                 }
+
+                if (self.swiper.activeIndex != 3) {
+                    // app.toast.create({
+                    //     text: "Tổng tiền cước 0 đồng",
+                    //     closeTimeout: 2000,
+                    // }).open();
+                    self.swiper.slideTo(3);
+                    return;
+                }
+
+                if (!data.Total_Charge || data.Total_Charge <= 0) {
+                    var rs = confirm("Tổng tiền cước 0 đồng. Vẫn muốn lưu?");
+                    if (rs) {
+
+                    } else {
+                        self.swiper.slideTo(1);
+                        return;
+                    }
+                }
+
+
+
+
                 if (!data.Declared_Value) {
                     data.Declared_Value = 0;
                 }
@@ -718,10 +743,10 @@
                 if (!data.Other_Surcharge) {
                     data.Other_Surcharge = 0;
                 }
-                if (!data.Recipient_Postcode || data.Recipient_Postcode.length==0) {
+                if (!data.Recipient_Postcode || data.Recipient_Postcode.length == 0) {
                     data.Recipient_Postcode = 'N/A';
                 }
-                if(!data.Pickup_Order_ID || data.Pickup_Order_ID<=0){
+                if (!data.Pickup_Order_ID || data.Pickup_Order_ID <= 0) {
                     data.Pickup_Order_ID = app.data.lastChoice.ID;
                 }
 
@@ -730,21 +755,43 @@
                 }
 
 
-
-                ////
-
                 if (self.Store.insert) {
 
                 } else {
                     self.Store = self.$route.context.Store;
                 }
-                
 
                 if (!data.ID || data.ID < 1) {
                     self.Store.insert(data).done(function (dataObj, key) {
                         // Process the key and data object here
-                        app.data.editing = false;
-                        self.refresh();
+                        pocID = dataObj.ID;
+                        self.pocID = pocID;
+                        self.poc = Object.assign(self.poc, dataObj);
+                        $$("#POCID").val(pocID);
+
+                        self.store._array.map(function (x) {
+                            x.Pickup_Order_Consignment_ID = pocID;
+                        });
+                        self.summaryStore._array.map(function (x) {
+                            x.Pickup_Order_Consignment_ID = pocID;
+                        });
+                        self.store.syncServer(function () {
+                            self.summaryStore.syncServer(function () {
+                                app.data.editing = false;
+                                self.refresh();
+                            }, function (er) {
+                                app.toast.create({
+                                    text: "Lỗi: " + er,
+                                    closeTimeout: 2000,
+                                }).open();
+                            });
+                        }, function (er) {
+                            app.toast.create({
+                                text: "Lỗi: " + er,
+                                closeTimeout: 2000,
+                            }).open();
+                        });
+
                     }).fail(function (error) {
                         // Handle the "error" here
                         app.toast.create({
@@ -754,9 +801,23 @@
                     });
                 } else {
                     self.Store.update(data.ID, data).done(function (dataObj, key) {
-                        // Process the key and data object here
-                        app.data.editing = false;
-                        self.refresh();
+                        // Process the key and data object here                        
+                        self.store.syncServer(function () {
+                            self.summaryStore.syncServer(function () {
+                                app.data.editing = false;
+                                self.refresh();
+                            }, function (er) {
+                                app.toast.create({
+                                    text: "Lỗi: " + er,
+                                    closeTimeout: 2000,
+                                }).open();
+                            });
+                        }, function (er) {
+                            app.toast.create({
+                                text: "Lỗi: " + er,
+                                closeTimeout: 2000,
+                            }).open();
+                        })
                     }).fail(function (error) {
                         // Handle the "error" here
                         app.toast.create({
@@ -770,7 +831,7 @@
 
                 //mainView.router.back();
                 //debugger;
-            }
+            },
 
         },
         // Lifecycle Hooks
@@ -804,14 +865,154 @@
             },
             pageInit: function (e, page) {
                 console.log('pageInit', page);
+
                 var self = this;
                 var pocID = page.route.params.pocID;
+                self.pocID = pocID;
 
-                $$(".Recipient_Name").text(self.poc.Recipient_Name || "");
-                //$$(".Recipient_Mobile_No").text(self.po.Sender_Phone_No);
+                var store = app.methods.initCacher("Pickup_Order_Consignment_Package", [
+                    "Pickup_Order_Consignment_ID", "=", pocID
+                ]);
+                self.store = store;
+                var summaryStore = app.methods.initCacher("Pickup_Order_Consignment_Surcharge", [
+                    "Pickup_Order_Consignment_ID", "=", pocID
+                ]);
+                self.summaryStore = summaryStore;
+
+                var replaceCost = function (Charge_Type, Amount) {
+                    var fFC = summaryStore.store._array.find(function (x) {
+                        return x.Surcharge_Code == Charge_Type;
+                    });
+                    
+                    if (fFC != null) {
+                        fFC.Surcharge_Amount_Collect = Amount;
+                        fFC.Surcharge_Amount = Amount;
+                        summaryStore.store.push([{
+                            type: "update",
+                            key: fFC.ID,
+                            data: fFC
+                        }]);
+                    } else {
+                        summaryStore.store.push([{
+                            type: "insert",
+                            data: {
+                                Pickup_Order_Consignment_ID: pocID,
+                                Surcharge_Code: Charge_Type,
+                                Surcharge_Amount_Collect: Amount,
+                                Surcharge_Amount: Amount,
+                                Pickup_Order_Consignment_ID: pocID,
+                                Created_By: app.data.user.user_name,
+                                Created_Date: new Date(),
+                                Last_Source: "Mobile Pickup",
+                                Last_Client_Name: cln,                               
+                            }
+                        }]);
+                    }
+                }
+
+                var caculationCost = function (finalWeight) {
+                    var Service_ID = $$("#Service_ID").val();
+                    var Service_Code = getOracleServiceCode(Service_ID);
+
+                    var Custom_Code = app.data.lastChoice.Branch_Code;
+                    if (!Custom_Code || Custom_Code.length < 3) {
+                        Custom_Code = app.data.lastChoice.Customer_Code;
+                    }
+                    var Sender_Province_ID = app.data.lastChoice.Province_ID;
+                    var Sender_Province = PROVINCES.find(function (x) {
+                        return x.ID == Sender_Province_ID;
+                    });
+                    var Sender_Province_code = Sender_Province.Province_Code || '00';
+                    var Receiver_Province_ID = $$("#Recipient_Province_ID").val();
+                    var Receiver_Province = PROVINCES.find(function (x) {
+                        return x.ID == Receiver_Province_ID;
+                    });
+                    var Receiver_Province_Code = Receiver_Province.Province_Code || '00';
+                    var Receiver_District_ID = $$("#Recipient_District_ID").val();
+                    var Receiver_District = DISTRICTS.find(function (x) {
+                        return x.ID == Receiver_District_ID;
+                    });
+                    var Receiver_District_Code = Receiver_District.District_Code || '0000';
+
+                    app.methods.getCost(
+                        Custom_Code,
+                        Service_Code,
+                        finalWeight,
+                        Sender_Province_code,
+                        Receiver_Province_Code,
+                        Receiver_District_Code,
+                        function (rs) {
+                            if (rs) {
+                                replaceCost("FC", rs.Cost);
+                                replaceCost("100", rs.FarCharge);
+                                replaceCost("110", 0);
+
+                                //$("#Freight_Charge").dxNumberBox("instance").option("value", rs.Cost);
+                                //$("#Total_Charge").dxNumberBox("instance").option("value", rs.Cost + rs.FarCharge);
+                                $$("#Freight_Charge").val(rs.Cost);
+                                $$("#Total_Charge").val(rs.Cost + rs.FarCharge);
+                                setTimeout(function () {
+                                    $("#grid-summary").dxDataGrid("instance").refresh();
+                                }, 100);
+
+                            }
+
+                            // $$("#Freight_Charge").val(rs.Cost);
+                            // $$("#ESA_Surcharge").val(rs.FarCharge);
+                            // $$("#Total_Charge").val(rs.Cost+rs.FarCharge);
+
+                        });
+                }
+
+                store.store.on("modified", function () {
+                    var sumWeight = 0;
+                    var sumLength = 0;
+                    var sumWidth = 0;
+                    var sumHeight = 0;
+                    var sumCount = 0;
+                    var hasDongGo = false;
+                    for (var i = 0; i < store.store._array.length; i++) {
+                        try {
+                            var tmp = store.store._array[i];
+                            
+                            sumLength += +tmp.Package_Length || 0;
+                            sumWidth += +tmp.Package_Width || 0;
+                            sumHeight += +tmp.Package_Height || 0;
+                            sumCount += 1;
+                            hasDongGo = tmp.Charge_Type.includes("wood") || hasDongGo;
+                        } catch (ex) { }
+                    }
+                    //debugger;
+                    var iWeight = $("#Actual_Weight").dxNumberBox("instance");
+                    var Service_ID = $$("#Service_ID").val();
+                    var Service_Code = getOracleServiceCode(Service_ID);
+                    var sumDim = app.methods.getDimWeight(sumLength, sumWidth, sumHeight, Service_Code);
+                    sumWeight = iWeight.option("value");
+                    var finalWeight = Math.max(0, sumDim, sumWeight);
+
+                    $("#Dim_Weight").dxNumberBox("instance").option("value", sumDim);
+                    $("#Total_Package").dxNumberBox("instance").option("value", sumCount);
+                    $$("#Charge_Weight").val(finalWeight);
+
+
+                    caculationCost(finalWeight, hasDongGo);
+                });
+
+                summaryStore.store.on("modified", function () {
+                    var Total_Charge = 0;
+                    for (var i = 0; i < summaryStore.store._array.length; i++) {
+                        try {
+                            var tmp = summaryStore.store._array[i];
+                            Total_Charge += tmp.Surcharge_Amount_Collect || 0;
+                        } catch (ex) { }
+                    }
+                    $$("#Total_Charge").val(Total_Charge);
+                });
+
+                
+                $$(".Recipient_Name").text(self.poc.Recipient_Name || "");                
                 $$(".Recipient_Address").text(self.poc.Recipient_Address || "");
-                //$$(".Sender_Contact_Person").text(self.po.Sender_Contact_Person);
-                //$$(".edit").attr("href", "/po/" + poID + "/edit/");
+                
 
                 $$(".add-num").on("click", function () {
                     var id = $$(this).data("index");
@@ -835,8 +1036,6 @@
                     var val = $$(this).val();
                     self.refreshDistrict(val);
                     self.refreshSubDistrict();
-                    //app.smartSelect.get(".select-district").setValue("3761");
-                    //app.smartSelect.get(".select-subdistrict").setValue("18732");
                     $$("#Recipient_District_ID").val(null);
                     $$("#Recipient_District_Name").text("Chọn quận, huyện");
                     $$("#Recipient_SubDistrict_ID").val(null);
@@ -856,13 +1055,7 @@
                 $$(".save").on("click", function () {
                     self.save();
                 });
-                // for(var i = 0; i<10; i++){
-                //     app.keypad.create({
-                //     inputEl: '#Mobile'+i,
-                //     dotCharacter: ";",
-                //     dotButton: true
-                //     });
-                // }  
+                
 
                 $$("#Payment_Type").on("change", function () {
                     var vl = $$(this).val();
@@ -872,28 +1065,557 @@
                         $$(".customer-code").hide();
                     }
                 });
+                //$$(".add-wood").on("click", function () {}
                 $$(".add-wood").on("click", function () {
+                    var grid = $("#grid-weight").dxDataGrid("instance");
+                    //$$(".popup-open").click();
+                    TYPEGRID = "wood";
+                    var fi = formItem();
+                    grid.option("filterValue", ["Charge_Type", "=", "wood"]);
+                    grid.option("editing.form.items", fi);                    
+                });
+                $$(".add-weight").on("click", function () {
+                    var grid = $("#grid-weight").dxDataGrid("instance");
+                    //$$(".popup-open").click();
+                    TYPEGRID = "weight";
+                    var fi = formItem();
+                    grid.option("filterValue", ["Charge_Type", "=", "weight"]);
+                    grid.option("editing.form.items", fi);
+                    // setTimeout(function () {
+                    //     grid.addRow();
+                    // }, 500);
+
+                });
+                $$(".add-dim-weight").on("click", function () {
+                    var grid = $("#grid-weight").dxDataGrid("instance");
+                    //$$(".popup-open").click();
+                    TYPEGRID = "dim";
+                    var fi = formItem();
+                    grid.option("filterValue", ["Charge_Type", "=", "dim"]);
+                    grid.option("editing.form.items", fi);
+                    // setTimeout(function () {
+                    //     grid.addRow();
+                    // }, 500);
 
                 });
 
+                $("#Total_Package").dxNumberBox({
+                    format: "###,##0",
+                    name: "Total_Package",
+                    value: self.poc.Total_Package,
+                });
+                $("#Package_Doc").dxNumberBox({
+                    format: "###,##0",
+                    name: "Package_Doc",
+                    value: self.poc.Package_Doc,
+                });
+                $("#Actual_Weight").dxNumberBox({
+                    format: "###,##0.000",
+                    min: 0.01,
+                    name: "Actual_Weight",
+                    value: self.poc.Actual_Weight,
+                    onValueChanged: function (e) {
+                        caculationCost(e.value);
+                    },                    
+                });
+
+                $("#Dim_Weight").dxNumberBox({
+                    format: "###,##0.000",
+                    name: "Dim_Weight",//COD_Amount
+                    min: 0.01,
+                    value: self.poc.Dim_Weight,
+                    readOnly: true,
+                    onFocusIn: function (e) {
+                        var firstdim = store.store._array.filter(function (x) {
+                            return x.Charge_Type == "dim";
+                        });
+                        if (firstdim && firstdim.length <= 1) {
+                            SHORT = true;
+                        }
+                        app.popup.open(".popup-weight", 0);
+                        TYPEGRID = "dim";
+                        var fi = formItem();
+                        var grid = $("#grid-weight").dxDataGrid("instance");
+                        grid.option("filterValue", ["Charge_Type", "=", "dim"]);
+                        //grid.filter(["Charge_Type", "=", TYPEGRID]);
+                        grid.option("editing.form.items", fi);
+
+                        setTimeout(function () {
+                            if (firstdim.length == 0) {
+                                grid.addRow();
+                            }
+                            else if (firstdim.length == 1) {
+                                var idx = grid.getRowIndexByKey(firstdim[0].ID);
+                                grid.editRow(idx);
+                            }
+                        }, 0);
+                    }
+                });
+
+                $("#Declared_Value").dxNumberBox({
+                    format: "###,##0",
+                    name: "Declared_Value",
+                    value: self.poc.Declared_Value,
+                });
+                $("#COD_Amount").dxNumberBox({
+                    format: "###,##0",
+                    name: "COD_Amount",
+                    value: self.poc.COD_Amount,
+                });
+                // $("#Freight_Charge").dxNumberBox({
+                //     format: "###,##0",
+                //     readOnly: true,
+
+                // });
+                // $("#Insurance_Surcharge").dxNumberBox({
+                //     format: "###,##0",
+                //     readOnly: true,
+
+                // });
+                // $("#VAS_Surcharge").dxNumberBox({
+                //     format: "###,##0",
+                //     readOnly: true,
+
+                // });
+                // $("#Other_Surcharge").dxNumberBox({
+                //     format: "###,##0",
+                //     readOnly: true,
+
+                // });
+                // $("#ESA_Surcharge").dxNumberBox({
+                //     format: "###,##0",
+                //     readOnly: true,
+
+                // });
+                // $("#Total_Charge").dxNumberBox({
+                //     format: "###,##0",
+                //     readOnly: true
+                // });
+
                 //debugger;
                 //self.swiper = app.swiper.get('.swiper-container');
+                function changeCheck() {
+                    //debugger;
+                    // var form = $("#formId").dxForm("instance");
+                    // if (form) {
+
+                    //     var ck = "hidden";
+                    //     if ($("#iQui_Doi").dxCheckBox("instance").option("value")) {
+                    //         ck = "showden";
+                    //     }
+                    //     if ($("#iDong_Go").dxCheckBox("instance").option("value")) {
+                    //         ck = "showden";
+                    //     }
+
+                    //     form.itemOption("dimention", "cssClass", ck);
+                    // }
+                }
+                function closeSHORT() {
+                    //debugger;
+                    if (SHORT) {
+                        SHORT = false;
+                        app.popup.close(".popup-weight", 0);
+                    }
+                };
+
+                function validDRC(e) {
+                    if (e.data.Dong_Go
+                        || (e.data.Charge_Type && e.data.Charge_Type.includes("wood"))
+                        || !e.data.Package_Weight
+                        || e.data.Package_Weight <= 0
+                    ) {
+                        return e.value && e.value > 0;
+                    }
+                    return true;
+                }
+                function validWeight(e) {
+                    debugger;
+                    if (
+                        (!e.data.Package_Length || e.data.Package_Length <= 0)
+                        ||
+                        (!e.data.Package_Width || e.data.Package_Width <= 0)
+                        ||
+                        (!e.data.Package_Height || e.data.Package_Height <= 0)
+                    ) {
+                        return e.value && e.value > 0;
+                    }
+                    return true;
+                }
+
+                $("#grid-weight").dxDataGrid({
+                    dataSource: store,
+                    repaintChangesOnly: true,
+                    showBorders: true,
+                    showRowLines: true,
+                    paging: {
+                        enabled: false
+                    },
+                    editing: {
+                        mode: "popup",
+                        useIcons: true,
+                        allowUpdating: true,
+                        allowDeleting: true,
+                        allowAdding: true,
+                        form: {
+                            //colCount: 3,
+                            colCountByScreen: {
+                                xs: 3,
+                                sm: 3,
+                                lg: 3,
+                                md: 3
+                            },
+                            elementAttr: {
+                                id: "formId",
+                            },
+                            items: formItem(),
+                            onContentReady: function () {
+                                closeSHORT();
+                            },
+                            onInitialized: function () {
+                                var bt = $('[aria-label="Thôi"]').dxButton("instance");
+                                bt.on("click", closeSHORT);
+                            }
+                        }
+                    },
+                    onRowInserted: closeSHORT,
+                    onRowUpdated: closeSHORT,
+                    // onEditorPreparing: function (e) {
+                    //     if (e.parentType == 'dataRow' && e.dataField == 'Dong_Go'                         ) {
+                    //         e.editorOptions.onValueChanged = function (args) {
+                    //             e.setValue(args.value);
+                    //             if(args.value==true){
+                    //                 if()
+                    //             }
+                    //         }
+                    //     }
+                    // },
+                    onEditingStart: function (e) {
+                        e.data.Modified_By = app.data.user.user_name;
+                        e.data.Modified_Date = new Date();
+                        e.data.Last_Source = "Mobile Pickup";
+                        e.data.Last_Client_Name = cln;
+                    },
+                    onToolbarPreparing: function (e) {
+                        var dataGrid = e.component;
+                        var cln = "";
+                        try {
+                            cln = device.serial + ' ' + device.model + ' ' + device.manufacturer;
+                        } catch (e) { }
+                        e.toolbarOptions.items.unshift({
+                            location: "before",
+                            widget: "dxButton",
+                            options: {
+                                icon: 'back',
+                                onClick: function (e) {
+                                    app.popup.close();
+                                }
+                            }
+                        });
+                    },
+                    onInitNewRow: function (e) {
+                        e.data.Pickup_Order_Consignment_ID = pocID;
+                        e.data.Created_By = app.data.user.user_name;
+                        e.data.Created_Date = new Date();
+                        e.data.Last_Source = "Mobile Pickup";
+                        e.data.Last_Client_Name = cln;
+                        e.data.Qui_Doi = false;
+                        e.data.Dong_Go = false;
+                        //debugger;
+                        e.data.Charge_Type = TYPEGRID;
+                    },
+                    filterValue: ["Charge_Type", "=", TYPEGRID],
+                    columns: [
+                        {
+                            dataField: "Charge_Type",
+                            visible: false,
+                            editorOptions: {
+                                visible: false,
+                            }
+                        },
+                        {
+                            dataField: "Package_Weight",
+                            caption: "Trọng lượng",
+                            dataType: "number",
+                            format: "###,##0.000",
+                            editorOptions: {
+                                format: "###,##0.000",
+                                elementAttr: {
+                                    id: "iPackage_Weight",
+                                }
+                            },
+                            validationRules: [{
+                                type: "custom",
+                                validationCallback: validWeight,
+                                message: "Trọng lượng không đúng!"
+                            }],
+                        },
+                        {
+                            dataField: "D_R_C",
+                            caption: "D X R X C",
+                            calculateCellValue: function (rowData) {
+                                //debugger;
+                                var str = "";
+                                if (rowData.Package_Length > 0) {
+                                    str += $.number(rowData.Package_Length, 2);
+                                } else {
+                                    str += " 0 ";
+                                }
+                                str += "x";
+                                if (rowData.Package_Width > 0) {
+                                    str += $.number(rowData.Package_Width, 2);
+                                } else {
+                                    str += " 0 ";
+                                }
+                                str += "x";
+                                if (rowData.Package_Height > 0) {
+                                    str += $.number(rowData.Package_Height, 2);
+                                } else {
+                                    str += " 0 ";
+                                }
+                                return str;
+                            },
+                        },
+                        {
+                            dataField: "Qui_Doi",
+                            caption: "Quy đổi",
+                            dataType: "boolean",
+                            editorOptions: {
+                                elementAttr: {
+                                    id: "iQui_Doi",
+                                },
+                            },
+                            visible: false,
+                        },
+                        {
+                            dataField: "Dong_Go",
+                            caption: "Đóng gỗ",
+                            dataType: "boolean",
+                            editorOptions: {
+                                elementAttr: {
+                                    id: "iDong_Go",
+                                },
+                                editCellTemplate: function (cellElement, cellInfo) {
+                                    var bl = cellInfo.data.Charge_Type.includes("wood");
+                                    $("<div />").dxSwitch({
+                                        //width: 50,
+                                        switchedOnText: "Có",
+                                        switchedOffText: "Không",
+                                        value: bl,
+                                    }).appendTo(cellElement);
+                                }
+                            },
+                            setCellValue: function (rowData, value) {
+                                rowData.Dong_Go = value;
+                                if (value == true) {
+                                    if (rowData.Charge_Type) {
+                                        if (!rowData.Charge_Type.includes("wood")) {
+                                            rowData.Charge_Type += "wood";
+                                        }
+                                    } else {
+                                        rowData.Charge_Type = "wood";
+                                    }
+                                } else {
+                                    if (rowData.Charge_Type && rowData.Charge_Type.includes("wood")) {
+                                        rowData.Charge_Type = rowData.Charge_Type.replace(/wood/g, "");
+                                    }
+                                }
+                            },
+                            visible: false,
+                        },
+                        {
+                            dataField: "Package_Length",
+                            caption: "Dài",
+                            dataType: "number",
+                            format: "###,##0",
+                            editorOptions: {
+                                format: "###,##0",
+                                elementAttr: {
+                                    id: "iPackage_Length",
+                                }
+                            },
+                            visible: false,
+                            validationRules: [{
+                                type: "custom",
+                                validationCallback: validDRC,
+                                message: "Dài, rộng, cao không đúng!"
+                            }],
+                        },
+                        {
+                            dataField: "Package_Width",
+                            caption: "Rộng",
+                            dataType: "number",
+                            format: "###,##0",
+                            editorOptions: {
+                                format: "###,##0",
+                                elementAttr: {
+                                    id: "iPackage_Width",
+                                }
+                            },
+                            visible: false,
+                            validationRules: [{
+                                type: "custom",
+                                validationCallback: validDRC,
+                                message: "Dài, rộng, cao không đúng!"
+                            }],
+                        },
+                        {
+                            dataField: "Package_Height",
+                            caption: "Cao",
+                            dataType: "number",
+                            format: "###,##0",
+                            editorOptions: {
+                                format: "###,##0",
+                                elementAttr: {
+                                    id: "iPackage_Height",
+                                }
+                            },
+                            visible: false,
+                            validationRules: [{
+                                type: "custom",
+                                validationCallback: validDRC,
+                                message: "Dài, rộng, cao không đúng!"
+                            }],
+                        },
+                    ]
+                });
+                var isEditCharge = false;
+                $("#grid-summary").dxDataGrid({
+                    dataSource: summaryStore,
+                    repaintChangesOnly: true,
+                    showBorders: true,
+                    showRowLines: true,
+                    paging: {
+                        enabled: true,
+                        pageSize: 5
+                    },
+                    editing: {
+                        mode: "cell",
+                        //refreshMode: "reshape",
+                        useIcons: true,
+                        allowUpdating: true,
+                        allowDeleting: true,
+                        allowAdding: true,
+                    },
+                    onEditingStart: function (e) {
+                        e.data.Modified_By = app.data.user.user_name;
+                        e.data.Modified_Date = new Date();
+                        e.data.Last_Source = "Mobile Pickup";
+                        e.data.Last_Client_Name = cln;
+                        isEditCharge = true;
+                        var grid = e.component;
+                        grid.beginUpdate();
+                        grid.columnOption("Surcharge_Code", "allowEditing", false);
+                        grid.endUpdate();
+                    },
+                    onInitNewRow: function (e) {
+                        e.data.Pickup_Order_Consignment_ID = pocID;
+                        e.data.Created_By = app.data.user.user_name;
+                        e.data.Created_Date = new Date();
+                        e.data.Last_Source = "Mobile Pickup";
+                        e.data.Last_Client_Name = cln;
+                        e.data.Surcharge_Amount = 0;
+                        e.data.SORT = new Date().getTime();
+                        isEditCharge = false;
+                        var grid = e.component;
+                        grid.beginUpdate();
+                        grid.columnOption("Surcharge_Code", "allowEditing", true);
+                        grid.endUpdate();
+                    },
+                    onToolbarPreparing: function (e) {
+                        var dataGrid = e.component;
+
+                        e.toolbarOptions.items.unshift({
+                            location: "before",
+                            template: function () {
+                                return $("<div/>")
+                                    .addClass("informer")
+                                    .append(
+                                        // $("<h2 />")
+                                        //     .addClass("count")
+                                        //     .text(getGroupCount("CustomerStoreState")),
+                                        $("<span />")
+                                            .addClass("name")
+                                            .text("Tiền cước đơn hàng")
+                                    );
+                            }
+                        });
+                    },                    
+                    columns: [
+                        {
+                            dataField: "Surcharge_Code",
+                            caption: "Nội dung",
+                            lookup: {
+                                dataSource: SURCHARGES,
+                                valueExpr: "Surcharge_Code",
+                                displayExpr: "Surcharge_TH_Name",
+                            },                            
+                            width: "60%",                            
+                        },
+                        {
+                            dataField: "Surcharge_Amount_Collect",
+                            caption: "Tiền",
+                            dataType: "number",
+                            format: "###,##0",
+                            editorOptions: {
+                                format: "###,##0",
+                                elementAttr: {
+                                    id: "iSurcharge_Amount_Collect",
+                                }
+                            },
+                            width: "40%",
+                            validationRules: [{
+                                type: "required",
+                                message: "Phải nhập số tiền"
+                            }, {
+                                type: "range",
+                                min: 1000,
+                                message: "Số tiền quá nhỏ"
+                            }],
+                            setCellValue: function (rowData, value) {
+                                rowData.Surcharge_Amount_Collect = value;
+                                rowData.Surcharge_Amount = value;
+                            },
+                        },
+                        {
+                            calculateCellValue:function(rowData){
+                                if(rowData.Surcharge_Code=="FC"){
+                                    return "000";
+                                }
+                                return rowData.Surcharge_Code;
+                                    
+                            },
+                            sortOrder: "asc",
+                            visible: false,
+                            editorOptions: {
+                                visible: false,
+                            }
+                        }
+                    ],
+                    summary: {
+                        recalculateWhileEditing: true,
+                        totalItems: [{
+                            column: "Surcharge_Code",
+                            summaryType: "count",
+                            valueFormat: "###,##0",
+                            displayFormat: "Tổng ({0})",
+                        }, {
+                            column: "Surcharge_Amount_Collect",
+                            summaryType: "sum",
+                            valueFormat: "###,##0",
+                            displayFormat: "{0}",
+                        }]
+                    }
+                });
+
             },
             pageBeforeIn: function (e, page) {
-                // console.log('pageBeforeIn', page);
-                // var t = app.keypad.get("#Declared_Value");
-                // t.formatValue = function (vl) {
-                //     //debugger;
-                //     ret$.number( 5020.2364 )
-                // }
-                $(".format-number").number(true, 0);
+
             },
             pageAfterIn: function (e, page) {
                 console.log('pageAfterIn', page);
                 var self = this;
                 self.swiper = app.swiper.get('.swiper-container');
-                $(".format-number").number(true, 0);
-                //$$(".back").on("click")
+
                 if (self.poc.FINISH && self.poc.FINISH > 0) {
                     $$(".save-command").hide();
                 } else {
@@ -908,6 +1630,7 @@
                 console.log('pageBeforeOut', page);
                 if (app.data.editing) {
                     var rs = confirm("Dữ liệu chưa được lưu. Vẫn thoát?");
+                    debugger;
                     if (rs) {
                         app.data.editing = false;
                     } else {

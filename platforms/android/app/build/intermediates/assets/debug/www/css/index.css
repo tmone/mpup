@@ -16,4 +16,9 @@
     width:100%!important;
 }
 .smart-select-page li.disabled{display: none;}
-
+.tabbar-labels a.tab-link.tab-link-active{
+    color: darkorange!important;
+}
+.tabbar .tab-link-highlight, .md .tabbar-labels .tab-link-highlight{
+    background-color: darkorange!important;
+}

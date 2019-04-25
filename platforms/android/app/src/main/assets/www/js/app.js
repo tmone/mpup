@@ -53,6 +53,7 @@ var montionCall = function (number, beginTime, cbResult, cbError) {
   }, cbError);
 }
 
+var CACHER = [];
 
 // Init App
 var app = new Framework7({
@@ -80,10 +81,70 @@ var app = new Framework7({
 
   },
   methods: {
+    getDimWeight: function (Packed_Length, Packed_Width, Packed_Height, Service_Code) {
+
+      var rs = 0;
+      if (Packed_Length> 0 && Packed_Width>0 && Packed_Height >0) {
+        var sp = 3000;
+        if (Service_Code == '0201'
+          || Service_Code == '0202'
+          || Service_Code == '0203'
+        ) {
+          sp = 6000;
+        } else if (Service_Code == '0205') {
+          sp = 3000;
+        }
+        var drc = Packed_Length * Packed_Width * Packed_Height;
+        rs = drc / sp;
+      }
+      return rs;
+    },
+    getCost: function (Custom_Code, Service_Code, Weight, Sender_Province_code, Receiver_Province_Code, Receiver_District_Code, cb) {
+      $.ajax({
+        url:
+          // 'http://localhost:34567'
+          app.data.serverUrl 
+          + "/api/Cost",
+        data: {
+          c: Custom_Code,
+          s: Service_Code,
+          w: Weight,
+          sp: Sender_Province_code,
+          rp: Receiver_Province_Code,
+          rd: Receiver_District_Code
+        },
+        method: "POST",
+        success: function (rs) {
+          if (rs && cb) {
+            cb(rs);
+          }
+        },
+        error: function (err) {
+          //debugger;
+          if (err.status != 200 || err.status != 201) {
+            app.toast.create({
+              text: "Lỗi: " + JSON.stringify(err),
+              closeTimeout: 2000,
+            }).open();
+          }
+        }
+      }).done(function (data) {
+
+      }).fail(function (err) {
+        //debugger;
+        if (err.status != 200 || err.status != 201) {
+          app.toast.create({
+            text: "Lỗi: " + JSON.stringify(err),
+            closeTimeout: 2000,
+          }).open();
+        }
+      });
+    },
     pickup: function (poID, stausID, exceptionID, mess) {
       app.preloader.show("multi");
       $.ajax({
-        url: 'http://localhost:34567' + "/api/Pickup/Pickup",
+        url: //'http://localhost:34567' 
+          app.data.serverUrl + "/api/Pickup/Pickup",
         data: {
           u: app.data.user.user_name,
           p: app.data.user.password,
@@ -122,6 +183,133 @@ var app = new Framework7({
         }
       });
     },
+    initCacher: function (cacherName, filter) {
+      var key = "ID";
+      var mainKey = key || 0;
+      //if (!CACHER[cacherName] || !Array.isArray(CACHER[cacherName])) {
+      CACHER[cacherName] = [];
+      //}
+      function changedStore() {
+        app.data.editing = true;
+      }
+      var getStore = app.methods.initStore(cacherName, filter);
+      var tmpStore = new DevExpress.data.ArrayStore({
+        key: key,
+        data: CACHER[cacherName],
+        onInserted: changedStore,
+        onUpdated: changedStore,
+        onRemoved: function (k) {
+          getStore.remove(k)
+            .done(function (key) {
+              // Process the "key" here
+            })
+            .fail(function (error) {
+
+              var msg = JSON.stringify(error);
+              var ty = msg.includes("deadlock");
+
+              //app.preloader.hide();
+              app.toast.create({
+                text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
+                closeTimeout: 2000,
+              }).open();
+            });
+        }
+      });
+
+
+
+      getStore.load().done(function (data) {
+        if (data && data.length > 0) {
+          var tmd = data.map(function (x) {
+            tmpStore.push([{ type: "insert", data: x }]);
+          });
+        }
+      });
+
+      return {
+        store: tmpStore,
+        serverStore: getStore,
+        reshapeOnPush: true,
+        syncServer: function (scb, ecb) {
+          self = this;
+          var ldata = self.store._array;
+          var total = ldata.length;
+          var successCount = 0;
+          var errorCount = 0;
+          for (var i = 0; i < ldata.length; i++) {
+            var it = ldata[i];
+            if (!it.ID || it.ID.toString().includes("-")) {
+              var tmpit = Object.assign({},it,{ID:0});
+              self.serverStore.insert(tmpit)
+                .done(function (dataObj, key) {
+                  self.store.push([{
+                    type: "update",
+                    key: it.ID,
+                    data: dataObj
+                  }]);
+                  successCount++;
+                  if (successCount + errorCount == total) {
+                    if (errorCount > 0) {
+                      if (ecb) {
+                        ecb(errorCount);
+                      }
+                    } else {
+                      if (scb) {
+                        scb(successCount);
+                      }
+                    }
+                  }
+                })
+                .fail(function (error) {
+                  errorCount++;
+                  if (successCount + errorCount == total) {
+                    if (errorCount > 0) {
+                      if (ecb) {
+                        ecb(error);
+                      }
+                    } else {
+                      if (scb) {
+                        scb(successCount);
+                      }
+                    }
+                  }
+                });
+            } else {
+              self.serverStore.update(it.ID, it)
+                .done(function (dataObj, key) {
+                  successCount++;
+                  if (successCount + errorCount == total) {
+                    if (errorCount > 0) {
+                      if (ecb) {
+                        ecb(errorCount);
+                      }
+                    } else {
+                      if (scb) {
+                        scb(successCount);
+                      }
+                    }
+                  }
+                })
+                .fail(function (error) {
+                  errorCount++;
+                  if (successCount + errorCount == total) {
+                    if (errorCount > 0) {
+                      if (ecb) {
+                        ecb(errorCount);
+                      }
+                    } else {
+                      if (scb) {
+                        scb(successCount);
+                      }
+                    }
+                  }
+                });
+            }
+          }
+        }
+      };
+    },
     initStore: function (storeName, filter) {
       if (storeName && storeName.length > 0) {
         return DevExpress.data.AspNet.createStore({
@@ -138,14 +326,23 @@ var app = new Framework7({
             ajaxSettings.data.u = app.data.user.user_name;
             ajaxSettings.data.p = app.data.user.password;
             if (filter && filter.length > 0) {
-              ajaxSettings.data.filter = JSON.stringify(filter);
+              if (ajaxSettings.data.filter && ajaxSettings.data.filter.length > 0) {
+                ajaxSettings.data.filter = '[' + ajaxSettings.data.filter + ',"and",' + JSON.stringify(filter) + ']';
+              } else {
+                ajaxSettings.data.filter = JSON.stringify(filter);
+              }
             }
           },
           onAjaxError: function (e) {
+            var msg = JSON.stringify(e);
+            var ty = msg.includes("deadlock");
+
+            //app.preloader.hide();
             app.toast.create({
-              text: "Lỗi: " + e.error,
+              text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
               closeTimeout: 2000,
             }).open();
+
           }
         });
       } else {
@@ -197,6 +394,18 @@ var app = new Framework7({
           app.progressbar.show();
           $$(".count-wait").text('*');
         };
+
+        // var store = app.methods.initStore("Pickup_Order", [
+        //   "Route_Code", "=", app.data.user.user_name
+        // ]);
+        // store.load().done(function (data) {
+        //   if (isShow) { app.preloader.hide(); } else {
+        //     app.progressbar.hide();
+        //   }
+        //   self.methods.updateList(data);
+        // });
+
+
         $.ajax({
           url: app.data.serverUrl + "/api/MPUP/" + app.data.user.user_name + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
           method: "GET",

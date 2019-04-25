@@ -1,6 +1,6 @@
+
 // Dom7
 var $$ = Dom7;
-
 
 // install plugin to Framework7
 Framework7.use(Framework7Keypad);
@@ -12,7 +12,7 @@ if (document.location.search.indexOf('theme=') >= 0) {
 }
 
 var getCallLog = function (beginTime, cbResult, cbError) {
-  var filters = [
+  let filters = [
     {
       "name": "date",
       "value": beginTime,
@@ -53,12 +53,7 @@ var montionCall = function (number, beginTime, cbResult, cbError) {
   }, cbError);
 }
 
-var Cachers = [];
-var CacheStore = new DevExpress.data.ArrayStore({
-  key: "ID",
-  data: Cachers
-});
-
+var CACHER = [];
 
 // Init App
 var app = new Framework7({
@@ -72,22 +67,230 @@ var app = new Framework7({
       password: '****',
       dc: ''
     },
+    editing: false,
     lastChoice: {},
     serverUrl: "http://210.211.121.146:30000",
     pushBill: true,
     geoLocation: {},
     signal: true,
     version: "1.0.0",
-    list: null,
+    waitlist: null,
     items: [],
     popupDate: null,
     popupDateCallback: null,
-    Store: CacheStore,
-    push: null,
+
   },
   methods: {
-    helloWorld: function () {
-      app.dialog.alert('Hello World!');
+    pickup: function (poID, stausID, exceptionID, mess) {
+      app.preloader.show("multi");
+      $.ajax({
+        url: //'http://localhost:34567' 
+          app.data.serverUrl + "/api/Pickup/Pickup",
+        data: {
+          u: app.data.user.user_name,
+          p: app.data.user.password,
+          i: poID,
+          m: mess || ' ',
+          s: stausID,
+          e: exceptionID
+        },
+        method: "POST",
+        success: function () {
+          app.preloader.hide();
+          mainView.router.back();
+        },
+        error: function (err) {
+          //debugger;
+          if (err.status != 200 || err.status != 201) {
+            app.preloader.hide();
+            app.toast.create({
+              text: "Lỗi: " + JSON.stringify(err),
+              closeTimeout: 2000,
+            }).open();
+          }
+
+        }
+      }).done(function (data) {
+        app.preloader.hide();
+        mainView.router.back();
+      }).fail(function (err) {
+        //debugger;
+        if (err.status != 200 || err.status != 201) {
+          app.preloader.hide();
+          app.toast.create({
+            text: "Lỗi: " + JSON.stringify(err),
+            closeTimeout: 2000,
+          }).open();
+        }
+      });
+    },
+    initCacher: function (cacherName, filter) {
+      var key = "ID";
+      var mainKey = key || 0;
+      //if (!CACHER[cacherName] || !Array.isArray(CACHER[cacherName])) {
+      CACHER[cacherName] = [];
+      //}
+      function changedStore() {
+        app.data.editing = true;
+      }
+      var getStore = app.methods.initStore(cacherName, filter);
+      var tmpStore = new DevExpress.data.ArrayStore({
+        key: key,
+        data: CACHER[cacherName],
+        onInserted: changedStore,
+        onUpdated: changedStore,
+        onRemoved: function (k) {
+          getStore.remove(k)
+            .done(function (key) {
+              // Process the "key" here
+            })
+            .fail(function (error) {
+
+              var msg = JSON.stringify(error);
+              var ty = msg.includes("deadlock");
+
+              //app.preloader.hide();
+              app.toast.create({
+                text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
+                closeTimeout: 2000,
+              }).open();
+            });
+        }
+      });
+
+
+
+      getStore.load().done(function (data) {
+        if (data && data.length > 0) {
+          var tmd = data.map(function (x) {
+            tmpStore.push([{ type: "insert", data: x }]);
+          });
+        }
+      });
+
+      return {
+        store: tmpStore,
+        serverStore: getStore,
+        reshapeOnPush: true,
+        syncServer: function (scb, ecb) {
+          self = this;
+          var ldata = self._array
+          var total = ldata.length;
+          var successCount = 0;
+          var errorCount = 0;
+          for (var i = 0; i < ldata.length; i++) {
+            var it = ldata[i];
+            if (!it.ID || it.ID <= 0) {
+              self.serverStore.insert(it)
+                .done(function (dataObj, key) {
+                  self.store.push([{
+                    type: "update",
+                    key: dataObj.ID,
+                    data: dataObj
+                  }]);
+                  successCount++;
+                  if (successCount + errorCount == total) {
+                    if (errorCount > 0) {
+                      if (ecb) {
+                        ecb(errorCount);
+                      }
+                    } else {
+                      if (scb) {
+                        scb(successCount);
+                      }
+                    }
+                  }
+                })
+                .fail(function (error) {
+                  errorCount++;
+                  if (successCount + errorCount == total) {
+                    if (errorCount > 0) {
+                      if (ecb) {
+                        ecb(errorCount);
+                      }
+                    } else {
+                      if (scb) {
+                        scb(successCount);
+                      }
+                    }
+                  }
+                });
+            } else {
+              self.serverStore.update(it.ID, it)
+                .done(function (dataObj, key) {
+                  successCount++;
+                  if (successCount + errorCount == total) {
+                    if (errorCount > 0) {
+                      if (ecb) {
+                        ecb(errorCount);
+                      }
+                    } else {
+                      if (scb) {
+                        scb(successCount);
+                      }
+                    }
+                  }
+                })
+                .fail(function (error) {
+                  errorCount++;
+                  if (successCount + errorCount == total) {
+                    if (errorCount > 0) {
+                      if (ecb) {
+                        ecb(errorCount);
+                      }
+                    } else {
+                      if (scb) {
+                        scb(successCount);
+                      }
+                    }
+                  }
+                });
+            }
+          }
+        }
+      };
+    },
+    initStore: function (storeName, filter) {
+      if (storeName && storeName.length > 0) {
+        return DevExpress.data.AspNet.createStore({
+          key: "ID",
+          loadUrl: app.data.serverUrl + "/api/" + storeName + "/Get",
+          insertUrl: app.data.serverUrl + "/api/" + storeName + "/Insert",
+          updateUrl: app.data.serverUrl + "/api/" + storeName + "/Update",
+          deleteUrl: app.data.serverUrl + "/api/" + storeName + "/Delete",
+          // loadUrl: "http://localhost:34567" + "/api/" + storeName + "/Get",
+          // insertUrl: "http://localhost:34567" + "/api/" + storeName + "/Insert",
+          // updateUrl: "http://localhost:34567" + "/api/" + storeName + "/Update",
+          // deleteUrl: "http://localhost:34567" + "/api/" + storeName + "/Delete",
+          onBeforeSend: function (operation, ajaxSettings) {
+            ajaxSettings.data.u = app.data.user.user_name;
+            ajaxSettings.data.p = app.data.user.password;
+            if (filter && filter.length > 0) {
+              if(ajaxSettings.data.filter && ajaxSettings.data.filter.length>0){
+                ajaxSettings.data.filter = '['+ajaxSettings.data.filter+',"and",' +JSON.stringify(filter)+']';
+              }else{
+                ajaxSettings.data.filter = JSON.stringify(filter);
+              }              
+            }
+          },
+          onAjaxError: function (e) {
+            var msg = JSON.stringify(e);
+            var ty = msg.includes("deadlock");
+
+            //app.preloader.hide();
+            app.toast.create({
+              text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
+              closeTimeout: 2000,
+            }).open();
+
+          }
+        });
+      } else {
+        return new DevExpress.data.ArrayStore({
+          key: "ID",
+          data: []
+        });;
+      }
     },
     setWait: function (n) {
       try {
@@ -116,15 +319,40 @@ var app = new Framework7({
         $(".count-wait").number(true, 0);
       } catch (er) { }
     },
-    loadData: function () {
+    loadData: function (isShow) {
+      if (isShow == false || isShow == true) {
+
+      }
+      else {
+        isShow = true;
+      }
       var self = this;
       if (self.data.user.user_name && self.data.user.user_name.length > 3) {
-        app.preloader.show();
+        if (isShow) {
+          app.preloader.show("multi");
+        } else {
+          app.progressbar.show();
+          $$(".count-wait").text('*');
+        };
+
+        // var store = app.methods.initStore("Pickup_Order", [
+        //   "Route_Code", "=", app.data.user.user_name
+        // ]);
+        // store.load().done(function (data) {
+        //   if (isShow) { app.preloader.hide(); } else {
+        //     app.progressbar.hide();
+        //   }
+        //   self.methods.updateList(data);
+        // });
+
+
         $.ajax({
           url: app.data.serverUrl + "/api/MPUP/" + app.data.user.user_name + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
           method: "GET",
           success: function (data) {
-            app.preloader.hide();
+            if (isShow) { app.preloader.hide(); } else {
+              app.progressbar.hide();
+            }
             self.methods.updateList(data);
           },
           error: function (err) {
@@ -143,9 +371,11 @@ var app = new Framework7({
             // }
           }
         }).done(function (data) {
-          app.preloader.hide();
+          if (isShow) { app.preloader.hide(); } else {
+            app.progressbar.hide();
+          }
+          app.ptr.done();
           self.methods.updateList(data);
-
         });
       }
     },
@@ -174,11 +404,13 @@ var app = new Framework7({
     refreshList: function () {
       //app.data.list.replaceAllItems(app.data.items);
 
-      app.data.list = app.virtualList.create({
+      app.data.waitlist = app.virtualList.create({
         // List Element
-        el: '.virtual-list',
+        el: '.wait-list',
         // Pass array with items
-        items: app.data.items,
+        items: app.data.items.filter(function (x) {
+          return x;
+        }),
         // Custom search function for searchbar
         searchAll: function (query, items) {
           var found = [];
@@ -193,8 +425,8 @@ var app = new Framework7({
           '<li>' +
           ' <div class="item-content">' +
           '   <div class="item-media">' +
-          '     <i class="icon f7-icons ios-only">{{#if CALL}}phone_round_fill{{else}}phone_landscape{{/if}}</i>' +
-          '     <i class="icon material-icons md-only">{{#if CALL}}contact_phone{{else}}stay_current_landscape{{/if}}</i>' +
+          '     <i class="icon f7-icons ios-only">{{#if CALL}}phone_round_fill{{else}}bolt_round_fill{{/if}}</i>' +
+          '     <i class="icon material-icons md-only">{{#if CALL}}contact_phone{{else}}local_play{{/if}}</i>' +
           '   </div>' +
           '   <div class="item-inner search-avaliable">' +
           '     <div class="item-title-row">' +
@@ -288,11 +520,15 @@ var app = new Framework7({
         var id = $$(self).data("id");
         var val = $$(self).val();
         if (val == "" || val == "REASON_0") {
+
           return;
         } else if (val == "REASON_3") {
           setTimeout(function () {
             app.data.popupDateCallback = function (year, month, day) {
               console.log(id, val, year, month, day);
+              var d = new Date(year, month, day);
+              var str = "Khách hẹn ngày khác: " + dateKey(d);
+              app.methods.pickup(id, 4, 87, str);
             }
             app.data.popupDate.open();
           }, 200);
@@ -301,6 +537,8 @@ var app = new Framework7({
           var dialog = app.dialog.prompt('Nhập lý do khác', "Hủy nhận hàng", function (name) {
             if (name && name.length > 2) {
               console.log(id, val, "Lý do khác", name);
+              var str = "Lý do khác: " + name;
+              app.methods.pickup(id, 4, 87, str);
             } else {
               app.toast.create({
                 text: "Lỗi: lý do '" + name + "' quá ngắn",
@@ -315,6 +553,14 @@ var app = new Framework7({
           setTimeout(function () {
             t.focus();
           }, 500);
+        } else if (val == "REASON_1") {
+          console.log(id, val);
+          var str = "Người gửi hủy yêu cầu";//+ (new Date(year,month,day).toJSON().substr(0,10));
+          app.methods.pickup(id, 4, 87, str);
+        } else if (val == "REASON_2") {
+
+          var str = "Chưa chuẩn bị hàng xong";//+ (new Date(year,month,day).toJSON().substr(0,10));
+          app.methods.pickup(id, 4, 87, str);
         } else {
           console.log(id, val);
         }
@@ -383,9 +629,16 @@ var app = new Framework7({
           return false;
         });
       } else {
-        mainView.router.back();
+        if (app.data.editing) {
+          app.dialog.confirm("Dữ liệu chưa được lưu? Vẫn thoát", app.data.appName, function () {
+            mainView.router.back();
+          }, function () {
+            return false;
+          });
+        } else {
+          mainView.router.back();
+        }
       }
-
     },
   },
   routes: routes,
@@ -393,6 +646,11 @@ var app = new Framework7({
     placementId: 'pltd4o7ibb9rc653x14',
   },
 
+});
+
+// Init/Create main view
+var mainView = app.views.create('.view-main', {
+  url: '/'
 });
 
 var setUserInfoSuccess = function (obj) {
@@ -487,65 +745,35 @@ function checkConnection() {
   }
 }
 
-// var onNotificationReceived = function (pushNotification) {
-//   var message = pushNotification.message;
-//   var title = pushNotification.title;
+var onNotificationReceived = function (pushNotification) {
+  var message = pushNotification.message;
+  var title = pushNotification.title;
 
-//   if (message === null || message === undefined) {
-//     // Android messages received in the background don't include a message. On Android, that fact can be used to
-//     // check if the message was received in the background or foreground. For iOS the message is always present.
-//     title = 'Thông báo';
-//     message = 'Không có gì...';
-//   }
+  if (message === null || message === undefined) {
+    // Android messages received in the background don't include a message. On Android, that fact can be used to
+    // check if the message was received in the background or foreground. For iOS the message is always present.
+    title = 'Thông báo';
+    message = 'Không có gì...';
+  }
 
-//   // Custom name/value pairs set in the App Center web portal are in customProperties
-//   if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
-//     message += '\nCustom properties:\n' + JSON.stringify(pushNotification.customProperties);
-//   }
+  // Custom name/value pairs set in the App Center web portal are in customProperties
+  if (pushNotification.customProperties && Object.keys(pushNotification.customProperties).length > 0) {
+    message += '\nCustom properties:\n' + JSON.stringify(pushNotification.customProperties);
+  }
 
+  app.toast.create({
+    text: "<strong>" + title + "</strong><br>" + message,
+    position: 'top',
+    closeButton: true,
+    closeButtonText: '<i class="f7-icons">close_round_fill</i>',
+  }).open();
 
-
-
-//   //console.log(title, message);
-// }
+  //console.log(title, message);
+}
 
 
 
 $$(document).on('deviceready', function () {
-
-  app.data.push = PushNotification.init({
-    android: {
-    },
-    browser: {
-      pushServiceURL: 'http://push.api.phonegap.com/v1/push'
-    },
-    ios: {
-      alert: "true",
-      badge: "true",
-      sound: "true"
-    },
-    windows: {}
-  });
-
-  app.data.push.on('registration', function (data) {
-    console.log(data.registrationId);
-  });
-
-  app.data.push.on('notification', function (data) {
-    console.log(data.message);
-    console.log(data.title);
-    console.log(data.count);
-    console.log(data.sound);
-    console.log(data.image);
-    console.log(data.additionalData);
-  });
-
-  app.data.push.on('error', function (e) {
-    console.log(e.message);
-  });
-
-
-
   $$(document).on("backbutton", app.methods.onBackKeyDown, false);
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
     window.plugins.callLog.hasReadPermission(function (rs) {
@@ -695,3 +923,14 @@ $$(document).on('page:afterin', function (e) {
     app.methods.refreshList();
   }
 });
+
+//app.ptr.create('.ptr-content');
+$$('.ptr-content').on('ptr:refresh', function (e) {
+  app.methods.loadData(false);
+});
+$$(".tab").on("tab:show", function () {
+  var tname = $$(this).data("name");
+  if (tname == "wait-list") {
+    app.methods.loadData(false);
+  }
+})

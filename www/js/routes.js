@@ -48,21 +48,14 @@ var routes = [
               Provinces: Provinces,
               Districts: Districts,
               SubDistricts: SubDistricts,
-              Bills: data,               
+              // Bills: data,               
             }
           }
         );
       }
 
-      var store = app.methods.initStore("Pickup_Order_Consignment", [
-        "Pickup_Order_ID", "=", poID
-      ]);
-      store.load().done(function (data) {
-        // Process "data" here
-        process(data);
-      }).fail(function (error) {
-        reject(error);
-      });
+      process();
+
     },
   },
   {

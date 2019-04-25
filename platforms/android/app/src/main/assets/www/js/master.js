@@ -1,16 +1,48 @@
-var SERVICES = [
-    {ID: -1, Service_Code: 'UNDEFINED' , Service_TH_Name: 'NULL'},
-    {ID: 26, Service_Code: '207' , Service_TH_Name: 'Cho thuê nguyên chuyến'},
-    {ID: 27, Service_Code: '205' , Service_TH_Name: 'Vận chuyển đường bộ'},
-    {ID: 28, Service_Code: 'FRE' , Service_TH_Name: 'Free Bill'},
-    {ID: 29, Service_Code: 'URG' , Service_TH_Name: 'Hỏa tốc'},
-    {ID: 30, Service_Code: 'EXP' , Service_TH_Name: 'Chuyển phát nhanh'},
-    {ID: 32, Service_Code: '48H' , Service_TH_Name: '48H'},
-    {ID: 33, Service_Code: 'ECO' , Service_TH_Name: 'Giá rẽ'},
-    {ID: 34, Service_Code: 'FCL' , Service_TH_Name: 'Container nguyên chuyến'},
-    {ID: 35, Service_Code: 'INT' , Service_TH_Name: 'Chuyển phát quốc tế'},
-    {ID: 37, Service_Code: 'RFR' , Service_TH_Name: 'Đường bộ'}
+var SURCHARGES = [
+    { ID: 1, Surcharge_Code: 'FC', Surcharge_TH_Name: 'Cước chính' },
+    { ID: 112, Surcharge_Code: '109', Surcharge_TH_Name: 'Phí khác' },
+    { ID: 113, Surcharge_Code: '105', Surcharge_TH_Name: 'Phí chờ giao hàng' },
+    { ID: 114, Surcharge_Code: '100', Surcharge_TH_Name: 'Phí trả ngoại vùng' },
+    { ID: 115, Surcharge_Code: '106', Surcharge_TH_Name: 'Phí lưu kho' },
+    { ID: 116, Surcharge_Code: '101', Surcharge_TH_Name: 'Phí đóng gói hàng hóa' },
+    { ID: 117, Surcharge_Code: '102', Surcharge_TH_Name: 'Phí nâng hạ hàng' },
+    { ID: 118, Surcharge_Code: '103', Surcharge_TH_Name: 'Phí báo phát' },
+    { ID: 119, Surcharge_Code: '104', Surcharge_TH_Name: 'Phí bảo hiểm' },
+    { ID: 120, Surcharge_Code: '107', Surcharge_TH_Name: 'Phí kiểm đếm' },
+    { ID: 121, Surcharge_Code: '108', Surcharge_TH_Name: 'Phí hàng hóa chất' },
+    { ID: 123, Surcharge_Code: '110', Surcharge_TH_Name: 'Phí đóng gỗ' },
 ];
+
+var SERVICES = [
+    { ID: -1, Service_Code: 'UNDEFINED', Service_TH_Name: 'NULL' },
+    { ID: 26, Service_Code: '207', Service_TH_Name: 'Cho thuê nguyên chuyến' },
+    { ID: 27, Service_Code: '205', Service_TH_Name: 'Vận chuyển đường bộ' },
+    { ID: 28, Service_Code: 'FRE', Service_TH_Name: 'Free Bill' },
+    { ID: 29, Service_Code: 'URG', Service_TH_Name: 'Hỏa tốc' },
+    { ID: 30, Service_Code: 'EXP', Service_TH_Name: 'Chuyển phát nhanh' },
+    { ID: 32, Service_Code: '48H', Service_TH_Name: '48H' },
+    { ID: 33, Service_Code: 'ECO', Service_TH_Name: 'Giá rẽ' },
+    { ID: 34, Service_Code: 'FCL', Service_TH_Name: 'Container nguyên chuyến' },
+    { ID: 35, Service_Code: 'INT', Service_TH_Name: 'Chuyển phát quốc tế' },
+    { ID: 37, Service_Code: 'RFR', Service_TH_Name: 'Đường bộ' }
+];
+var getOracleServiceCode = function (Service_ID) {
+    var map = {
+        'FRE': '0200',
+        'URG': '0203',
+        'EXP': '0201',
+        'RFR': '0205',
+        '48H': '0202',
+        'ECO': '0204',
+        'FCL': '0207',
+        'INT': '0401'
+    }
+    var orin = SERVICES.find(function (x) {
+        return x.ID == Service_ID;
+    });
+    if (!orin) return '0000';
+    return map[orin.Service_Code];
+}
 var PROVINCES = [
     { ID: 1, Province_Code: 'NA', Province_EN_Desc: 'NA', Province_TH_Desc: 'NA' },
     { ID: 584, Province_Code: '11', Province_EN_Desc: 'Tinh Cao Bang', Province_TH_Desc: 'Tỉnh Cao Bằng' },
