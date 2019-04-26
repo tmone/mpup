@@ -63,7 +63,7 @@
                     </button>
                 </p>
                 <p class="row">
-
+                    <span></span>
                 </p>
                 <p class="row">
                     <a href="#" class="col button button-large button-raised button-fill bill-create">
@@ -330,9 +330,10 @@
 
             },
             pageInit: function (e, page) {
+                debugger;
                 console.log('pageInit', page);
                 var self = this;
-                var poID = page.route.params.poID;
+                var poID = +page.route.params.poID;
                 console.log(poID);
                 var store = app.methods.initCacher("Pickup_Order_Consignment", [
                     "Pickup_Order_ID", "=", poID
@@ -340,8 +341,8 @@
                 self.store = store;
                 self.po = app.data.items.find(function (x) {
                     return x.ID == poID;
-                });
-                self.po.TYPE = self.po.TYPE || 0;
+                }) || { TYPE: 0 };
+
                 if (self.po.TYPE == 0) {
                     selectLSM("Pickup_Order", self.po, "ID", function (x) {
                         if (x && x.length > 0 && x[0].TYPE && x[0].TYPE > 0) {
@@ -360,7 +361,8 @@
                 $$(".Address").text(self.po.Address);
                 $$(".Contact_Person").text(self.po.Contact_Person);
                 $$(".edit").attr("href", "/po/" + poID + "/edit/");
-                $$('.bill-create').off('click').on('click', function () {
+                $$('.bill-create').on('click', function () {
+                    debugger;
                     self.po.TYPE = 2;
                     replaceLSM("Pickup_Order", self.po, "ID");
                     $$(".command-panel").hide();
@@ -377,7 +379,7 @@
                     //app.data.lastChoice = self.po;
                     mainView.router.navigate("/poc/" + tmp.ID + "/");
                 });
-                //$$(".bill-create").attr("href", "/po/" + poID + "/addbill/");
+
                 $$('.bill-scan4').off('click').on('click', function () {
                     self.po.TYPE = 1;
                     replaceLSM("Pickup_Order", self.po, "ID");
@@ -414,7 +416,7 @@
                     app.router.back();
                 });
 
-               
+
 
                 $("#bill-list").dxDataGrid({
                     dataSource: store,
@@ -478,8 +480,8 @@
                             },
                         );
                     },
-                    onRowClick: function(e){
-                        mainView.router.navigate("/poc/"+ e.key +"/");
+                    onRowClick: function (e) {
+                        mainView.router.navigate("/poc/" + e.key + "/");
                     },
                     columns: [
                         {
@@ -494,7 +496,7 @@
                             format: "###,##0",
                             width: "40%",
                         },
-                    ],                    
+                    ],
                     summary: {
                         recalculateWhileEditing: true,
                         totalItems: [{

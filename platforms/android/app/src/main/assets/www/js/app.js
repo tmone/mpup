@@ -71,6 +71,7 @@ var app = new Framework7({
     lastChoice: {},
     serverUrl: "http://210.211.121.146:30000",
     pushBill: true,
+    geoID: 0,
     geoLocation: {},
     signal: true,
     version: "1.0.0",
@@ -279,7 +280,14 @@ var app = new Framework7({
         serverStore: getStore,
         reshapeOnPush: true,
         syncServer: function (scb, ecb) {
-          self = this;
+          var self = this;
+          if (!app.data.signal) {
+            setTimeout(function () {
+              self.syncServer(scb, ecb);
+            }, 10000);
+            return;
+          }
+
           var ldata = self.store._array;
           var total = ldata.length;
           var successCount = 0;
@@ -300,6 +308,9 @@ var app = new Framework7({
                     if (errorCount > 0) {
                       if (ecb) {
                         ecb(errorCount);
+                        setTimeout(function () {
+                          self.syncServer(scb, ecb);
+                        }, 30000);
                       }
                     } else {
                       if (scb) {
@@ -314,6 +325,9 @@ var app = new Framework7({
                     if (errorCount > 0) {
                       if (ecb) {
                         ecb(error);
+                        setTimeout(function () {
+                          self.syncServer(scb, ecb);
+                        }, 30000);
                       }
                     } else {
                       if (scb) {
@@ -330,6 +344,9 @@ var app = new Framework7({
                     if (errorCount > 0) {
                       if (ecb) {
                         ecb(errorCount);
+                        setTimeout(function () {
+                          self.syncServer(scb, ecb);
+                        }, 30000);
                       }
                     } else {
                       if (scb) {
@@ -344,6 +361,9 @@ var app = new Framework7({
                     if (errorCount > 0) {
                       if (ecb) {
                         ecb(errorCount);
+                        setTimeout(function () {
+                          self.syncServer(scb, ecb);
+                        }, 30000);
                       }
                     } else {
                       if (scb) {
@@ -716,6 +736,30 @@ var app = new Framework7({
         window.open("tel://" + phone);
       }
     },
+    onOnline: function () {
+      var networkState = navigator.connection.type;
+
+      if (networkState !== Connection.NONE) {
+        if (app.data.signal) {
+
+        } else {
+          if ($$('.modal-in').length > 0) {
+            app.dialog.close();
+          }
+          app.data.signal = true;
+
+        }
+      }
+
+    },
+    onOffline: function () {
+      app.data.signal = false;
+      if ($$('.modal-in').length > 0) {
+
+      } else {
+        app.dialog.preloader('Mất kết nối...');
+      }
+    },
     onBackKeyDown: function () {
 
       var leftp = app.panel.left && app.panel.left.opened;
@@ -808,16 +852,16 @@ var removeUserInfoError = function (error) {
 ///////////////////
 
 ///GEO///
-var onGeoSuccess = function (position) {
-  app.data.geoLocation = position;
-  NativeStorage.setItem("location", position, function (data) { }, function (error) { });
-};
+// var onGeoSuccess = function (position) {
+//   app.data.geoLocation = position;
+//   NativeStorage.setItem("location", position, function (data) { }, function (error) { });
+// };
 
-// onError Callback receives a PositionError object
-//
-function onGeoError(error) {
+// // onError Callback receives a PositionError object
+// //
+// function onGeoError(error) {
 
-}
+// }
 ///END GEO
 
 function checkConnection() {
@@ -837,19 +881,22 @@ function checkConnection() {
   //alert('Connection type: ' + states[networkState]);
   if (networkState == Connection.NONE) {
     app.data.signal = false;
-    app.toast.create({
-      text: "Không có tín hiệu mạng",
-      closeTimeout: 2000,
-    }).open();
-    setTimeout(checkConnection, 10000);
+    if ($$('.modal-in').length > 0) {
+
+    } else {
+      app.dialog.preloader('Mất kết nối...');
+    }
+    setTimeout(checkConnection, 1000);
   } else {
+
     if (app.data.signal) {
 
     } else {
+      app.dialog.close();
       app.data.signal = true;
-      app.gridComponent.refresh();
+
     }
-    setTimeout(checkConnection, 30000);
+    setTimeout(checkConnection, 3000);
   }
 }
 
@@ -882,8 +929,14 @@ var onNotificationReceived = function (pushNotification) {
 
 
 $$(document).on('deviceready', function () {
+
+  navigator.splashscreen.hide();
   $$(document).on("backbutton", app.methods.onBackKeyDown, false);
+  $$(document).on("offline", app.methods.onOffline, false);
+  $$(document).on("online", app.methods.onOnline, false);
+
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
+    //checkConnection();
     window.plugins.callLog.hasReadPermission(function (rs) {
       if (rs) {
 
@@ -932,11 +985,16 @@ $$(document).on('deviceready', function () {
 
   NativeStorage.getItem("userInfo", getUserInfoSuccess, getUserInfoError);
 
-  navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
-  ////
-  setInterval(function () {
-    navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
-  }, 60000);
+  // navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+  // ////
+  // setInterval(function () {
+  //   navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
+  // }, 60000);
+
+  app.data.geoID = navigator.geolocation.watchPosition(function () {
+    app.data.geoLocation = position;//LSM
+    NativeStorage.setItem("location", position, function (data) { }, function (error) { });
+  }, function () { }, { timeout: 30000 });
 
   if (cordova.getAppVersion) {
     cordova.getAppVersion.getVersionNumber(function (version) {

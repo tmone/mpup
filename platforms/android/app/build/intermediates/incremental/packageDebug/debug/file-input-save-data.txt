@@ -1,5 +1,5 @@
 #Internal package file, do not edit.
-#Fri Apr 26 09:21:27 ICT 2019
+#Fri Apr 26 13:45:32 ICT 2019
 1034.base=D\:\\mpup\\platforms\\android\\app\\build\\intermediates\\assets\\debug
 881.path=www/framework7/components/swiper/swiper-class/less/mixins.less
 508.set=ASSET

@@ -89,13 +89,15 @@ var app = new Framework7({
             app.data.serverUrl
             + "/api/CallLog/CallLog",
           data: {
-            Pickup_Order_ID: id,
-            Call_User: app.data.user.user_name,
-            Phone_Number: rs.number || num,
-            Begin_Datetime: new Date(rs.date) || new Date(),
-            Duration: rs.duration || 0,
-            Type: rs.type || "",
-            Others: JSON.stringify(Object.assign({lol:app.data.geoLocation},rs))
+            values: JSON.stringify({
+              Pickup_Order_ID: id,
+              Call_User: app.data.user.user_name,
+              Phone_Number: rs.number || num,
+              Begin_Datetime: new Date(rs.date) || new Date(),
+              Duration: rs.duration || 0,
+              Type: rs.type || "",
+              Others: JSON.stringify(Object.assign({ lol: app.data.geoLocation }, rs))
+            })
           },
           method: "POST",
           success: function (rs) {
@@ -277,7 +279,14 @@ var app = new Framework7({
         serverStore: getStore,
         reshapeOnPush: true,
         syncServer: function (scb, ecb) {
-          self = this;
+          var self = this;
+          if(!app.data.signal){
+            setTimeout(function(){
+              self.syncServer(scb,ecb);
+            },10000);
+            return;
+          }
+          
           var ldata = self.store._array;
           var total = ldata.length;
           var successCount = 0;
@@ -298,6 +307,9 @@ var app = new Framework7({
                     if (errorCount > 0) {
                       if (ecb) {
                         ecb(errorCount);
+                        setTimeout(function(){
+                          self.syncServer(scb,ecb);
+                        },30000);
                       }
                     } else {
                       if (scb) {
@@ -312,6 +324,9 @@ var app = new Framework7({
                     if (errorCount > 0) {
                       if (ecb) {
                         ecb(error);
+                        setTimeout(function(){
+                          self.syncServer(scb,ecb);
+                        },30000);
                       }
                     } else {
                       if (scb) {
@@ -328,6 +343,9 @@ var app = new Framework7({
                     if (errorCount > 0) {
                       if (ecb) {
                         ecb(errorCount);
+                        setTimeout(function(){
+                          self.syncServer(scb,ecb);
+                        },30000);
                       }
                     } else {
                       if (scb) {
@@ -342,6 +360,9 @@ var app = new Framework7({
                     if (errorCount > 0) {
                       if (ecb) {
                         ecb(errorCount);
+                        setTimeout(function(){
+                          self.syncServer(scb,ecb);
+                        },30000);
                       }
                     } else {
                       if (scb) {
@@ -688,7 +709,7 @@ var app = new Framework7({
           if (rs) {
             var beginTime = new Date().getTime();
             montionCall(phone, beginTime, function (rs) {
-              app.methods.saveCallLog(id,phone,rs);
+              app.methods.saveCallLog(id, phone, rs);
             }, function (err) {
               console.log(err);
             });
@@ -835,19 +856,22 @@ function checkConnection() {
   //alert('Connection type: ' + states[networkState]);
   if (networkState == Connection.NONE) {
     app.data.signal = false;
-    app.toast.create({
-      text: "Không có tín hiệu mạng",
-      closeTimeout: 2000,
-    }).open();
-    setTimeout(checkConnection, 10000);
+    if($$('.modal-in').length > 0){
+
+    }else{
+      app.dialog.preloader('Mất kết nối...');
+    }    
+    setTimeout(checkConnection, 1000);
   } else {
+    
     if (app.data.signal) {
 
     } else {
-      app.data.signal = true;
-      app.gridComponent.refresh();
+      app.dialog.close();
+      app.data.signal = true;      
+     
     }
-    setTimeout(checkConnection, 30000);
+    setTimeout(checkConnection, 3000);
   }
 }
 
@@ -880,8 +904,12 @@ var onNotificationReceived = function (pushNotification) {
 
 
 $$(document).on('deviceready', function () {
+  
+  navigator.splashscreen.hide();
   $$(document).on("backbutton", app.methods.onBackKeyDown, false);
+  
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
+    checkConnection();
     window.plugins.callLog.hasReadPermission(function (rs) {
       if (rs) {
 

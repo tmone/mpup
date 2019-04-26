@@ -15,8 +15,10 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <preference name="loadUrlTimeoutValue" value="60000" />
     <preference name="SplashScreenDelay" value="60000" />
     <preference name="AutoHideSplashScreen" value="false" />
+    <preference name="ShowSplashScreenSpinner" value="false" />
     <preference name="APPCENTER_ANALYTICS_ENABLE_IN_JS" value="true" />
     <preference name="APPCENTER_CRASHES_ALWAYS_SEND" value="false" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
@@ -24,7 +26,7 @@
     <preference name="android-build-tool" value="gradle" />
     <platform name="android">
         <resource-file src="google-services.json" target="app/google-services.json" />
-        <resource-file src="www/img/logo.png" target="res/drawable/logo.png" />
+        <resource-file src="www/img/logo2.png" target="res/drawable/logo2.png" />
         <preference name="APP_SECRET" value="b1c44c87-d4d9-41d7-9fe0-0de3d6f777b2" />
         <allow-intent href="market:*" />
         <preference name="android-minSdkVersion" value="22" />
