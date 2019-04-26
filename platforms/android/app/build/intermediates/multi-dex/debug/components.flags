@@ -51,7 +51,7 @@
 -printconfiguration 'D:\mpup\platforms\android\app\build\intermediates\multi-dex\debug\components.flags'
 
 
-# Referenced at D:\mpup\platforms\android\app\build\intermediates\manifests\full\debug\AndroidManifest.xml:77
+# Referenced at D:\mpup\platforms\android\app\build\intermediates\manifests\full\debug\AndroidManifest.xml:82
 -keep class android.support.multidex.MultiDexApplication {
     <init>(...);
 }

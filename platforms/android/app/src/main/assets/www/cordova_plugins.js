@@ -498,6 +498,14 @@ module.exports = [
     "clobbers": [
       "PushNotification"
     ]
+  },
+  {
+    "id": "cordova-sms-plugin.Sms",
+    "file": "plugins/cordova-sms-plugin/www/sms.js",
+    "pluginId": "cordova-sms-plugin",
+    "clobbers": [
+      "window.sms"
+    ]
   }
 ];
 module.exports.metadata = 
@@ -528,7 +536,8 @@ module.exports.metadata =
   "cordova-support-google-services": "1.1.0",
   "phonegap-plugin-barcodescanner": "8.0.1",
   "phonegap-plugin-multidex": "1.0.0",
-  "phonegap-plugin-push": "2.2.3"
+  "phonegap-plugin-push": "2.2.3",
+  "cordova-sms-plugin": "1.0.0"
 };
 // BOTTOM OF METADATA
 });

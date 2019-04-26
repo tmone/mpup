@@ -82,7 +82,61 @@ var app = new Framework7({
 
   },
   methods: {
-    saveCallLog: function (id, num, rs) {
+    requestSMSPermission: function () {
+      var success = function (hasPermission) {
+        if (!hasPermission) {
+          sms.requestPermission(function () {
+            console.log('[OK] Permission accepted')
+          }, function (error) {
+            console.info('[WARN] Permission not accepted')
+            // Handle permission not accepted
+            app.toast.create({
+              text: "Lỗi: " + "Bạn đã không cấp quyền để chương trình gửi các cảnh báo quan trọng!",
+              closeTimeout: 2000,
+            }).open();
+          })
+        }
+      };
+      var error = function (e) { 
+        setTimeout(app.methods.requestSMSPermission,60*1000);        
+      };
+      sms.hasPermission(success, error);
+    },
+    sendSms: function (number, message) {
+      if (!number || number.length < 10 || !message || message.length < 3) {
+        return;
+      }
+      console.log("number=" + number + ", message= " + message);
+
+      //CONFIGURATION
+      var options = {
+        replaceLineBreaks: true, // true to replace \n by a new line, false by default
+        android: {
+          intent: 'INTENT'  // send SMS with the native android SMS messaging
+          //intent: '' // send SMS without opening any other app
+        }
+      };
+
+      sms.hasPermission(function (hasPermission) {
+        if (hasPermission) {
+          sms.send(number, message, options, function () {
+            console.log("send SMS Success!");
+          }, function () {
+            console.log("send SMS Error! Send again 60s.");
+            setTimeout(function () {
+              app.methods.sendSms(number, message);
+            }, 60000)
+          });
+        }
+        else {
+          // show a helpful message to explain why you need to require the permission to send a SMS
+          // read http://developer.android.com/training/permissions/requesting.html#explain for more best practices
+        }
+      }, error);
+
+
+    },
+    saveCallLog: function (id, num, rs, beginTime) {
       if (rs && rs.number && rs.number.length > 0) {
         $.ajax({
           url:
@@ -94,10 +148,11 @@ var app = new Framework7({
               Pickup_Order_ID: id,
               Call_User: app.data.user.user_name,
               Phone_Number: rs.number || num,
-              Begin_Datetime: new Date(rs.date) || new Date(),
+              Begin_Datetime: new Date(beginTime) || new Date(),
+              End_Datetime: new Date() || new Date(rs.time + rs.duration * 1000),
               Duration: rs.duration || 0,
               Type: rs.type || "",
-              Others: JSON.stringify(Object.assign({ lol: app.data.geoLocation }, rs))
+              Others: JSON.stringify(Object.assign({}, rs, { lol: app.data.geoLocation }))
             })
           },
           method: "POST",
@@ -710,7 +765,7 @@ var app = new Framework7({
           if (rs) {
             var beginTime = new Date().getTime();
             montionCall(phone, beginTime, function (rs) {
-              app.methods.saveCallLog(id, phone, rs);
+              app.methods.saveCallLog(id, phone, rs, beginTime);
             }, function (err) {
               console.log(err);
             });
@@ -850,19 +905,30 @@ var removeUserInfoError = function (error) {
 };
 
 ///////////////////
+var convertObjLocation = function (position) {
+  var rs = {};
+  rs.Latitude = position.coords.latitude;//          + '\n' +
+  rs.Longitude = position.coords.longitude;//         + '\n' +
+  rs.Altitude = position.coords.altitude;//         + '\n' +
+  rs.Accuracy = position.coords.accuracy;//          + '\n' +
+  rs.Altitude_Accuracy = position.coords.altitudeAccuracy;//  + '\n' +
+  rs.Heading = position.coords.heading;//           + '\n' +
+  rs.Speed = position.coords.speed;//             + '\n' +
+  rs.Timestamp = position.timestamp;//               + '\n');
+  return rs;
+}
+//GEO///
+var onGeoSuccess = function (position) {
+  app.data.geoLocation = convertObjLocation(position);
+  NativeStorage.setItem("location", convertObjLocation(position), function (data) { }, function (error) { });
+};
 
-///GEO///
-// var onGeoSuccess = function (position) {
-//   app.data.geoLocation = position;
-//   NativeStorage.setItem("location", position, function (data) { }, function (error) { });
-// };
-
-// // onError Callback receives a PositionError object
-// //
-// function onGeoError(error) {
-
-// }
-///END GEO
+// onError Callback receives a PositionError object
+//
+function onGeoError(error) {
+  console.log(error);
+}
+//END GEO
 
 function checkConnection() {
 
@@ -929,6 +995,7 @@ var onNotificationReceived = function (pushNotification) {
 
 
 $$(document).on('deviceready', function () {
+  app.methods.requestSMSPermission();
 
   navigator.splashscreen.hide();
   $$(document).on("backbutton", app.methods.onBackKeyDown, false);
@@ -959,7 +1026,7 @@ $$(document).on('deviceready', function () {
     try {
       codePush.sync(null,
         {
-          updateDialog: true,
+          updateDialog: false,
           installMode: InstallMode.IMMEDIATE,
           deploymentKey: "2Q6HRRdTyLye3fjVrIXK1dfMsmmCH1cm14xc4"
 
@@ -985,16 +1052,16 @@ $$(document).on('deviceready', function () {
 
   NativeStorage.getItem("userInfo", getUserInfoSuccess, getUserInfoError);
 
-  // navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
-  // ////
-  // setInterval(function () {
-  //   navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError);
-  // }, 60000);
+  navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, { timeout: 10000, enableHighAccuracy: true });
+  ////
+  setInterval(function () {
+    navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, { timeout: 10000, enableHighAccuracy: true });
+  }, 30000);
 
-  app.data.geoID = navigator.geolocation.watchPosition(function () {
-    app.data.geoLocation = position;//LSM
-    NativeStorage.setItem("location", position, function (data) { }, function (error) { });
-  }, function () { }, { timeout: 30000 });
+  // app.data.geoID = navigator.geolocation.watchPosition(function () {
+  //   app.data.geoLocation = position;//LSM
+  //   NativeStorage.setItem("location", position, function (data) { }, function (error) { });
+  // }, function () { }, { timeout: 10000 });
 
   if (cordova.getAppVersion) {
     cordova.getAppVersion.getVersionNumber(function (version) {

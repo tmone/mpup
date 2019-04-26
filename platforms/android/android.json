@@ -87,6 +87,10 @@
             {
               "xml": "<feature name=\"PushNotification\"><param name=\"android-package\" value=\"com.adobe.phonegap.push.PushPlugin\" /></feature>",
               "count": 1
+            },
+            {
+              "xml": "<feature name=\"Sms\"><param name=\"android-package\" value=\"com.cordova.plugins.sms.Sms\" /></feature>",
+              "count": 1
             }
           ],
           "/widget": [
@@ -221,6 +225,10 @@
             {
               "xml": "<uses-permission android:name=\"android.permission.WAKE_LOCK\" />",
               "count": 1
+            },
+            {
+              "xml": "<uses-feature android:name=\"android.hardware.telephony\" android:required=\"false\" />",
+              "count": 1
             }
           ]
         }
@@ -321,6 +329,9 @@
     "phonegap-plugin-push": {
       "ANDROID_SUPPORT_V13_VERSION": "27.+",
       "FCM_VERSION": "11.6.2",
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-sms-plugin": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   },
@@ -824,6 +835,14 @@
       "clobbers": [
         "PushNotification"
       ]
+    },
+    {
+      "id": "cordova-sms-plugin.Sms",
+      "file": "plugins/cordova-sms-plugin/www/sms.js",
+      "pluginId": "cordova-sms-plugin",
+      "clobbers": [
+        "window.sms"
+      ]
     }
   ],
   "plugin_metadata": {
@@ -852,6 +871,7 @@
     "cordova-support-google-services": "1.1.0",
     "phonegap-plugin-barcodescanner": "8.0.1",
     "phonegap-plugin-multidex": "1.0.0",
-    "phonegap-plugin-push": "2.2.3"
+    "phonegap-plugin-push": "2.2.3",
+    "cordova-sms-plugin": "1.0.0"
   }
 }
