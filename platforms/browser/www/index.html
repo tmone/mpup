@@ -23,13 +23,13 @@
 </head>
 
 <body class="color-theme-orange">
-    <div id="app">
+    <div id="app" class="color-theme-orange">
         <div class="statusbar"></div>
         <div class="panel panel-left panel-cover">
             <div class="page" data-page="home">
                 <div class="page-content">
-                    <div class="block-title"
-                        style="min-height:50px;background-color: darkorange;padding: 16px;margin: 0px;color:black;">
+                    <div class="block-title "
+                        style="min-height:50px;background-color: #ff9500;padding: 16px;margin: 0px;color:black;">
                         <div>
                             <i class="icon f7-icons text-color-white" style="font-size:64px">person_round</i>
                             <span id="user-name"
@@ -48,8 +48,8 @@
                                 <a href="/setting/" class="item-link panel-close  flm">
                                     <div class="item-content flm">
                                         <div class="item-media flm"><i
-                                                class="icon f7-icons ios-only  text-color-orange">gear</i>
-                                            <i class="icon material-icons md-only  text-color-orange">settings</i>
+                                                class="icon f7-icons ios-only  text-color-deeporange">gear</i>
+                                            <i class="icon material-icons md-only  text-color-deeporange">settings</i>
                                         </div>
                                         <div class="item-inner flm">
                                             <div class="item-title flm">
@@ -67,8 +67,8 @@
                                 <a href="/about/" class="item-link panel-close  flm">
                                     <div class="item-content flm">
                                         <div class="item-media flm"><i
-                                                class="icon f7-icons ios-only  text-color-orange">info_round</i>
-                                            <i class="icon material-icons md-only text-color-orange">info_outline</i>
+                                                class="icon f7-icons ios-only  text-color-deeporange">info_round</i>
+                                            <i class="icon material-icons md-only text-color-deeporange">info_outline</i>
                                         </div>
                                         <div class="item-inner flm">
                                             <div class="item-title flm">
@@ -86,8 +86,8 @@
                                 <a href="#" id="dang-xuat" class="item-link panel-close flm">
                                     <div class="item-content flm">
                                         <div class="item-media flm"><i
-                                                class="icon f7-icons ios-only  text-color-orange">exit</i>
-                                            <i class="icon material-icons md-only  text-color-orange">exit_to_app</i>
+                                                class="icon f7-icons ios-only  text-color-deeporange">exit</i>
+                                            <i class="icon material-icons md-only  text-color-deeporange">exit_to_app</i>
                                         </div>
                                         <div class="item-inner flm">
                                             <div class="item-title flm">
@@ -127,8 +127,8 @@
             </div>
         </div>
         <div class="view view-main view-init ios-edges" data-url="/">
-            <div class="page">
-                <div class="navbar">
+            <div class="page color-theme-orange">
+                <div class="navbar color-theme-orange">
                     <div class="navbar-inner">
                         <div class="left">
                             <a href="#" class="link icon-only panel-open" data-panel="left">
@@ -150,9 +150,9 @@
                 <div class="toolbar tabbar tabbar-labels toolbar-top bg-color-gray">
                     <div class="toolbar-inner">
                         <a href="#waitList" class="tab-link tab-link-active bill-wait"><i
-                                class="icon f7-icons ios-only">document_fill<span class="badge"><span
+                                class="icon f7-icons ios-only">document_fill<span class="badge  color-blue"><span
                                         class="count-wait">0</span></span></i>
-                            <i class="icon material-icons md-only">assignment_returned<span class="badge"><span
+                            <i class="icon material-icons md-only">assignment_returned<span class="badge color-blue"><span
                                         class="count-wait">0</span></span></i>
                             <span class="tabbar-label">Đang nhận</span></a>
                         <a href="#finishList" class="tab-link bill-finish"><i
@@ -273,7 +273,7 @@
                             <ul>
                                 <li style="margin:10px">
                                     <a href="#"
-                                        class="button button-big button-raised button-fill list-button login-button color-orange"
+                                        class="button button-big button-raised button-fill list-button login-button color-deeporange"
                                         style="color:white">ĐĂNG
                                         NHẬP</a>
                                 </li>
@@ -302,12 +302,12 @@
     <script src="js/dx.messages.vi.js"></script>
     <script src="js/dx.messages.en.js"></script>
 
-    <script src="framework7/js/framework7.min.js"></script>
+    <script src="framework7/js/framework7.js"></script>
     <script src="framework7/js/framework7.keypad.js"></script>
     <script src="js/routes.js"></script>
     <script src="js/app.js"></script>
     <script src="js/master.js"></script>
-    <script src="js/jquery.number.min.js"></script>
+
     <script>
         DevExpress.localization.locale("vi");
 
@@ -321,7 +321,8 @@
 
         // Callback function to execute when mutations are observed
         var callback = function (mutationsList, observer) {
-            for (var mutation of mutationsList) {
+            for (var i=0; i<mutationsList.length; i++) {
+                var mutation = mutationsList[i];
                 if (mutation.type == 'childList') {
                     //console.log(mutation);
 

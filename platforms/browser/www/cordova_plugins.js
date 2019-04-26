@@ -25,6 +25,28 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-badge/www/badge.js",
+        "id": "cordova-plugin-badge.Badge",
+        "pluginId": "cordova-plugin-badge",
+        "clobbers": [
+            "cordova.plugins.notification.badge"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-badge/src/browser/favico.min.js",
+        "id": "cordova-plugin-badge.Badge.Favico",
+        "pluginId": "cordova-plugin-badge",
+        "clobbers": [
+            "cordova.plugins.notification.badge.Favico"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-badge/src/browser/BadgeProxy.js",
+        "id": "cordova-plugin-badge.Badge.Proxy",
+        "pluginId": "cordova-plugin-badge",
+        "runs": true
+    },
+    {
         "file": "plugins/cordova-plugin-calllog/www/calllog.js",
         "id": "cordova-plugin-calllog.CallLog",
         "pluginId": "cordova-plugin-calllog",
@@ -546,28 +568,6 @@ module.exports = [
         "runs": true
     },
     {
-        "file": "plugins/cordova-plugin-badge/www/badge.js",
-        "id": "cordova-plugin-badge.Badge",
-        "pluginId": "cordova-plugin-badge",
-        "clobbers": [
-            "cordova.plugins.notification.badge"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-badge/src/browser/favico.min.js",
-        "id": "cordova-plugin-badge.Badge.Favico",
-        "pluginId": "cordova-plugin-badge",
-        "clobbers": [
-            "cordova.plugins.notification.badge.Favico"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-badge/src/browser/BadgeProxy.js",
-        "id": "cordova-plugin-badge.Badge.Proxy",
-        "pluginId": "cordova-plugin-badge",
-        "runs": true
-    },
-    {
         "file": "plugins/phonegap-plugin-push/www/push.js",
         "id": "phonegap-plugin-push.PushNotification",
         "pluginId": "phonegap-plugin-push",
@@ -590,11 +590,12 @@ module.exports.metadata =
     "code-push": "2.0.6",
     "cordova-call": "1.1.6",
     "cordova-plugin-app-version": "0.1.9",
+    "cordova-plugin-badge": "0.8.8",
     "cordova-plugin-calllog": "1.2.2",
     "cordova-plugin-camera": "4.0.3",
     "cordova-plugin-dialogs": "2.0.1",
     "cordova-plugin-device": "2.0.2",
-    "cordova-plugin-code-push": "1.11.17",
+    "cordova-plugin-code-push": "1.11.18",
     "cordova-plugin-file": "6.0.1",
     "cordova-plugin-file-transfer": "1.7.1",
     "cordova-plugin-geolocation": "4.0.1",
@@ -608,8 +609,9 @@ module.exports.metadata =
     "cordova-plugin-vibration": "3.1.0",
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-plugin-zip": "3.1.0",
+    "cordova-support-google-services": "1.1.0",
     "phonegap-plugin-barcodescanner": "8.0.1",
-    "cordova-plugin-badge": "0.8.8",
+    "phonegap-plugin-multidex": "1.0.0",
     "phonegap-plugin-push": "2.2.3"
 }
 // BOTTOM OF METADATA

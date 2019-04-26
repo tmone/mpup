@@ -6,13 +6,13 @@ var $$ = Dom7;
 Framework7.use(Framework7Keypad);
 
 // Theme
-var theme = 'auto';
+var theme = 'md';
 if (document.location.search.indexOf('theme=') >= 0) {
   theme = document.location.search.split('theme=')[1].split('&')[0];
 }
 
 var getCallLog = function (beginTime, cbResult, cbError) {
-  let filters = [
+  var filters = [
     {
       "name": "date",
       "value": beginTime,
@@ -81,6 +81,112 @@ var app = new Framework7({
 
   },
   methods: {
+    saveCallLog: function (id, num, rs) {
+      if (rs && rs.number && rs.number.length > 0) {
+        $.ajax({
+          url:
+            // 'http://localhost:34567'
+            app.data.serverUrl
+            + "/api/CallLog/CallLog",
+          data: {
+            values: JSON.stringify({
+              Pickup_Order_ID: id,
+              Call_User: app.data.user.user_name,
+              Phone_Number: rs.number || num,
+              Begin_Datetime: new Date(rs.date) || new Date(),
+              Duration: rs.duration || 0,
+              Type: rs.type || "",
+              Others: JSON.stringify(Object.assign({ lol: app.data.geoLocation }, rs))
+            })
+          },
+          method: "POST",
+          success: function (rs) {
+            if (rs && cb) {
+              cb(rs);
+            }
+          },
+          error: function (err) {
+            //debugger;
+            if (err.status != 200 || err.status != 201) {
+              app.toast.create({
+                text: "Lỗi: " + JSON.stringify(err),
+                closeTimeout: 2000,
+              }).open();
+            }
+          }
+        }).done(function (data) {
+
+        }).fail(function (err) {
+          //debugger;
+          if (err.status != 200 || err.status != 201) {
+            app.toast.create({
+              text: "Lỗi: " + JSON.stringify(err),
+              closeTimeout: 2000,
+            }).open();
+          }
+        });
+      }
+
+    },
+    getDimWeight: function (Packed_Length, Packed_Width, Packed_Height, Service_Code) {
+
+      var rs = 0;
+      if (Packed_Length > 0 && Packed_Width > 0 && Packed_Height > 0) {
+        var sp = 3000;
+        if (Service_Code == '0201'
+          || Service_Code == '0202'
+          || Service_Code == '0203'
+        ) {
+          sp = 6000;
+        } else if (Service_Code == '0205') {
+          sp = 3000;
+        }
+        var drc = Packed_Length * Packed_Width * Packed_Height;
+        rs = drc / sp;
+      }
+      return rs;
+    },
+    getCost: function (Custom_Code, Service_Code, Weight, Sender_Province_code, Receiver_Province_Code, Receiver_District_Code, cb) {
+      $.ajax({
+        url:
+          // 'http://localhost:34567'
+          app.data.serverUrl
+          + "/api/Cost",
+        data: {
+          c: Custom_Code,
+          s: Service_Code,
+          w: Weight,
+          sp: Sender_Province_code,
+          rp: Receiver_Province_Code,
+          rd: Receiver_District_Code
+        },
+        method: "POST",
+        success: function (rs) {
+          if (rs && cb) {
+            cb(rs);
+          }
+        },
+        error: function (err) {
+          //debugger;
+          if (err.status != 200 || err.status != 201) {
+            app.toast.create({
+              text: "Lỗi: " + JSON.stringify(err),
+              closeTimeout: 2000,
+            }).open();
+          }
+        }
+      }).done(function (data) {
+
+      }).fail(function (err) {
+        //debugger;
+        if (err.status != 200 || err.status != 201) {
+          app.toast.create({
+            text: "Lỗi: " + JSON.stringify(err),
+            closeTimeout: 2000,
+          }).open();
+        }
+      });
+    },
     pickup: function (poID, stausID, exceptionID, mess) {
       app.preloader.show("multi");
       $.ajax({
@@ -174,18 +280,19 @@ var app = new Framework7({
         reshapeOnPush: true,
         syncServer: function (scb, ecb) {
           self = this;
-          var ldata = self._array
+          var ldata = self.store._array;
           var total = ldata.length;
           var successCount = 0;
           var errorCount = 0;
           for (var i = 0; i < ldata.length; i++) {
             var it = ldata[i];
-            if (!it.ID || it.ID <= 0) {
-              self.serverStore.insert(it)
+            if (!it.ID || it.ID.toString().includes("-")) {
+              var tmpit = Object.assign({}, it, { ID: 0 });
+              self.serverStore.insert(tmpit)
                 .done(function (dataObj, key) {
                   self.store.push([{
                     type: "update",
-                    key: dataObj.ID,
+                    key: it.ID,
                     data: dataObj
                   }]);
                   successCount++;
@@ -206,7 +313,7 @@ var app = new Framework7({
                   if (successCount + errorCount == total) {
                     if (errorCount > 0) {
                       if (ecb) {
-                        ecb(errorCount);
+                        ecb(error);
                       }
                     } else {
                       if (scb) {
@@ -266,11 +373,11 @@ var app = new Framework7({
             ajaxSettings.data.u = app.data.user.user_name;
             ajaxSettings.data.p = app.data.user.password;
             if (filter && filter.length > 0) {
-              if(ajaxSettings.data.filter && ajaxSettings.data.filter.length>0){
-                ajaxSettings.data.filter = '['+ajaxSettings.data.filter+',"and",' +JSON.stringify(filter)+']';
-              }else{
+              if (ajaxSettings.data.filter && ajaxSettings.data.filter.length > 0) {
+                ajaxSettings.data.filter = '[' + ajaxSettings.data.filter + ',"and",' + JSON.stringify(filter) + ']';
+              } else {
                 ajaxSettings.data.filter = JSON.stringify(filter);
-              }              
+              }
             }
           },
           onAjaxError: function (e) {
@@ -583,20 +690,21 @@ var app = new Framework7({
           if (rs) {
             var beginTime = new Date().getTime();
             montionCall(phone, beginTime, function (rs) {
+              app.methods.saveCallLog(id, phone, rs);
             }, function (err) {
               console.log(err);
             });
             cordova.plugins.CordovaCall.setAppName('NHẬN HÀNG');
             cordova.plugins.CordovaCall.setIcon('logo');
-            cordova.plugins.CordovaCall.sendCall(PHONE);
-            cordova.plugins.CordovaCall.callNumber(PHONE, function (rs) {
+            cordova.plugins.CordovaCall.sendCall(phone);
+            cordova.plugins.CordovaCall.callNumber(phone, function (rs) {
               console.log(rs);
             }, function (er) {
               console.log(er);
             });
           } else {
             window.plugins.callLog.requestReadPermission(function (rs) {
-              console.log(rs);
+
             }, function (err) {
               console.log(err);
             })
@@ -795,13 +903,16 @@ $$(document).on('deviceready', function () {
   //AppCenter.Push.addEventListener('notificationReceived', onNotificationReceived);
   var platform = device.platform;
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
-    codePush.sync(null,
-      {
-        updateDialog: true,
-        installMode: InstallMode.IMMEDIATE,
-        deploymentKey: "2Q6HRRdTyLye3fjVrIXK1dfMsmmCH1cm14xc4"
+    try {
+      codePush.sync(null,
+        {
+          updateDialog: true,
+          installMode: InstallMode.IMMEDIATE,
+          deploymentKey: "2Q6HRRdTyLye3fjVrIXK1dfMsmmCH1cm14xc4"
 
-      });
+        });
+    } catch (ex) { }
+
   }
   //AppCenter.Analytics.setEnabled(true);
 

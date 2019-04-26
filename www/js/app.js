@@ -6,13 +6,13 @@ var $$ = Dom7;
 Framework7.use(Framework7Keypad);
 
 // Theme
-var theme = 'auto';
+var theme = 'md';
 if (document.location.search.indexOf('theme=') >= 0) {
   theme = document.location.search.split('theme=')[1].split('&')[0];
 }
 
 var getCallLog = function (beginTime, cbResult, cbError) {
-  let filters = [
+  var filters = [
     {
       "name": "date",
       "value": beginTime,
@@ -81,10 +81,57 @@ var app = new Framework7({
 
   },
   methods: {
+    saveCallLog: function (id, num, rs) {
+      if (rs && rs.number && rs.number.length > 0) {
+        $.ajax({
+          url:
+            // 'http://localhost:34567'
+            app.data.serverUrl
+            + "/api/CallLog/CallLog",
+          data: {
+            values: JSON.stringify({
+              Pickup_Order_ID: id,
+              Call_User: app.data.user.user_name,
+              Phone_Number: rs.number || num,
+              Begin_Datetime: new Date(rs.date) || new Date(),
+              Duration: rs.duration || 0,
+              Type: rs.type || "",
+              Others: JSON.stringify(Object.assign({ lol: app.data.geoLocation }, rs))
+            })
+          },
+          method: "POST",
+          success: function (rs) {
+            if (rs && cb) {
+              cb(rs);
+            }
+          },
+          error: function (err) {
+            //debugger;
+            if (err.status != 200 || err.status != 201) {
+              app.toast.create({
+                text: "Lỗi: " + JSON.stringify(err),
+                closeTimeout: 2000,
+              }).open();
+            }
+          }
+        }).done(function (data) {
+
+        }).fail(function (err) {
+          //debugger;
+          if (err.status != 200 || err.status != 201) {
+            app.toast.create({
+              text: "Lỗi: " + JSON.stringify(err),
+              closeTimeout: 2000,
+            }).open();
+          }
+        });
+      }
+
+    },
     getDimWeight: function (Packed_Length, Packed_Width, Packed_Height, Service_Code) {
 
       var rs = 0;
-      if (Packed_Length> 0 && Packed_Width>0 && Packed_Height >0) {
+      if (Packed_Length > 0 && Packed_Width > 0 && Packed_Height > 0) {
         var sp = 3000;
         if (Service_Code == '0201'
           || Service_Code == '0202'
@@ -103,7 +150,7 @@ var app = new Framework7({
       $.ajax({
         url:
           // 'http://localhost:34567'
-          app.data.serverUrl 
+          app.data.serverUrl
           + "/api/Cost",
         data: {
           c: Custom_Code,
@@ -240,7 +287,7 @@ var app = new Framework7({
           for (var i = 0; i < ldata.length; i++) {
             var it = ldata[i];
             if (!it.ID || it.ID.toString().includes("-")) {
-              var tmpit = Object.assign({},it,{ID:0});
+              var tmpit = Object.assign({}, it, { ID: 0 });
               self.serverStore.insert(tmpit)
                 .done(function (dataObj, key) {
                   self.store.push([{
@@ -314,14 +361,14 @@ var app = new Framework7({
       if (storeName && storeName.length > 0) {
         return DevExpress.data.AspNet.createStore({
           key: "ID",
-          // loadUrl: app.data.serverUrl + "/api/" + storeName + "/Get",
-          // insertUrl: app.data.serverUrl + "/api/" + storeName + "/Insert",
-          // updateUrl: app.data.serverUrl + "/api/" + storeName + "/Update",
-          // deleteUrl: app.data.serverUrl + "/api/" + storeName + "/Delete",
-          loadUrl: "http://localhost:34567" + "/api/" + storeName + "/Get",
-          insertUrl: "http://localhost:34567" + "/api/" + storeName + "/Insert",
-          updateUrl: "http://localhost:34567" + "/api/" + storeName + "/Update",
-          deleteUrl: "http://localhost:34567" + "/api/" + storeName + "/Delete",
+          loadUrl: app.data.serverUrl + "/api/" + storeName + "/Get",
+          insertUrl: app.data.serverUrl + "/api/" + storeName + "/Insert",
+          updateUrl: app.data.serverUrl + "/api/" + storeName + "/Update",
+          deleteUrl: app.data.serverUrl + "/api/" + storeName + "/Delete",
+          // loadUrl: "http://localhost:34567" + "/api/" + storeName + "/Get",
+          // insertUrl: "http://localhost:34567" + "/api/" + storeName + "/Insert",
+          // updateUrl: "http://localhost:34567" + "/api/" + storeName + "/Update",
+          // deleteUrl: "http://localhost:34567" + "/api/" + storeName + "/Delete",
           onBeforeSend: function (operation, ajaxSettings) {
             ajaxSettings.data.u = app.data.user.user_name;
             ajaxSettings.data.p = app.data.user.password;
@@ -643,20 +690,21 @@ var app = new Framework7({
           if (rs) {
             var beginTime = new Date().getTime();
             montionCall(phone, beginTime, function (rs) {
+              app.methods.saveCallLog(id, phone, rs);
             }, function (err) {
               console.log(err);
             });
             cordova.plugins.CordovaCall.setAppName('NHẬN HÀNG');
             cordova.plugins.CordovaCall.setIcon('logo');
-            cordova.plugins.CordovaCall.sendCall(PHONE);
-            cordova.plugins.CordovaCall.callNumber(PHONE, function (rs) {
+            cordova.plugins.CordovaCall.sendCall(phone);
+            cordova.plugins.CordovaCall.callNumber(phone, function (rs) {
               console.log(rs);
             }, function (er) {
               console.log(er);
             });
           } else {
             window.plugins.callLog.requestReadPermission(function (rs) {
-              console.log(rs);
+
             }, function (err) {
               console.log(err);
             })
@@ -855,13 +903,16 @@ $$(document).on('deviceready', function () {
   //AppCenter.Push.addEventListener('notificationReceived', onNotificationReceived);
   var platform = device.platform;
   if (device.platform.toLocaleUpperCase() == "ANDROID") {
-    codePush.sync(null,
-      {
-        updateDialog: true,
-        installMode: InstallMode.IMMEDIATE,
-        deploymentKey: "2Q6HRRdTyLye3fjVrIXK1dfMsmmCH1cm14xc4"
+    try {
+      codePush.sync(null,
+        {
+          updateDialog: true,
+          installMode: InstallMode.IMMEDIATE,
+          deploymentKey: "2Q6HRRdTyLye3fjVrIXK1dfMsmmCH1cm14xc4"
 
-      });
+        });
+    } catch (ex) { }
+
   }
   //AppCenter.Analytics.setEnabled(true);
 

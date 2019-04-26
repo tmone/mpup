@@ -1,5 +1,5 @@
 /**
- * Framework7 3.6.3
+ * Framework7 3.5.2
  * Full featured mobile HTML framework for building iOS & Android apps
  * http://framework7.io/
  *
@@ -7,14 +7,14 @@
  *
  * Released under the MIT License
  *
- * Released on: December 27, 2018
+ * Released on: November 12, 2018
  */
 
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
-  global.Framework7 = factory();
-}(typeof self !== 'undefined' ? self : this, function () { 'use strict';
+  (global.Framework7 = factory());
+}(this, (function () { 'use strict';
 
   /**
    * Template7 1.4.0
@@ -2834,7 +2834,7 @@
     // Windows
     if (windowsPhone) {
       device.os = 'windows';
-      device.osVersion = windowsPhone[2];
+      device.osVersion = windows[2];
       device.windowsPhone = true;
     }
     // Android
@@ -3632,7 +3632,7 @@
     return {
       positionSticky: positionSticky,
       touch: (function checkTouch() {
-        return !!((win.navigator.maxTouchPoints > 0) || ('ontouchstart' in win) || (win.DocumentTouch && doc instanceof win.DocumentTouch));
+        return !!(('ontouchstart' in win) || (win.DocumentTouch && doc instanceof win.DocumentTouch));
       }()),
 
       pointerEvents: !!(win.navigator.pointerEnabled || win.PointerEvent || ('maxTouchPoints' in win.navigator)),
@@ -4502,10 +4502,6 @@
             e.preventDefault();
           }
         }
-        if (params.activeState) { removeActive(); }
-        if (useRipple) {
-          rippleTouchEnd();
-        }
         return true;
       }
 
@@ -4523,9 +4519,6 @@
 
       if ((touchEndTime - lastClickTime) < params.fastClicksDelayBetweenClicks) {
         setTimeout(removeActive, 0);
-        if (useRipple) {
-          rippleTouchEnd();
-        }
         return true;
       }
 
@@ -5797,9 +5790,9 @@
     if ( forwardOptions === void 0 ) forwardOptions = {};
 
     var router = this;
-    var $el = $(el);
     var app = router.app;
     var view = router.view;
+
     var options = Utils.extend(false, {
       animate: router.params.animate,
       pushState: true,
@@ -5848,19 +5841,13 @@
     var separateNavbar = router.separateNavbar;
 
     var $viewEl = router.$el;
-    var $newPage = $el;
+    var $newPage = $(el);
     var reload = options.reloadPrevious || options.reloadCurrent || options.reloadAll;
     var $oldPage;
 
     var $navbarEl;
     var $newNavbarInner;
     var $oldNavbarInner;
-
-    router.allowPageChange = false;
-    if ($newPage.length === 0) {
-      router.allowPageChange = true;
-      return router;
-    }
 
     if ($newPage.length) {
       // Remove theme elements
@@ -5881,11 +5868,10 @@
       }
     }
 
-    // Save Keep Alive Cache
-    if (options.route && options.route.route && options.route.route.keepAlive && !options.route.route.keepAliveData) {
-      options.route.route.keepAliveData = {
-        pageEl: $el[0],
-      };
+    router.allowPageChange = false;
+    if ($newPage.length === 0) {
+      router.allowPageChange = true;
+      return router;
     }
 
     // Pages In View
@@ -6059,9 +6045,6 @@
       }
     }
     if (!newPageInDom) {
-      router.pageCallback('mounted', $newPage, $newNavbarInner, newPagePosition, reload ? newPagePosition : 'current', options, $oldPage);
-    } else if (options.route && options.route.route && options.route.route.keepAlive && !$newPage[0].f7PageMounted) {
-      $newPage[0].f7PageMounted = true;
       router.pageCallback('mounted', $newPage, $newNavbarInner, newPagePosition, reload ? newPagePosition : 'current', options, $oldPage);
     }
 
@@ -6406,11 +6389,10 @@
 
     var options = {};
     if (route.route.options) {
-      Utils.extend(options, route.route.options, navigateOptions);
+      Utils.extend(options, route.route.options, navigateOptions, { route: route });
     } else {
-      Utils.extend(options, navigateOptions);
+      Utils.extend(options, navigateOptions, { route: route });
     }
-    options.route = route;
 
     if (options && options.context) {
       route.context = options.context;
@@ -6425,16 +6407,12 @@
           router.modalLoad(modalLoadProp, route, options);
         }
       });
-      if (route.route.keepAlive && route.route.keepAliveData) {
-        router.load({ el: route.route.keepAliveData.pageEl }, options, false);
-        routerLoaded = true;
-      }
       ('url content component pageName el componentUrl template templateUrl').split(' ').forEach(function (pageLoadProp) {
         var obj;
 
         if (route.route[pageLoadProp] && !routerLoaded) {
           routerLoaded = true;
-          router.load(( obj = {}, obj[pageLoadProp] = route.route[pageLoadProp], obj ), options, false);
+          router.load(( obj = {}, obj[pageLoadProp] = route.route[pageLoadProp], obj ), options);
         }
       });
       if (routerLoaded) { return; }
@@ -6682,12 +6660,10 @@
       }
     }
 
-    var hasContentLoadProp;
     ('url content component el componentUrl template templateUrl').split(' ').forEach(function (tabLoadProp) {
       var obj;
 
       if (tabRoute[tabLoadProp]) {
-        hasContentLoadProp = true;
         loadTab(( obj = {}, obj[tabLoadProp] = tabRoute[tabLoadProp], obj ), options);
       }
     });
@@ -6701,8 +6677,6 @@
     }
     if (tabRoute.async) {
       tabRoute.async.call(router, currentRoute, previousRoute, asyncResolve, asyncReject);
-    } else if (!hasContentLoadProp) {
-      router.allowPageChange = true;
     }
 
     return router;
@@ -6930,7 +6904,6 @@
 
   function backward(el, backwardOptions) {
     var router = this;
-    var $el = $(el);
     var app = router.app;
     var view = router.view;
 
@@ -6942,7 +6915,7 @@
     var dynamicNavbar = router.dynamicNavbar;
     var separateNavbar = router.separateNavbar;
 
-    var $newPage = $el;
+    var $newPage = $(el);
     var $oldPage = router.$el.children('.page-current');
 
     if ($newPage.length) {
@@ -6980,13 +6953,6 @@
     // Remove theme elements
     router.removeThemeElements($newPage);
 
-    // Save Keep Alive Cache
-    if (options.route && options.route.route && options.route.route.keepAlive && !options.route.route.keepAliveData) {
-      options.route.route.keepAliveData = {
-        pageEl: $el[0],
-      };
-    }
-
     // New Page
     $newPage
       .addClass('page-previous')
@@ -7001,6 +6967,7 @@
         .removeClass('stacked')
         .removeAttr('aria-hidden');
     }
+
 
     // Remove previous page in case of "forced"
     var backIndex;
@@ -7088,9 +7055,6 @@
         }
       }
       if (!newPageInDom) {
-        router.pageCallback('mounted', $newPage, $newNavbarInner, 'previous', 'current', options, $oldPage);
-      } else if (options.route && options.route.route && options.route.route.keepAlive && !$newPage[0].f7PageMounted) {
-        $newPage[0].f7PageMounted = true;
         router.pageCallback('mounted', $newPage, $newNavbarInner, 'previous', 'current', options, $oldPage);
       }
     }
@@ -7493,11 +7457,10 @@
 
     var options = {};
     if (route.route.options) {
-      Utils.extend(options, route.route.options, navigateOptions);
+      Utils.extend(options, route.route.options, navigateOptions, { route: route });
     } else {
-      Utils.extend(options, navigateOptions);
+      Utils.extend(options, navigateOptions, { route: route });
     }
-    options.route = route;
 
     if (options && options.context) {
       route.context = options.context;
@@ -7518,10 +7481,6 @@
     }
     function resolve() {
       var routerLoaded = false;
-      if (route.route.keepAlive && route.route.keepAliveData) {
-        router.loadBack({ el: route.route.keepAliveData.pageEl }, options);
-        routerLoaded = true;
-      }
       ('url content component pageName el componentUrl template templateUrl').split(' ').forEach(function (pageLoadProp) {
         var obj;
 
@@ -7585,15 +7544,16 @@
     return router;
   }
 
-  function clearPreviousPages() {
+  function clearPreviousHistory() {
     var router = this;
     var app = router.app;
     var separateNavbar = router.separateNavbar;
+    var url = router.history[router.history.length - 1];
 
     var $currentPageEl = $(router.currentPageEl);
 
     var $pagesToRemove = router.$el
-      .children('.page')
+      .children('.page:not(.stacked)')
       .filter(function (index, pageInView) { return pageInView !== $currentPageEl[0]; });
 
     $pagesToRemove.each(function (index, pageEl) {
@@ -7613,13 +7573,6 @@
         }
       }
     });
-  }
-
-  function clearPreviousHistory() {
-    var router = this;
-    var url = router.history[router.history.length - 1];
-
-    router.clearPreviousPages();
 
     router.history = [url];
     router.view.history = [url];
@@ -8031,13 +7984,7 @@
     };
 
     Router.prototype.removePage = function removePage (el) {
-      var $el = $(el);
-      var f7Page = $el && $el[0] && $el[0].f7Page;
       var router = this;
-      if (f7Page && f7Page.route && f7Page.route.route && f7Page.route.route.keepAlive) {
-        $el.remove();
-        return;
-      }
       router.removeEl(el);
     };
 
@@ -8615,6 +8562,9 @@
         pageFrom: pageFrom,
       };
 
+      if ($navbarEl && $navbarEl[0]) {
+        $navbarEl[0].f7Page = page;
+      }
       $pageEl[0].f7Page = page;
       return page;
     };
@@ -8629,11 +8579,6 @@
       if (!$pageEl.length) { return; }
       var route = options.route;
       var restoreScrollTopOnBack = router.params.restoreScrollTopOnBack;
-      var keepAlive = $pageEl[0].f7Page && $pageEl[0].f7Page.route && $pageEl[0].f7Page.route.route && $pageEl[0].f7Page.route.route.keepAlive;
-
-      if (callback === 'beforeRemove' && keepAlive) {
-        callback = 'beforeUnmount'; // eslint-disable-line
-      }
 
       var camelName = "page" + (callback[0].toUpperCase() + callback.slice(1, callback.length));
       var colonName = "page:" + (callback.toLowerCase());
@@ -8742,14 +8687,12 @@
       $pageEl.trigger(colonName, page);
       router.emit(camelName, page);
 
-      if (callback === 'beforeRemove' || callback === 'beforeUnmount') {
+      if (callback === 'beforeRemove') {
         detachEvents();
-        if (!keepAlive) {
-          if ($pageEl[0].f7Page && $pageEl[0].f7Page.navbarEl) {
-            delete $pageEl[0].f7Page.navbarEl.f7Page;
-          }
-          $pageEl[0].f7Page = null;
+        if ($pageEl[0].f7Page && $pageEl[0].f7Page.navbarEl) {
+          delete $pageEl[0].f7Page.navbarEl.f7Page;
         }
+        $pageEl[0].f7Page = null;
       }
     };
 
@@ -9034,8 +8977,6 @@
   Router.prototype.backward = backward;
   Router.prototype.loadBack = loadBack;
   Router.prototype.back = back;
-  // Clear previoius pages from the DOM
-  Router.prototype.clearPreviousPages = clearPreviousPages;
   // Clear history
   Router.prototype.clearPreviousHistory = clearPreviousHistory;
 
@@ -9218,17 +9159,17 @@
 
   function initClicks(app) {
     function handleClicks(e) {
-      var $clickedEl = $(e.target);
-      var $clickedLinkEl = $clickedEl.closest('a');
-      var isLink = $clickedLinkEl.length > 0;
-      var url = isLink && $clickedLinkEl.attr('href');
-      var isTabLink = isLink && $clickedLinkEl.hasClass('tab-link') && ($clickedLinkEl.attr('data-tab') || (url && url.indexOf('#') === 0));
+      var clicked = $(e.target);
+      var clickedLink = clicked.closest('a');
+      var isLink = clickedLink.length > 0;
+      var url = isLink && clickedLink.attr('href');
+      var isTabLink = isLink && clickedLink.hasClass('tab-link') && (clickedLink.attr('data-tab') || (url && url.indexOf('#') === 0));
 
       // Check if link is external
       if (isLink) {
         // eslint-disable-next-line
-        if ($clickedLinkEl.is(app.params.clicks.externalLinks) || (url && url.indexOf('javascript:') >= 0)) {
-          var target = $clickedLinkEl.attr('target');
+        if (clickedLink.is(app.params.clicks.externalLinks) || (url && url.indexOf('javascript:') >= 0)) {
+          var target = clickedLink.attr('target');
           if (
             url
             && win.cordova
@@ -9247,7 +9188,7 @@
         var moduleClicks = app.modules[moduleName].clicks;
         if (!moduleClicks) { return; }
         Object.keys(moduleClicks).forEach(function (clickSelector) {
-          var matchingClickedElement = $clickedEl.closest(clickSelector).eq(0);
+          var matchingClickedElement = clicked.closest(clickSelector).eq(0);
           if (matchingClickedElement.length > 0) {
             moduleClicks[clickSelector].call(app, matchingClickedElement, matchingClickedElement.dataset());
           }
@@ -9258,16 +9199,16 @@
       var clickedLinkData = {};
       if (isLink) {
         e.preventDefault();
-        clickedLinkData = $clickedLinkEl.dataset();
+        clickedLinkData = clickedLink.dataset();
       }
       var validUrl = url && url.length > 0 && url !== '#' && !isTabLink;
-      if (validUrl || $clickedLinkEl.hasClass('back')) {
+      if (validUrl || clickedLink.hasClass('back')) {
         var view;
         if (clickedLinkData.view) {
           view = $(clickedLinkData.view)[0].f7View;
         } else {
-          view = $clickedEl.parents('.view')[0] && $clickedEl.parents('.view')[0].f7View;
-          if (!$clickedLinkEl.hasClass('back') && view && view.params.linksView) {
+          view = clicked.parents('.view')[0] && clicked.parents('.view')[0].f7View;
+          if (!clickedLink.hasClass('back') && view && view.params.linksView) {
             if (typeof view.params.linksView === 'string') { view = $(view.params.linksView)[0].f7View; }
             else if (view.params.linksView instanceof View) { view = view.params.linksView; }
           }
@@ -9283,10 +9224,7 @@
             // something wrong there
           }
         }
-        if ($clickedLinkEl[0].f7RouteProps) {
-          clickedLinkData.props = $clickedLinkEl[0].f7RouteProps;
-        }
-        if ($clickedLinkEl.hasClass('back')) { view.router.back(url, clickedLinkData); }
+        if (clickedLink.hasClass('back')) { view.router.back(url, clickedLinkData); }
         else { view.router.navigate(url, clickedLinkData); }
       }
     }
@@ -11216,16 +11154,7 @@
         $navbarInnerEl = $navbarInnerEl.find('.navbar-inner');
         if ($navbarInnerEl.length > 1) { return undefined; }
       }
-      if ($navbarInnerEl.parents('.page').length) {
-        return $navbarInnerEl.parents('.page')[0];
-      }
-      var pageEl;
-      $navbarInnerEl.parents('.view').find('.page').each(function (index, el) {
-        if (el && el.f7Page && el.f7Page.navbarEl && $navbarInnerEl[0] === el.f7Page.navbarEl) {
-          pageEl = el;
-        }
-      });
-      return pageEl;
+      return $navbarInnerEl[0].f7Page;
     },
     initHideNavbarOnScroll: function initHideNavbarOnScroll(pageEl, navbarInnerEl) {
       var app = this;
@@ -11289,7 +11218,6 @@
           hide: Navbar.hide.bind(app),
           show: Navbar.show.bind(app),
           getElByPage: Navbar.getElByPage.bind(app),
-          getPageByEl: Navbar.getPageByEl.bind(app),
           initHideNavbarOnScroll: Navbar.initHideNavbarOnScroll.bind(app),
         },
       });
@@ -12137,4 +12065,4 @@
 
   return Framework7;
 
-}));
+})));

@@ -334,6 +334,10 @@
                 var self = this;
                 var poID = page.route.params.poID;
                 console.log(poID);
+                var store = app.methods.initCacher("Pickup_Order_Consignment", [
+                    "Pickup_Order_ID", "=", poID
+                ]);
+                self.store = store;
                 self.po = app.data.items.find(function (x) {
                     return x.ID == poID;
                 });
@@ -361,7 +365,7 @@
                     replaceLSM("Pickup_Order", self.po, "ID");
                     $$(".command-panel").hide();
                     $$(".create-panel").show();
-                    var pend = self.Bills.filter(function (x) {
+                    var pend = store.store._array.filter(function (x) {
                         var t = x.FINISH && x.FINISH > 0;
                         return !t;
                     });
@@ -410,10 +414,7 @@
                     app.router.back();
                 });
 
-                var store = app.methods.initCacher("Pickup_Order_Consignment", [
-                    "Pickup_Order_ID", "=", poID
-                ]);
-                self.store = store;
+               
 
                 $("#bill-list").dxDataGrid({
                     dataSource: store,
@@ -443,9 +444,9 @@
                                     //width: 136,
                                     elementAttr: {
                                         id: "finishID",
-                                        class: "text-color-orange"
+                                        class: "text-color-deeporange"
                                     },
-                                    icon: "dx-icon dx-icon-check text-color-orange",
+                                    icon: "dx-icon dx-icon-check text-color-deeporange",
                                     onClick: function (e) {
                                         var c = 0;
                                         var total = 0;
@@ -465,10 +466,10 @@
                                 options: {
                                     text: "Mới",
                                     //width: 136,
-                                    icon: "dx-icon dx-icon-add text-color-orange",
+                                    icon: "dx-icon dx-icon-add text-color-deeporange",
                                     elementAttr: {
                                         id: "addID",
-                                        class: "text-color-orange"
+                                        class: "text-color-deeporange"
                                     },
                                     onClick: function (e) {
                                         mainView.router.navigate("/poc/0/");

@@ -13,6 +13,9 @@
     "cordova-plugin-app-version": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
+    "cordova-plugin-badge": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
     "cordova-plugin-calllog": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
@@ -26,9 +29,6 @@
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
     "cordova-plugin-dialogs": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
-    "cordova-plugin-file": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
     "cordova-plugin-file-transfer": {
@@ -70,15 +70,21 @@
     "phonegap-plugin-barcodescanner": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     },
-    "cordova-plugin-badge": {
-      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
-    },
     "phonegap-plugin-push": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   },
   "dependent_plugins": {
     "code-push": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "cordova-support-google-services": {
+      "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
+    },
+    "phonegap-plugin-multidex": {
       "PACKAGE_NAME": "vn.com.kerryexpress.mpup"
     }
   }

@@ -511,7 +511,7 @@ module.exports.metadata =
   "cordova-plugin-camera": "4.0.3",
   "cordova-plugin-dialogs": "2.0.1",
   "cordova-plugin-device": "2.0.2",
-  "cordova-plugin-code-push": "1.11.17",
+  "cordova-plugin-code-push": "1.11.18",
   "cordova-plugin-file": "6.0.1",
   "cordova-plugin-file-transfer": "1.7.1",
   "cordova-plugin-geolocation": "4.0.1",

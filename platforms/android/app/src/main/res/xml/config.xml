@@ -118,7 +118,7 @@
     <preference name="phonegap-version" value="cli-8.1.1" />
     <preference name="android-build-tool" value="gradle" />
     <preference name="APP_SECRET" value="b1c44c87-d4d9-41d7-9fe0-0de3d6f777b2" />
-    <preference name="android-minSdkVersion" value="19" />
+    <preference name="android-minSdkVersion" value="22" />
     <preference name="SplashMaintainAspectRatio" value="true" />
     <preference name="SplashShowOnlyFirstTime" value="true" />
     <preference name="CodePushDeploymentKey" value="2Q6HRRdTyLye3fjVrIXK1dfMsmmCH1cm14xc4" />

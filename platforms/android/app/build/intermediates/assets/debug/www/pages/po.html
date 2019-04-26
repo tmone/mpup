@@ -155,7 +155,7 @@
                         </a>
                     </span>
                 </div>
-                <div class="card-footer">
+                <!-- <div class="card-footer">
                     <a class="button" href="/poc/0/">
                         <i class="icon f7-icons ios-only">add</i>
                         <i class="icon material-icons md-only">add</i>
@@ -169,11 +169,12 @@
                 </div>
                 <div class="card-header">
                     Tổng tiền cần thu <span class="right total-money format-number">0</span>
-                </div>
-                <div class="card-content card-content-padding">
+                </div> -->
+                <!-- <div class="card-content card-content-padding">
                     <div class="list virtual-list media-list chevron-center" id="bill-list">
                     </div>
-                </div>
+                </div> -->
+                <div id="bill-list"></div>
             </div>
 
         </div>
@@ -184,7 +185,7 @@
         margin: 10px 0;
     }
 </style>
-<script>
+<script type="text/javascript">
 
     var store = [];
 
@@ -278,6 +279,7 @@
             return {
                 po: {},
                 vl: null,
+                store: null,
             }
         },
         // Component Methods
@@ -296,7 +298,7 @@
                     $$(".create-panel").show();
                     $$(".scan4-panel").hide();
                 }
-            },            
+            },
         },
         // Lifecycle Hooks
         beforeCreate: function () {
@@ -332,6 +334,10 @@
                 var self = this;
                 var poID = page.route.params.poID;
                 console.log(poID);
+                var store = app.methods.initCacher("Pickup_Order_Consignment", [
+                    "Pickup_Order_ID", "=", poID
+                ]);
+                self.store = store;
                 self.po = app.data.items.find(function (x) {
                     return x.ID == poID;
                 });
@@ -359,7 +365,7 @@
                     replaceLSM("Pickup_Order", self.po, "ID");
                     $$(".command-panel").hide();
                     $$(".create-panel").show();
-                    var pend = self.Bills.filter(function (x) {
+                    var pend = store.store._array.filter(function (x) {
                         var t = x.FINISH && x.FINISH > 0;
                         return !t;
                     });
@@ -407,52 +413,103 @@
                     }).open();
                     app.router.back();
                 });
-                $$(".finish-create").on('click', function () {
-                    var total_money = 0;
 
-                    self.Bills.map(function (x) {
-                        total_money += x.Total_Charge || 0;
-                    });
+               
 
-                    app.dialog.confirm('Nhận thành công với ' + self.Bills.length + ' tổng số tiền <span style="color:orange"><strong>' + $.number(total_money) + '</strong></span>?', function () {
-                        app.methods.pickup(poID,3,0,'');
-                    });
+                $("#bill-list").dxDataGrid({
+                    dataSource: store,
+                    repaintChangesOnly: true,
+                    showBorders: true,
+                    showRowLines: true,
+                    paging: {
+                        enabled: false,
+                    },
+                    editing: {
+                        //mode: "cell",
+                        //refreshMode: "reshape",
+                        useIcons: true,
+                        //allowUpdating: true,
+                        allowDeleting: true,
+                        //allowAdding: true,
+                    },
+                    onToolbarPreparing: function (e) {
+                        var dataGrid = e.component;
 
-                });
-                //debugger;
-                self.vl = app.virtualList.create({
-                    el: '#bill-list',
-                    items: self.Bills,
-                    height: app.theme === 'ios' ? 63 : (app.theme === 'md' ? 73 : 46),
-                    itemTemplate:
-                        '<li>' +
-                        '    <a href="/poc/{{ID}}/" class="item-link item-content">' +
-                        '        <div class="item-inner">' +
-                        '            <div class="item-title-row">' +
-                        '                <div class="item-title">{{Consignment_No}}</div>' +
-                        '                <div class="item-after format-number">{{Total_Charge}}</div>' +
-                        '            </div>' +
-                        '            <div class="item-subtitle">HTTT: {{#js_if "this.Payment_Type ==\'NG\'"}}Đã thanh toán{{/js_if}}{{#js_if "this.Payment_Type ==\'NN\'"}}Người nhận{{/js_if}}{{#js_if "this.Payment_Type ==\'GS\'"}}Thanh toán sau{{/js_if}}</div>' +
-                        //'            <div class="item-text">' +
-                        //'               Đ/c: <span>{{Recipient_Address}}</span>' +
-                        //'            </div>' +
-                        //'            <div class="item-subtitle">' +
-                        //'               <span class="badge">{{Total_Package}}</span>' +
-                        //'               <span class="badge">{{Actual_Weight}}</span>' +
-                        //'               <span class="badge">{{Total_Charge}}</span>' +
-                        //'               <span class="badge">{{Declared_Value}}</span>' +
-                        //'            </div>' +
-                        '        </div>' +
-                        '    </a>' +
-                        '</li>',
-                    on: {
-                        itemsAfterInsert: function (virtualList, fragment) {
-                            $$(".virtual-list ul").css("height", "auto");
-                        }
+                        e.toolbarOptions.items.unshift(
+                            {
+                                location: "before",
+                                widget: "dxButton",
+                                options: {
+                                    text: "Hoàn thành",
+                                    //width: 136,
+                                    elementAttr: {
+                                        id: "finishID",
+                                        class: "text-color-deeporange"
+                                    },
+                                    icon: "dx-icon dx-icon-check text-color-deeporange",
+                                    onClick: function (e) {
+                                        var c = 0;
+                                        var total = 0;
+                                        for (var i = 0; i < store.store._array.length; i++) {
+                                            c++;
+                                            total += store.store._array[i].Total_Charge || 0;
+                                        }
+                                        app.dialog.confirm('Nhận thành công với ' + c + ' vđ. Tổng số tiền <span style="color:orange"><strong>' + $.number(total) + '</strong></span>?', function () {
+                                            app.methods.pickup(poID, 3, 0, '');
+                                        });
+                                    }
+                                }
+                            },
+                            {
+                                location: "after",
+                                widget: "dxButton",
+                                options: {
+                                    text: "Mới",
+                                    //width: 136,
+                                    icon: "dx-icon dx-icon-add text-color-deeporange",
+                                    elementAttr: {
+                                        id: "addID",
+                                        class: "text-color-deeporange"
+                                    },
+                                    onClick: function (e) {
+                                        mainView.router.navigate("/poc/0/");
+                                    }
+                                }
+                            },
+                        );
+                    },
+                    onRowClick: function(e){
+                        mainView.router.navigate("/poc/"+ e.key +"/");
+                    },
+                    columns: [
+                        {
+                            dataField: "Consignment_No",
+                            caption: "Số vận đơn",
+                            width: "60%",
+                        },
+                        {
+                            dataField: "Total_Charge",
+                            caption: "Số Tiền",
+                            dataType: "number",
+                            format: "###,##0",
+                            width: "40%",
+                        },
+                    ],                    
+                    summary: {
+                        recalculateWhileEditing: true,
+                        totalItems: [{
+                            column: "Consignment_No",
+                            summaryType: "count",
+                            valueFormat: "###,##0",
+                            displayFormat: "Tổng ({0})",
+                        }, {
+                            column: "Total_Charge",
+                            summaryType: "sum",
+                            valueFormat: "###,##0",
+                            displayFormat: "{0}",
+                        }]
                     }
                 });
-                $$(".virtual-list ul").css("height", "auto");
-                $(".format-number").number(true, 0);
             },
             pageBeforeIn: function (e, page) {
                 console.log('pageBeforeIn', page);

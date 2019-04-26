@@ -1,27 +1,27 @@
 {
-  "_from": "cordova-plugin-code-push",
-  "_id": "cordova-plugin-code-push@1.11.17",
+  "_from": "cordova-plugin-code-push@^1.11.17",
+  "_id": "cordova-plugin-code-push@1.11.18",
   "_inBundle": false,
-  "_integrity": "sha512-i2EOJuKxvCU3v78Bjj4a4aCV0LA9sBMg5Xa2/TwMe8V5mZ3xK0qW9tDx65gEauvvP+RIoc5iel4UAd18DL6e6g==",
+  "_integrity": "sha512-qm2zpal2rU7ZIYuhOz8NjV8Cn4ozHe/LyDlRayn1RdLWbL0D+jSyRXkQgKzdUbVFoY1PP4d5B6aj6wO7md1fmg==",
   "_location": "/cordova-plugin-code-push",
   "_phantomChildren": {},
   "_requested": {
-    "type": "tag",
+    "type": "range",
     "registry": true,
-    "raw": "cordova-plugin-code-push",
+    "raw": "cordova-plugin-code-push@^1.11.17",
     "name": "cordova-plugin-code-push",
     "escapedName": "cordova-plugin-code-push",
-    "rawSpec": "",
+    "rawSpec": "^1.11.17",
     "saveSpec": null,
-    "fetchSpec": "latest"
+    "fetchSpec": "^1.11.17"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/cordova-plugin-code-push/-/cordova-plugin-code-push-1.11.17.tgz",
-  "_shasum": "ea21866f6a8ba3189f6b43fc8185dee417a21c0a",
-  "_spec": "cordova-plugin-code-push",
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-code-push/-/cordova-plugin-code-push-1.11.18.tgz",
+  "_shasum": "9f24ee74f6fd1c56a378c3746f690dcca46c0a4d",
+  "_spec": "cordova-plugin-code-push@^1.11.17",
   "_where": "D:\\mpup",
   "author": {
     "name": "Microsoft Corporation"
@@ -83,5 +83,5 @@
     "type": "git",
     "url": "git+https://github.com/Microsoft/cordova-plugin-code-push.git"
   },
-  "version": "1.11.17"
+  "version": "1.11.18"
 }
