@@ -537,7 +537,8 @@ module.exports.metadata =
   "phonegap-plugin-barcodescanner": "8.0.1",
   "phonegap-plugin-multidex": "1.0.0",
   "phonegap-plugin-push": "2.2.3",
-  "cordova-sms-plugin": "1.0.0"
+  "cordova-sms-plugin": "1.0.0",
+  "cordova-plugin-crypto-file": "1.2.1"
 };
 // BOTTOM OF METADATA
 });

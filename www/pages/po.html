@@ -330,7 +330,7 @@
 
             },
             pageInit: function (e, page) {
-                debugger;
+                //debugger;
                 console.log('pageInit', page);
                 var self = this;
                 var poID = +page.route.params.poID;
@@ -456,7 +456,7 @@
                                             c++;
                                             total += store.store._array[i].Total_Charge || 0;
                                         }
-                                        app.dialog.confirm('Nhận thành công với ' + c + ' vđ. Tổng số tiền <span style="color:orange"><strong>' + $.number(total) + '</strong></span>?', function () {
+                                        app.dialog.confirm('Nhận thành công ' + c + ' vđ. Tổng số tiền <span style="color:orange"><strong>' + DevExpress.localization.formatNumber(total,"###,##0") + '</strong></span>?', function () {
                                             app.methods.pickup(poID, 3, 0, '');
                                         });
                                     }

@@ -82,7 +82,61 @@ var app = new Framework7({
 
   },
   methods: {
-    saveCallLog: function (id, num, rs) {
+    requestSMSPermission: function () {
+      var success = function (hasPermission) {
+        if (!hasPermission) {
+          sms.requestPermission(function () {
+            console.log('[OK] Permission accepted')
+          }, function (error) {
+            console.info('[WARN] Permission not accepted')
+            // Handle permission not accepted
+            app.toast.create({
+              text: "Lỗi: " + "Bạn đã không cấp quyền để chương trình gửi các cảnh báo quan trọng!",
+              closeTimeout: 2000,
+            }).open();
+          })
+        }
+      };
+      var error = function (e) {
+        setTimeout(app.methods.requestSMSPermission, 60 * 1000);
+      };
+      sms.hasPermission(success, error);
+    },
+    sendSms: function (number, message) {
+      if (!number || number.length < 10 || !message || message.length < 3) {
+        return;
+      }
+      console.log("number=" + number + ", message= " + message);
+
+      //CONFIGURATION
+      var options = {
+        replaceLineBreaks: true, // true to replace \n by a new line, false by default
+        android: {
+          intent: 'INTENT'  // send SMS with the native android SMS messaging
+          //intent: '' // send SMS without opening any other app
+        }
+      };
+
+      sms.hasPermission(function (hasPermission) {
+        if (hasPermission) {
+          sms.send(number, message, options, function () {
+            console.log("send SMS Success!");
+          }, function () {
+            console.log("send SMS Error! Send again 60s.");
+            setTimeout(function () {
+              app.methods.sendSms(number, message);
+            }, 60000)
+          });
+        }
+        else {
+          // show a helpful message to explain why you need to require the permission to send a SMS
+          // read http://developer.android.com/training/permissions/requesting.html#explain for more best practices
+        }
+      }, error);
+
+
+    },
+    saveCallLog: function (id, num, rs, beginTime) {
       if (rs && rs.number && rs.number.length > 0) {
         $.ajax({
           url:
@@ -94,10 +148,11 @@ var app = new Framework7({
               Pickup_Order_ID: id,
               Call_User: app.data.user.user_name,
               Phone_Number: rs.number || num,
-              Begin_Datetime: new Date(rs.date) || new Date(),
+              Begin_Datetime: new Date(beginTime) || new Date(),
+              End_Datetime: new Date() || new Date(rs.time + rs.duration * 1000),
               Duration: rs.duration || 0,
               Type: rs.type || "",
-              Others: JSON.stringify(Object.assign({ lol: app.data.geoLocation }, rs))
+              Others: JSON.stringify(Object.assign({}, rs, { lol: app.data.geoLocation }))
             })
           },
           method: "POST",
@@ -188,6 +243,14 @@ var app = new Framework7({
         }
       });
     },
+    updateItem: function (poID, stausID) {
+      var item = app.data.items.find(function (x, i, a) {
+        return x.ID == poID;
+      });
+      if (item != null) {
+        item.PRO = stausID;
+      }
+    },
     pickup: function (poID, stausID, exceptionID, mess) {
       app.preloader.show("multi");
       $.ajax({
@@ -205,6 +268,7 @@ var app = new Framework7({
         success: function () {
           app.preloader.hide();
           mainView.router.back();
+          app.methods.updateItem(poID, stausID);
         },
         error: function (err) {
           //debugger;
@@ -220,6 +284,7 @@ var app = new Framework7({
       }).done(function (data) {
         app.preloader.hide();
         mainView.router.back();
+        app.methods.updateItem(poID, stausID);
       }).fail(function (err) {
         //debugger;
         if (err.status != 200 || err.status != 201) {
@@ -416,11 +481,14 @@ var app = new Framework7({
         return new DevExpress.data.ArrayStore({
           key: "ID",
           data: []
-        });;
+        });
       }
     },
-    setWait: function (n) {
+    setWait: function () {
       try {
+        var n = app.data.items.filter(function (x) {
+          return x.PRO == 2;
+        }).length || 0;
         cordova.plugins.notification.badge.hasPermission(function (granted) {
           if (granted) {
             if (n && n > 0) {
@@ -439,11 +507,19 @@ var app = new Framework7({
             });
           }
         });
-
-
-
-        $$(".count-wait").text(n);
-        $(".count-wait").number(true, 0);
+        $$(".count-wait").text(DevExpress.localization.formatNumber(n,"###,##0"));        
+      } catch (er) { }
+      try {
+        var n = app.data.items.filter(function (x) {
+          return x.PRO == 3;
+        }).length || 0;        
+        $$(".count-finish").text(DevExpress.localization.formatNumber(n,"###,##0"));        
+      } catch (er) { }
+      try {
+        var n = app.data.items.filter(function (x) {
+          return x.PRO == 4;
+        }).length || 0;        
+        $$(".count-cancel").text(DevExpress.localization.formatNumber(n,"###,##0"));        
       } catch (er) { }
     },
     loadData: function (isShow) {
@@ -462,48 +538,48 @@ var app = new Framework7({
           $$(".count-wait").text('*');
         };
 
-        // var store = app.methods.initStore("Pickup_Order", [
-        //   "Route_Code", "=", app.data.user.user_name
-        // ]);
-        // store.load().done(function (data) {
-        //   if (isShow) { app.preloader.hide(); } else {
-        //     app.progressbar.hide();
-        //   }
-        //   self.methods.updateList(data);
-        // });
-
-
-        $.ajax({
-          url: app.data.serverUrl + "/api/MPUP/" + app.data.user.user_name + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
-          method: "GET",
-          success: function (data) {
-            if (isShow) { app.preloader.hide(); } else {
-              app.progressbar.hide();
-            }
-            self.methods.updateList(data);
-          },
-          error: function (err) {
-            app.preloader.hide();
-            var msg = JSON.stringify(err);
-            var ty = msg.includes("deadlock");
-
-            //app.preloader.hide();
-            app.toast.create({
-              text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
-              closeTimeout: 2000,
-            }).open();
-            //console.timeEnd("Pushs:" + r.Consignment_No);
-            // if (cb) {
-            //   cb(false);
-            // }
-          }
-        }).done(function (data) {
+        var store = app.methods.initStore("Pickup_Order", [
+          "Route_Code", "=", app.data.user.user_name
+        ]);
+        store.load().done(function (data) {
           if (isShow) { app.preloader.hide(); } else {
             app.progressbar.hide();
           }
-          app.ptr.done();
           self.methods.updateList(data);
         });
+
+
+        // $.ajax({
+        //   url: app.data.serverUrl + "/api/MPUP/" + app.data.user.user_name + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
+        //   method: "GET",
+        //   success: function (data) {
+        //     if (isShow) { app.preloader.hide(); } else {
+        //       app.progressbar.hide();
+        //     }
+        //     self.methods.updateList(data);
+        //   },
+        //   error: function (err) {
+        //     app.preloader.hide();
+        //     var msg = JSON.stringify(err);
+        //     var ty = msg.includes("deadlock");
+
+        //     //app.preloader.hide();
+        //     app.toast.create({
+        //       text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
+        //       closeTimeout: 2000,
+        //     }).open();
+        //     //console.timeEnd("Pushs:" + r.Consignment_No);
+        //     // if (cb) {
+        //     //   cb(false);
+        //     // }
+        //   }
+        // }).done(function (data) {
+        //   if (isShow) { app.preloader.hide(); } else {
+        //     app.progressbar.hide();
+        //   }
+        //   app.ptr.done();
+        //   self.methods.updateList(data);
+        // });
       }
     },
     UpsetStore: function (arr) {
@@ -528,15 +604,23 @@ var app = new Framework7({
         }
       }
     },
-    refreshList: function () {
+    refreshList: function (type) {
       //app.data.list.replaceAllItems(app.data.items);
-
+      if (!type || type < 2) {
+        type = 2;
+      }
+      var tname = '.wait-list';
+      if (type == 3) {
+        tname = '.finish-list';
+      } else if (type == 4) {
+        tname = '.cancel-list';
+      }
       app.data.waitlist = app.virtualList.create({
         // List Element
-        el: '.wait-list',
+        el: tname,
         // Pass array with items
         items: app.data.items.filter(function (x) {
-          return x;
+          return x.PRO == type;
         }),
         // Custom search function for searchbar
         searchAll: function (query, items) {
@@ -578,19 +662,20 @@ var app = new Framework7({
           '     </div>{{/js_if}}' +
           '   </div>' +
           ' </div>' +
-          ' <div class="segmented segmented-raised">' +
-          '   <a href="/po/{{ID}}/" data-id="{{ID}}" class="button bill-pickup"><i class="icon f7-icons ios-only">download_fill</i><i class="icon material-icons md-only">archive</i><span>Nhận hàng</span></a>' +
-          '   <a href="#" data-id="{{ID}}"  data-phone="{{PHONES}}"  class="button bill-call"><i class="icon f7-icons ios-only">phone_fill</i><i class="icon material-icons md-only">call</i><span>Gọi</span></a>' +
-          '   {{#if CALL}}<a href="#" data-id="{{ID}}" class="button bill-cancel smart-select smart-select-init" data-open-in="popup" data-virtual-list="true" data-page-back-link-text="Thôi" data-close-on-select="true" data-page-title="Chọn lý do"><i class="icon f7-icons ios-only">close_round</i><i class="icon material-icons md-only">close</i><span>Hủy</span>' +
-          '     <select class="bill-reason" data-id="{{ID}}" name="reason">' +
-          '       <option value="" selected disabled hidden>0. Chọn lý do</option>' +
-          '       <option value="REASON_1" >1. Người gửi hủy yêu cầu</option>' +
-          '       <option value="REASON_2" >2. Chưa chuẩn bị hàng xong</option>' +
-          '       <option value="REASON_3" >3. Hẹn ngày khác lấy hàng</option>' +
-          '       <option value="REASON_4" >4. Lý do khác</option>' +
-          '     </select>' +
-          '   </a>{{/if}}' +
-          ' </div>' +
+          (type == 2 ? (
+            ' <div class="segmented segmented-raised">' +
+            '   <a href="/po/{{ID}}/" data-id="{{ID}}" class="button bill-pickup"><i class="icon f7-icons ios-only">download_fill</i><i class="icon material-icons md-only">archive</i><span>Nhận hàng</span></a>' +
+            '   <a href="#" data-id="{{ID}}"  data-phone="{{PHONES}}"  class="button bill-call"><i class="icon f7-icons ios-only">phone_fill</i><i class="icon material-icons md-only">call</i><span>Gọi</span></a>' +
+            '   {{#if CALL}}<a href="#" data-id="{{ID}}" class="button bill-cancel smart-select smart-select-init" data-open-in="popup" data-virtual-list="true" data-page-back-link-text="Thôi" data-close-on-select="true" data-page-title="Chọn lý do"><i class="icon f7-icons ios-only">close_round</i><i class="icon material-icons md-only">close</i><span>Hủy</span>' +
+            '     <select class="bill-reason" data-id="{{ID}}" name="reason">' +
+            '       <option value="" selected disabled hidden>0. Chọn lý do</option>' +
+            '       <option value="REASON_1" >1. Người gửi hủy yêu cầu</option>' +
+            '       <option value="REASON_2" >2. Chưa chuẩn bị hàng xong</option>' +
+            '       <option value="REASON_3" >3. Hẹn ngày khác lấy hàng</option>' +
+            '       <option value="REASON_4" >4. Lý do khác</option>' +
+            '     </select>' +
+            '   </a>{{/if}}' +
+            ' </div>') : '') +
           '</li>',
         // Item height
         height: app.theme === 'ios' ? 63 : (app.theme === 'md' ? 73 : 46),
@@ -697,10 +782,12 @@ var app = new Framework7({
     },
     updateList: function (rs) {
       try {
-        app.methods.setWait(rs.length);
+        app.methods.setWait();
         if (rs && rs.length > 0) {
           app.data.items = rs;
-          app.methods.refreshList();
+          app.methods.refreshList(2);
+          app.methods.refreshList(3);
+          app.methods.refreshList(4);
         }
       } catch (er) { }
     },
@@ -710,7 +797,7 @@ var app = new Framework7({
           if (rs) {
             var beginTime = new Date().getTime();
             montionCall(phone, beginTime, function (rs) {
-              app.methods.saveCallLog(id, phone, rs);
+              app.methods.saveCallLog(id, phone, rs, beginTime);
             }, function (err) {
               console.log(err);
             });
@@ -940,6 +1027,7 @@ var onNotificationReceived = function (pushNotification) {
 
 
 $$(document).on('deviceready', function () {
+  app.methods.requestSMSPermission();
 
   navigator.splashscreen.hide();
   $$(document).on("backbutton", app.methods.onBackKeyDown, false);
@@ -1100,7 +1188,9 @@ $$('.language').on('click', function () {
 
 $$(document).on('page:afterin', function (e) {
   if (e.detail.route.name == "home") {
-    app.methods.refreshList();
+    app.methods.refreshList(2);
+    app.methods.refreshList(3);
+    app.methods.refreshList(4);
   }
 });
 

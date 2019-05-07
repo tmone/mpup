@@ -471,7 +471,7 @@ var app = new Framework7({
         return new DevExpress.data.ArrayStore({
           key: "ID",
           data: []
-        });;
+        });
       }
     },
     setWait: function (n) {
@@ -517,48 +517,48 @@ var app = new Framework7({
           $$(".count-wait").text('*');
         };
 
-        // var store = app.methods.initStore("Pickup_Order", [
-        //   "Route_Code", "=", app.data.user.user_name
-        // ]);
-        // store.load().done(function (data) {
-        //   if (isShow) { app.preloader.hide(); } else {
-        //     app.progressbar.hide();
-        //   }
-        //   self.methods.updateList(data);
-        // });
-
-
-        $.ajax({
-          url: app.data.serverUrl + "/api/MPUP/" + app.data.user.user_name + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
-          method: "GET",
-          success: function (data) {
-            if (isShow) { app.preloader.hide(); } else {
-              app.progressbar.hide();
-            }
-            self.methods.updateList(data);
-          },
-          error: function (err) {
-            app.preloader.hide();
-            var msg = JSON.stringify(err);
-            var ty = msg.includes("deadlock");
-
-            //app.preloader.hide();
-            app.toast.create({
-              text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
-              closeTimeout: 2000,
-            }).open();
-            //console.timeEnd("Pushs:" + r.Consignment_No);
-            // if (cb) {
-            //   cb(false);
-            // }
-          }
-        }).done(function (data) {
+        var store = app.methods.initStore("Pickup_Order", [
+          "Route_Code", "=", app.data.user.user_name
+        ]);
+        store.load().done(function (data) {
           if (isShow) { app.preloader.hide(); } else {
             app.progressbar.hide();
           }
-          app.ptr.done();
           self.methods.updateList(data);
         });
+
+
+        // $.ajax({
+        //   url: app.data.serverUrl + "/api/MPUP/" + app.data.user.user_name + "?u=" + app.data.user.user_name + "&p=" + app.data.user.password,
+        //   method: "GET",
+        //   success: function (data) {
+        //     if (isShow) { app.preloader.hide(); } else {
+        //       app.progressbar.hide();
+        //     }
+        //     self.methods.updateList(data);
+        //   },
+        //   error: function (err) {
+        //     app.preloader.hide();
+        //     var msg = JSON.stringify(err);
+        //     var ty = msg.includes("deadlock");
+
+        //     //app.preloader.hide();
+        //     app.toast.create({
+        //       text: "Lỗi: " + (ty ? "Server đang bận. Thử lại sau ít phút" : msg),
+        //       closeTimeout: 2000,
+        //     }).open();
+        //     //console.timeEnd("Pushs:" + r.Consignment_No);
+        //     // if (cb) {
+        //     //   cb(false);
+        //     // }
+        //   }
+        // }).done(function (data) {
+        //   if (isShow) { app.preloader.hide(); } else {
+        //     app.progressbar.hide();
+        //   }
+        //   app.ptr.done();
+        //   self.methods.updateList(data);
+        // });
       }
     },
     UpsetStore: function (arr) {
