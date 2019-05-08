@@ -507,19 +507,19 @@ var app = new Framework7({
             });
           }
         });
-        $$(".count-wait").text(DevExpress.localization.formatNumber(n,"###,##0"));        
+        $$(".count-wait").text(DevExpress.localization.formatNumber(n, "###,##0"));
       } catch (er) { }
       try {
         var n = app.data.items.filter(function (x) {
           return x.PRO == 3;
-        }).length || 0;        
-        $$(".count-finish").text(DevExpress.localization.formatNumber(n,"###,##0"));        
+        }).length || 0;
+        $$(".count-finish").text(DevExpress.localization.formatNumber(n, "###,##0"));
       } catch (er) { }
       try {
         var n = app.data.items.filter(function (x) {
           return x.PRO == 4;
-        }).length || 0;        
-        $$(".count-cancel").text(DevExpress.localization.formatNumber(n,"###,##0"));        
+        }).length || 0;
+        $$(".count-cancel").text(DevExpress.localization.formatNumber(n, "###,##0"));
       } catch (er) { }
     },
     loadData: function (isShow) {
@@ -1195,12 +1195,29 @@ $$(document).on('page:afterin', function (e) {
 });
 
 //app.ptr.create('.ptr-content');
-$$('.ptr-content').on('ptr:refresh', function (e) {
-  app.methods.loadData(false);
-});
-$$(".tab").on("tab:show", function () {
+// $$('.ptr-content').on('ptr:refresh', function (e) {
+//   app.methods.loadData(false);
+// });
+$$(".tab").on("tab:hide", function () {
   var tname = $$(this).data("name");
   if (tname == "wait-list") {
     app.methods.loadData(false);
   }
-})
+});
+$$(".tab").on("tab:show", function () {
+  var tname = $$(this).data("name");
+  if (tname == "wait-list") {
+    var total = app.data.items.length;
+    var wait = app.data.items.filter(function (x) {
+      return x.PRO == 2;
+    }).length || 0;
+    if (total > 0 && wait == 0) {
+      $$("#search-id").hide();
+      $$("#done-id").show();
+    }else{
+      $$("#search-id").show();
+      $$("#done-id").hide();
+    }
+  }
+
+});

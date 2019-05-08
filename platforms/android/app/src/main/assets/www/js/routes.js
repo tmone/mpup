@@ -11,6 +11,12 @@ var routes = [
     componentUrl: './pages/about.html',
     name: 'about',
   },
+  // About page
+  {
+    path: '/done/',
+    componentUrl: './pages/done.html',
+    name: 'done',
+  },
   {
     path: '/po/:poID/',
     async: function (routeTo, routeFrom, resolve, reject) {
