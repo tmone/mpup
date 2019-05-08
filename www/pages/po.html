@@ -187,12 +187,31 @@
 </style>
 <script>
 
-    var store = [];
+    var scan4store = [];
 
     var MULTISCAN = false;
     var getKeyCode = function (str) {
         return str.charCodeAt(str.length);
     }
+    function checkConsignmnet(vl, cb) {
+        $.ajax({
+            method: "GET",
+            url: app.data.serverUrl + '/api/Consignment/' + vl,
+            error: function (err) {
+
+            }
+        }).done(function (data) {
+            if (data && data.length > 0 && data[0].ID && data[0].ID > 0) {
+                if (cb) {
+                    cb(true);
+                }
+            } else {
+                if (cb) {
+                    cb(false);
+                }
+            }
+        });
+    };
     function findAndPushOFDS(vl) {
         console.log(vl);
         var test = vl.replace(/[^0-9a-zA-Z_\-]/g, '');
@@ -205,32 +224,40 @@
         }
         //debugger;
         var fou = false;
-        for (var i = 0; i < store.length; i++) {
-            if (store[i] == vl) {
+        for (var i = 0; i < scan4store.length; i++) {
+            if (scan4store[i] == vl) {
                 //navigator.notification.beep(2);
                 navigator.vibrate([200, 200]);
                 return;
             }
         }
-        navigator.notification.beep(1);
-        navigator.vibrate(200);
-        store.push(vl);
-        $$("#tbody").find('tbody').append(
-            $$('<tr>').append($$('<td class="checkbox-cell">' +
-                '   <label class="checkbox">' +
-                '       <input class="vd-selected" type="checkbox" data-value="' + vl + '">' +
-                '       <i class="icon-checkbox"></i>' +
-                '   </label>' +
-                '</td>'),
-                $$('<td class="label-cell">' + vl + '</td>'))
-        );
-        //debugger;
-        if (store.length > 0) {
-            $$(".show-footer").show();
-        } else {
-            $$(".show-footer").hide();
-        }
-
+        checkConsignmnet(vl, function (rs) {
+            if (rs && rs == true) {
+                app.toast.create({
+                    text: 'Lỗi: SVĐ <span style="color:orange"><strong>' + vl + '</span><strong> đã được sử dụng!',
+                    closeTimeout: 2000,
+                }).open();
+                return;
+            }
+            navigator.notification.beep(1);
+            navigator.vibrate(200);
+            scan4store.push(vl);
+            $$("#tbody").find('tbody').append(
+                $$('<tr>').append($$('<td class="checkbox-cell">' +
+                    '   <label class="checkbox">' +
+                    '       <input class="vd-selected" type="checkbox" data-value="' + vl + '">' +
+                    '       <i class="icon-checkbox"></i>' +
+                    '   </label>' +
+                    '</td>'),
+                    $$('<td class="label-cell">' + vl + '</td>'))
+            );
+            //debugger;
+            if (scan4store.length > 0) {
+                $$(".show-footer").show();
+            } else {
+                $$(".show-footer").hide();
+            }
+        });
     }
     function scanBarcode() {
         cordova.plugins.barcodeScanner.scan(
@@ -396,12 +423,12 @@
                     var l = $$(".vd-selected:checked");
                     $.each(l, function () {
                         var vl = $$(this).data("value");
-                        store.splice(store.indexOf(vl), 1);
+                        scan4store.splice(scan4store.indexOf(vl), 1);
                     });
 
                     $('#tbody tr').has('.vd-selected:checked').remove();
                     $('.scan4-panel').removeClass("data-table-has-checked");
-                    if (store.length > 0) {
+                    if (scan4store.length > 0) {
                         $$(".show-footer").show();
                     } else {
                         $$(".show-footer").hide();
@@ -409,11 +436,21 @@
 
                 });
                 $$(".finish-scan4").on('click', function () {
-                    app.toast.create({
-                        text: JSON.stringify(store),
-                        closeTimeout: 2000,
-                    }).open();
-                    app.router.back();
+                    debugger;
+                    // app.toast.create({
+                    //     text: JSON.stringify(store),
+                    //     closeTimeout: 2000,
+                    // }).open();
+                    // app.router.back();
+                    if (scan4store.length > 0) {
+                        app.dialog.confirm('Nhận thành công ' + scan4store.length + ' vđ?', function () {
+                            app.methods.pickup(poID, 3, 0, '', scan4store.join(';'), function () {
+                                app.methods.loadData(false);
+                                app.router.back();
+                            });
+                        });
+                    }
+
                 });
 
 
@@ -456,8 +493,11 @@
                                             c++;
                                             total += store.store._array[i].Total_Charge || 0;
                                         }
-                                        app.dialog.confirm('Nhận thành công ' + c + ' vđ. Tổng số tiền <span style="color:orange"><strong>' + DevExpress.localization.formatNumber(total,"###,##0") + '</strong></span>?', function () {
-                                            app.methods.pickup(poID, 3, 0, '');
+                                        app.dialog.confirm('Nhận thành công ' + c + ' vđ. Tổng số tiền <span style="color:orange"><strong>' + DevExpress.localization.formatNumber(total, "###,##0") + '</strong></span>?', function () {
+                                            app.methods.pickup(poID, 3, 0, '', function () {
+                                                app.methods.loadData(false);
+                                                app.router.back();
+                                            });
                                         });
                                     }
                                 }

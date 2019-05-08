@@ -10,100 +10,111 @@
         </div>
         <div class="title">Chốt ca</div>
         <div class="right">
-            <a class="link back chot-id">
-                <i class="icon f7-icons ios-only">check</i>
-                <i class="icon material-icons md-only">done</i>
-                Hoàn thành
-            </a>
+          <a class="link back chot-id">
+            <i class="icon f7-icons ios-only">check</i>
+            <i class="icon material-icons md-only">done</i>
+            Ok
+          </a>
         </div>
       </div>
     </div>
     <div class="page-content">
-      <div class="block block-strong">
-        <p>Component page is also compiled with Template7 or ES Template, but it has much more functionality. In addition to Template7 page it has lifecycle hooks, events handling, data managment and Virtual DOM data bindings.</p>
-        <p>It is useful to use Component page when you need page-specific logic.</p>
-      </div>
-      <div class="block-title">Events Handling</div>
-      <div class="block block-strong">
-        <a href="#" class="button button-raised" @click="openAlert">Open Alert</a>
-      </div>
-      <div class="block-title">Page Component Data</div>
-      <div class="block block-strong">
-        <p>Hello! My name is {{name}}. I am {{age}} years old.</p>
-        <p>I like to play:</p>
+      <div class="block-title">Chi tiết vận đơn trong ngày <strong><span class="date"></span></strong>.</div>
+      <div class="list no-chevron">
         <ul>
-          {{#each like}}
-          <li>{{this}}</li>
-          {{/each}}
+          <li>
+            <a href="#" class="item-link item-content">
+              <!-- <div class="item-media"><i class="icon f7-icons ios-only">person_round_fill</i>
+                <i class="icon material-icons md-only">account_circle</i></div> -->
+              <div class="item-inner">
+                <div class="item-title">
+                  <div class="item-header">Tài khoản</div>
+                  Mã nhân viên
+                </div>
+                <div class="item-after">
+                  <div id="id-user"></div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item-link item-content">
+              <!-- <div class="item-media"><i class="icon f7-icons ios-only">person_round_fill</i>
+                <i class="icon material-icons md-only">account_circle</i></div> -->
+              <div class="item-inner">
+                <div class="item-title">
+                  <div class="item-header">Tổng số vận đơn</div>
+                  Nhận thành công
+                </div>
+                <div class="item-after">
+                  <div id="id-total-success"></div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item-link item-content">
+              <!-- <div class="item-media"><i class="icon f7-icons ios-only">person_round_fill</i>
+                <i class="icon material-icons md-only">account_circle</i></div> -->
+              <div class="item-inner">
+                <div class="item-title">
+                  <div class="item-header">Tổng số vận đơn</div>
+                  Thanh toán sau
+                </div>
+                <div class="item-after">
+                  <div id="id-total-after"></div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item-link item-content">
+              <!-- <div class="item-media"><i class="icon f7-icons ios-only">person_round_fill</i>
+                <i class="icon material-icons md-only">account_circle</i></div> -->
+              <div class="item-inner">
+                <div class="item-title">
+                  <div class="item-header">Tổng số vận đơn</div>
+                  Người nhận thanh toán
+                </div>
+                <div class="item-after">
+                  <div id="id-total-receiver"></div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item-link item-content">
+              <!-- <div class="item-media"><i class="icon f7-icons ios-only">person_round_fill</i>
+                <i class="icon material-icons md-only">account_circle</i></div> -->
+              <div class="item-inner">
+                <div class="item-title">
+                  <div class="item-header">Tổng số vận đơn</div>
+                  Đã thanh toán
+                </div>
+                <div class="item-after">
+                  <div id="id-total-billed"></div>
+                </div>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="item-link item-content">
+              <!-- <div class="item-media"><i class="icon f7-icons ios-only">money_dollar</i>
+                <i class="icon material-icons md-only">attach_money</i></div> -->
+              <div class="item-inner">
+                <div class="item-title">
+                  <div class="item-header">Tổng số tiền thu</div>
+                  Cần phải nộp
+                </div>
+                <div class="item-after">
+                  <div id="id-total-money"></div>
+                </div>
+              </div>
+            </a>
+          </li>
         </ul>
       </div>
-      <div class="block-title">Route Context</div>
-      <div class="block block-strong">
-        <p>Context can be passed in route options</p>
-        <ul>
-          <li>foo: {{foo}}</li>
-        </ul>
-      </div>
-      <div class="block-title">Extended Context</div>
-      <div class="block block-strong">
-        <p>Component page context as Template7 page context is also extended with some additional variables.</p>
-        <h4>$route</h4>
-        <p>Contains properties of the current route:</p>
-        <ul style="padding-left:25px;word-wrap:break-word;">
-          <li><b>$route.url</b>: {{$route.url}}</li>
-          <li><b>$route.path</b>: {{$route.path}}</li>
-          <li><b>$route.params</b>: {{js 'return JSON.stringify(this.$route.params)'}}</li>
-          <li><b>$route.hash</b>: {{$route.hash}}</li>
-          <li><b>$route.query</b>: {{js 'return JSON.stringify(this.$route.query)'}}</li>
-          <li><b>$route.context</b>: {{js 'return JSON.stringify(this.$route.context)'}}</li>
-        </ul>
 
-        <h4>$root</h4>
-        <p>Root data & methods:</p>
-        <ul style="padding-left:25px">
-          <li><b>$root.user.firstName</b>: {{$root.user.firstName}}</li>
-          <li><b>$root.user.lastName</b>: {{$root.user.lastName}}</li>          
-        </ul>
-
-        <h4>$theme</h4>
-        <p>Currently active theme:</p>
-        <ul style="padding-left:25px">
-          <li><b>$theme.ios</b>: {{$theme.ios}}</li>
-          <li><b>$theme.md</b>: {{$theme.md}}</li>
-        </ul>
-      </div>
-      <div class="block-title">Virtual DOM</div>
-      <div class="block block-strong">
-        <p>Component page is rendered using Virtual DOM. It means it can automatically update page layout depending on changed state with minimal efforts and with maxumim performance.</p>
-      </div>
-      <div class="block block-strong">
-        <p>Ok, so your name is <b>{{name}}</b>?</p>
-        <div class="input {{#if $theme.md}}margin-bottom{{/if}}">
-          <input class="padding-bottom" type="text" @input="onInput" value="{{name}}" placeholder="Type your name">
-          <div class="input-info">Type new name and it be dynamically changed</div>
-        </div>
-      </div>
-      <div class="block block-strong">
-        <p>Button clicked <b>{{clickCounter}}</b> times</p>
-        <p><a class="button button-round button-fill" @click="onButtonClick">Increase Counter</a></p>
-      </div>
-      {{#if listItems}}
-      <div class="list simple-list">
-        <ul>
-          {{#each listItems}}
-          <li>Item {{this}}</li>
-          {{/each}}
-        </ul>
-      </div>
-      {{else}}
-      <div class="block block-strong text-align-center">
-        {{#if listLoading}}
-        <div class="preloader"></div>
-        {{else}}
-        <p><a class="button button-round button-fill" @click="loadList">Load List</a></p>
-        {{/if}}
-      </div>
-      {{/if}}
     </div>
   </div>
 </template>
@@ -118,87 +129,142 @@
     data: function () {
       // Must return an object
       return {
-        name: 'Jimmy',
-        age: 25,
-        like: ['Tennis', 'Chess', 'Football'],
-        clickCounter: 0,
-        listItems: null,
-        listLoading: null,
+
       }
     },
     // Component Methods
     methods: {
-      openAlert: function () {
-        var self = this;
-        self.$app.dialog.alert('Hello World');
-      },
-      onInput: function (e) {
-        var self = this;
-        self.$setState({
-          name: e.target.value,
-        });
-      },
-      onButtonClick: function () {
-        var self = this;
-        self.$setState({
-          clickCounter: self.clickCounter + 1
-        });
-      },
-      loadList: function () {
-        var self = this;
-        self.$setState({ listLoading: true });
-        // Emulate Ajax request
-        setTimeout(() => {
-          self.$setState({
-            listLoading: false,
-            listItems: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-          });
-        }, 2000);
-      },
+
     },
     // Lifecycle Hooks
-    beforeCreate() {
+    beforeCreate: function () {
       console.log('componentBeforeCreate', this)
     },
-    created() {
+    created: function () {
       console.log('componentCreated', this)
     },
-    beforeMount() {
+    beforeMount: function () {
       console.log('componentBeforeMount', this)
     },
-    mounted() {
+    mounted: function () {
       console.log('componentMounted', this);
     },
-    updated() {
+    updated: function () {
       console.log('componentUpdated', this);
     },
-    beforeDestroy() {
+    beforeDestroy: function () {
       console.log('componentBeforeDestroy', this);
     },
-    destroyed() {
+    destroyed: function () {
       console.log('componentDestroyed', this);
     },
     // Page Events
     on: {
-      pageMounted: function(e, page) {
+      pageMounted: function (e, page) {
         console.log('pageMounted', page);
       },
-      pageInit: function(e, page) {
+      pageInit: function (e, page) {
         console.log('pageInit', page);
+        $$(".date").val(new Date().toJSON().substr(0, 10));
+        $("#id-user").dxTextBox({
+          readOnly: true,
+          value: app.data.user.user_name,
+          width: 100,
+          inputAttr: {
+            style: "text-align: right;"
+          }
+        });
+        $("#id-total-success").dxNumberBox({
+          readOnly: true,
+          value: app.data.items.filter(function (x) {
+            return x.PRO == 3;
+          }).length,
+          width: 100,
+          format: "###,##0",
+          inputAttr: {
+            style: "text-align: right;"
+          }
+        });
+        app.methods.getSummary(function (rs) {
+          if (rs && rs.length > 0) {
+            var cgs = 0;
+            try {
+              cgs = rs.find(function (x) {
+                return x.Payment_Type == 'GS';
+              }).Count_Type;
+            } catch (err) { }
+            var cnn = 0;
+            try {
+              cnn = rs.find(function (x) {
+                return x.Payment_Type == 'NN';
+              }).Count_Type;
+            } catch (err) { }
+            var cng = 0;
+            try {
+              cng = rs.find(function (x) {
+                return x.Payment_Type == 'NG';
+              }).Count_Type;
+            } catch (err) { }
+            var total_money = 0;
+            rs.filter(function (x) {
+              return x.Payment_Type == 'NG';
+            }).map(function (x) {
+              total_money += x.Total_Type || 0;
+            });
+
+            $("#id-total-after").dxNumberBox({
+              readOnly: true,
+              value: cgs,
+              width: 100,
+              format: "###,##0",
+              inputAttr: {
+                style: "text-align: right;"
+              }
+            });
+            $("#id-total-receiver").dxNumberBox({
+              readOnly: true,
+              value: cnn || 0,
+              width: 100,
+              format: "###,##0",
+              inputAttr: {
+                style: "text-align: right;"
+              }
+            });
+            $("#id-total-billed").dxNumberBox({
+              readOnly: true,
+              value: cng || 0,
+              width: 100,
+              format: "###,##0",
+              inputAttr: {
+                style: "text-align: right;"
+              }
+            });
+            $("#id-total-money").dxNumberBox({
+              readOnly: true,
+              value: cng || 0,
+              width: 100,
+              format: "###,##0",
+              inputAttr: {
+                style: "text-align: right;"
+              }
+            });
+
+          }
+        });
       },
-      pageBeforeIn: function(e, page) {
+      pageBeforeIn: function (e, page) {
         console.log('pageBeforeIn', page);
       },
-      pageAfterIn: function(e, page) {
+      pageAfterIn: function (e, page) {
         console.log('pageAfterIn', page);
       },
-      pageBeforeOut: function(e, page) {
+      pageBeforeOut: function (e, page) {
         console.log('pageBeforeOut', page);
       },
-      pageAfterOut: function(e, page) {
+      pageAfterOut: function (e, page) {
         console.log('pageAfterOut', page);
       },
-      pageBeforeRemove: function(e, page) {
+      pageBeforeRemove: function (e, page) {
         console.log('pageBeforeRemove', page);
       },
     }

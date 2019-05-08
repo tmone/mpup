@@ -200,7 +200,7 @@
           "/manifest": [
             {
               "xml": "<uses-permission android:name=\"android.permission.SEND_SMS\" />",
-              "count": 81,
+              "count": 188,
               "id": "config.xml"
             }
           ]

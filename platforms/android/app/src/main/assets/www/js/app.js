@@ -202,6 +202,38 @@ var app = new Framework7({
       }
       return rs;
     },
+    getSummary: function(cb){
+      $.ajax({
+        url:
+          // 'http://localhost:34567'
+          app.data.serverUrl
+          + "/api/Summary/Summary?u="+app.data.user.user_name+"&p="+app.data.user.password,        
+        success: function (rs) {
+          if (rs && cb) {
+            cb(rs);
+          }
+        },
+        error: function (err) {
+          //debugger;
+          if (err.status != 200 || err.status != 201) {
+            app.toast.create({
+              text: "Lỗi: " + JSON.stringify(err),
+              closeTimeout: 2000,
+            }).open();
+          }
+        }
+      }).done(function (data) {
+
+      }).fail(function (err) {
+        //debugger;
+        if (err.status != 200 || err.status != 201) {
+          app.toast.create({
+            text: "Lỗi: " + JSON.stringify(err),
+            closeTimeout: 2000,
+          }).open();
+        }
+      });
+    },
     getCost: function (Custom_Code, Service_Code, Weight, Sender_Province_code, Receiver_Province_Code, Receiver_District_Code, cb) {
       $.ajax({
         url:
@@ -251,39 +283,34 @@ var app = new Framework7({
         item.PRO = stausID;
       }
     },
-    pickup: function (poID, stausID, exceptionID, mess) {
+    pickup: function (poID, stausID, exceptionID, mess, bills, cb) {
       app.preloader.show("multi");
       $.ajax({
         url: //'http://localhost:34567' 
-          app.data.serverUrl + "/api/Pickup/Pickup",
+          app.data.serverUrl + "/api/PickupScan4/PickupScan4",
         data: {
           u: app.data.user.user_name,
           p: app.data.user.password,
           i: poID,
           m: mess || ' ',
           s: stausID,
-          e: exceptionID
+          e: exceptionID,
+          b: bills
         },
         method: "POST",
         success: function () {
-          app.preloader.hide();
-          mainView.router.back();
           app.methods.updateItem(poID, stausID);
         },
         error: function (err) {
           //debugger;
           if (err.status != 200 || err.status != 201) {
-            app.preloader.hide();
             app.toast.create({
               text: "Lỗi: " + JSON.stringify(err),
               closeTimeout: 2000,
             }).open();
           }
-
         }
       }).done(function (data) {
-        app.preloader.hide();
-        mainView.router.back();
         app.methods.updateItem(poID, stausID);
       }).fail(function (err) {
         //debugger;
@@ -293,6 +320,11 @@ var app = new Framework7({
             text: "Lỗi: " + JSON.stringify(err),
             closeTimeout: 2000,
           }).open();
+        }
+      }).always(function () {
+        app.preloader.hide();
+        if (cb) {
+          cb();
         }
       });
     },
@@ -546,6 +578,20 @@ var app = new Framework7({
             app.progressbar.hide();
           }
           self.methods.updateList(data);
+
+          var total = app.data.items.length;
+          var wait = app.data.items.filter(function (x) {
+            return x.PRO == 2;
+          }).length || 0;
+          if (total > 0 && wait == 0) {
+            // $$("#search-id").hide();
+            $$("#done-id").show();
+          } else {
+            // $$("#search-id").show();
+            $$("#done-id").hide();
+          }
+
+
         });
 
 
@@ -666,7 +712,7 @@ var app = new Framework7({
             ' <div class="segmented segmented-raised">' +
             '   <a href="/po/{{ID}}/" data-id="{{ID}}" class="button bill-pickup"><i class="icon f7-icons ios-only">download_fill</i><i class="icon material-icons md-only">archive</i><span>Nhận hàng</span></a>' +
             '   <a href="#" data-id="{{ID}}"  data-phone="{{PHONES}}"  class="button bill-call"><i class="icon f7-icons ios-only">phone_fill</i><i class="icon material-icons md-only">call</i><span>Gọi</span></a>' +
-            '   {{#if CALL}}<a href="#" data-id="{{ID}}" class="button bill-cancel smart-select smart-select-init" data-open-in="popup" data-virtual-list="true" data-page-back-link-text="Thôi" data-close-on-select="true" data-page-title="Chọn lý do"><i class="icon f7-icons ios-only">close_round</i><i class="icon material-icons md-only">close</i><span>Hủy</span>' +
+            '   <a href="#" data-id="{{ID}}" class="button bill-cancel smart-select smart-select-init" data-open-in="popup" data-virtual-list="true" data-page-back-link-text="Thôi" data-close-on-select="true" data-page-title="Chọn lý do"><i class="icon f7-icons ios-only">close_round</i><i class="icon material-icons md-only">close</i><span>Hủy</span>' +
             '     <select class="bill-reason" data-id="{{ID}}" name="reason">' +
             '       <option value="" selected disabled hidden>0. Chọn lý do</option>' +
             '       <option value="REASON_1" >1. Người gửi hủy yêu cầu</option>' +
@@ -674,8 +720,9 @@ var app = new Framework7({
             '       <option value="REASON_3" >3. Hẹn ngày khác lấy hàng</option>' +
             '       <option value="REASON_4" >4. Lý do khác</option>' +
             '     </select>' +
-            '   </a>{{/if}}' +
-            ' </div>') : '') +
+            '   </a>' +
+            ' </div>'
+          ) : '') +
           '</li>',
         // Item height
         height: app.theme === 'ios' ? 63 : (app.theme === 'md' ? 73 : 46),
@@ -740,7 +787,10 @@ var app = new Framework7({
               console.log(id, val, year, month, day);
               var d = new Date(year, month, day);
               var str = "Khách hẹn ngày khác: " + dateKey(d);
-              app.methods.pickup(id, 4, 87, str);
+              app.methods.pickup(id, 4, 87, str, function () {
+                app.methods.loadData(false);
+                app.router.back();
+              });
             }
             app.data.popupDate.open();
           }, 200);
@@ -750,7 +800,10 @@ var app = new Framework7({
             if (name && name.length > 2) {
               console.log(id, val, "Lý do khác", name);
               var str = "Lý do khác: " + name;
-              app.methods.pickup(id, 4, 87, str);
+              app.methods.pickup(id, 4, 87, str, function () {
+                app.methods.loadData(false);
+                app.router.back();
+              });
             } else {
               app.toast.create({
                 text: "Lỗi: lý do '" + name + "' quá ngắn",
@@ -768,11 +821,17 @@ var app = new Framework7({
         } else if (val == "REASON_1") {
           console.log(id, val);
           var str = "Người gửi hủy yêu cầu";//+ (new Date(year,month,day).toJSON().substr(0,10));
-          app.methods.pickup(id, 4, 87, str);
+          app.methods.pickup(id, 4, 87, str, function () {
+            app.methods.loadData(false);
+            app.router.back();
+          });
         } else if (val == "REASON_2") {
 
           var str = "Chưa chuẩn bị hàng xong";//+ (new Date(year,month,day).toJSON().substr(0,10));
-          app.methods.pickup(id, 4, 87, str);
+          app.methods.pickup(id, 4, 87, str, function () {
+            app.methods.loadData(false);
+            app.router.back();
+          });
         } else {
           console.log(id, val);
         }
@@ -1204,20 +1263,20 @@ $$(".tab").on("tab:hide", function () {
     app.methods.loadData(false);
   }
 });
-$$(".tab").on("tab:show", function () {
-  var tname = $$(this).data("name");
-  if (tname == "wait-list") {
-    var total = app.data.items.length;
-    var wait = app.data.items.filter(function (x) {
-      return x.PRO == 2;
-    }).length || 0;
-    if (total > 0 && wait == 0) {
-      $$("#search-id").hide();
-      $$("#done-id").show();
-    }else{
-      $$("#search-id").show();
-      $$("#done-id").hide();
-    }
-  }
+// $$(".tab").on("tab:show", function () {
+//   var tname = $$(this).data("name");
+//   if (tname == "wait-list") {
+//     var total = app.data.items.length;
+//     var wait = app.data.items.filter(function (x) {
+//       return x.PRO == 2;
+//     }).length || 0;
+//     if (total > 0 && wait == 0) {
+//       $$("#search-id").hide();
+//       $$("#done-id").show();
+//     } else {
+//       $$("#search-id").show();
+//       $$("#done-id").hide();
+//     }
+//   }
 
-});
+// });
